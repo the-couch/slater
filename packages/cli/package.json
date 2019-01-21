@@ -1,6 +1,6 @@
 {
   "name": "@slater/cli",
-  "version": "0.8.0",
+  "version": "1.0.0-alpha.0",
   "description": "shopify theme management toolkit",
   "main": "index.js",
   "bin": {
