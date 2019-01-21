@@ -1,0 +1,22 @@
+:root {
+  --black: #000;
+  --white: #FFF;
+  --gray: #EAEAEA;
+  --theme: #BB3136;
+}
+
+.cw {
+  color: var(--white);
+}
+.ct {
+  color: var(--theme);
+}
+.bcw {
+  background-color: var(--white);
+}
+.bcgm {
+  background-color: var(--gray);
+}
+.bct {
+  background-color: var(--theme);
+}

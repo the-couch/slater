@@ -1,0 +1,113 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {% if settings.favicon != blank %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {% endif %}
+
+  {%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+  {%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+  <title>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+
+  <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+
+  {{ 'main.css' | asset_url | stylesheet_tag }}
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lt IE 9]><script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}"></script><![endif]-->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <style>
+    /*================ Giftcard Template ================*/
+    .giftcard-qr img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .apple-wallet-image {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /*================ Print Giftcard Styles ================*/
+    @media print {
+      @page {
+        margin: 0.5cm;
+      }
+      p {
+        orphans: 3;
+        widows: 3;
+      }
+
+      html,
+      body {
+        background-color: #fff;
+        color: #000;
+      }
+
+      .print-giftcard,
+      .apple-wallet {
+        display: none;
+      }
+    }
+  </style>
+
+  {{ content_for_header }}
+</head>
+
+<body class="template-giftcard">
+  <main role="main" id="MainContent">
+    {{ content_for_layout }}
+  </main>
+
+  <script>
+    (function() {
+      var config = {
+        qrCode: '#QrCode',
+        printButton: '#PrintGiftCard',
+        giftCardCode: '.giftcard__code'
+      };
+
+      var $qrCode = $(config.qrCode);
+
+      new QRCode($qrCode[0], {
+        text: $qrCode.attr('data-identifier'),
+        width: 120,
+        height: 120
+      });
+
+      $(config.printButton).on('click', function() {
+        window.print();
+      });
+
+      // Auto-select gift card code on click, based on ID passed to the function
+      $(config.giftCardCode).on('click', {element: 'GiftCardDigits'}, selectText);
+
+      function selectText(evt) {
+        var text = document.getElementById(evt.data.element);
+        var range = '';
+
+        if (document.body.createTextRange) {
+          range = document.body.createTextRange();
+          range.moveToElementText(text);
+          range.select();
+        } else if (window.getSelection) {
+          var selection = window.getSelection();
+          range = document.createRange();
+          range.selectNodeContents(text);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{% capture cx %}
+  chevron
+  {% if left == true %}is-left{% endif %}
+  {% if down == true %}is-down{% endif %}
+{% endcapture %}
+
+<svg class='{% include 'u-cx' with cx %}' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentcolor" stroke-width="2" style="overflow:visible;"><path d="M5 1.0606601717798212 L11.939339828220179 8 L5 14.939339828220179"></path></svg>

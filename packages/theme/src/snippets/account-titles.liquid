@@ -1,0 +1,33 @@
+<div class='header-spacer'></div>
+
+<section class='account-titles outer ac'>
+  <div class='outer'>
+    <div class='container--s mha'>
+      <h1 class='h2 mb0 caps track medium mb2'>{{ title }}</h1>
+
+      <nav class='account-titles__links small caps track mb1'>
+        <ul class='f aic fw jcc'>
+          <li class='account-titles__link mh1'>
+            {% if template contains 'account' %}
+              <span class='cg'>Account Home</span>
+            {% else %}
+              <a class='link--underline' href='/account'>Account Home</a>
+            {% endif %}
+          </li>
+
+          <li class='account-titles__link mh1'>
+            {% if template contains 'address' %}
+              <span>Addresses</span>
+            {% else %}
+              <a class='link--underline' href='/account/addresses'>Addresses</a>
+            {% endif %}
+          </li>
+
+          <li class='account-titles__link mh1'>
+            <a class='link--underline no-ajax' href='/account/logout'>Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>

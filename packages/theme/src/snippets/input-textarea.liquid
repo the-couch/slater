@@ -1,0 +1,39 @@
+{% if type == blank %}
+  {% assign type = 'text' %}
+{% endif %}
+{% if autocomplete == blank %}
+  {% assign autocomplete = 'off' %}
+{% endif %}
+{% if autocapitalize == blank %}
+  {% assign autocapitalize = 'off' %}
+{% endif %}
+{% if spellcheck == blank %}
+  {% assign spellcheck = 'false' %}
+{% endif %}
+{% if rows == blank %}
+  {% assign rows = '3' %}
+{% endif %}
+{% if required == blank %}
+  {% assign required = 'false' %}
+{% endif %}
+
+{%- capture cx -%}
+  input-wrapper x
+  {{ className }}
+{%- endcapture -%}
+
+<div class='{{ cx }}' data-component='input-textarea'>
+  <textarea
+    class='sans p x'
+    type='{{ type }}'
+    name='{{ name }}'
+    placeholder='{{ placeholder }}'
+    autocomplete='{{ autocomplete }}'
+    autocapitalize='{{ autocapitalize }}'
+    spellcheck='{{ spellcheck }}'
+    rows='{{ rows }}'
+    required='{{ required }}'
+  >{{ value }}</textarea>
+  <label class='sans caps hide'>{{ label }}</label>
+  <span></span>
+</div>

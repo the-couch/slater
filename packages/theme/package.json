@@ -1,0 +1,27 @@
+{
+  "name": "@slater/theme",
+  "version": "0.8.0",
+  "scripts": {
+    "start": "slater watch",
+    "deploy:development": "slater deploy",
+    "deploy:production": "slater deploy --env production"
+  },
+  "author": "https://thecouch.nyc",
+  "license": "MIT",
+  "homepage": "https://github.com/the-couch/slater#readme",
+  "devDependencies": {
+    "@slater/cli": "^1.0.0"
+  },
+  "dependencies": {
+    "form-serialize": "^0.7.2",
+    "mitt": "^1.1.2",
+    "operator": "^1.2.0",
+    "picoapp": "^2.0.2",
+    "selly": "^0.1.0",
+    "sliced": "^1.0.1",
+    "svbstrate": "^4.1.0",
+    "unfetch": "^3.0.0",
+    "w2t": "0.0.2",
+    "webpack": "^4.26.1"
+  }
+}

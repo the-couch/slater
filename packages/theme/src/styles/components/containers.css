@@ -1,0 +1,18 @@
+.outer {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  @media (--600) {
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+}
+
+.container--s {
+  max-width: 600px;
+}
+.container--m {
+  max-width: 1000px;
+}
+.container--l {
+  max-width: 1400px;
+}

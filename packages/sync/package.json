@@ -1,0 +1,28 @@
+{
+  "name": "@slater/sync",
+  "version": "0.8.0",
+  "description": "shopify theme deployment utility",
+  "main": "index.js",
+  "scripts": {
+    "publish": "npm publish --access public"
+  },
+  "keywords": [
+    "shopify",
+    "themekit",
+    "upload"
+  ],
+  "author": "https://thecouch.nyc",
+  "license": "MIT",
+  "homepage": "https://github.com/the-couch/slater#readme",
+  "dependencies": {
+    "ansi-colors": "^3.0.4",
+    "fs-extra": "^7.0.0",
+    "log-update": "^2.3.0",
+    "micromatch": "^3.1.10",
+    "node-fetch": "^2.2.0",
+    "recursive-readdir": "^2.2.2",
+    "w2t": "0.0.2",
+    "yaml": "^1.0.0-rc.7",
+    "zip-folder": "^1.0.0"
+  }
+}

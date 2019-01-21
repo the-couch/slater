@@ -1,0 +1,30 @@
+{% if required == blank %}
+  {% assign required = 'false' %}
+{% endif %}
+
+{%- capture id -%}
+{{type}}{{name}}{{ className | replace: ' ', '' }}
+{%- endcapture -%}
+
+{%- capture cx -%}
+  select-wrapper x rel
+  {{ className }}
+  {% if boxed %}is-boxed{% endif %}
+{%- endcapture -%}
+
+<div class='{{ cx }}'>
+  <label for='{{ id }}' class='hide'>{{ label }}</label>
+  <select
+    id='{{ id }}'
+    name='{{ name }}'
+    value='{{ value }}'
+    {{ attributes }}
+    required='{{ required }}'>
+    {% if placeholder %}<option disabled selected>{{ placeholder }}</option>{% endif %}
+    {{ options }}
+  </select>
+
+  <svg width='10px' height='6px' viewBox='0 0 10 6' class='abs right top bottom mva'>
+    <use xlink:href='#icon-chevron'></use>
+  </svg>
+</div>

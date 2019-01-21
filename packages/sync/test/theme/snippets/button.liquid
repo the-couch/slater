@@ -1,0 +1,21 @@
+{% assign tag = tag | default: 'a' %}
+
+{% capture cx %}
+  button rel sans caps track
+  {{ className }}
+  {% if outline == true %}button--outline{% endif %}
+  {% if small == true %}button--small{% endif %}
+  {% if light == true %}button--light{% endif %}
+  {% if inherit == true %}button--inherit{% endif %}
+{% endcapture %}
+
+<{{ tag }}
+  {% if href %}href='{{ href }}'{% endif %}
+  {% if type %}type='{{ type }}'{% endif %}
+  {% if name %}name='{{ name }}'{% endif %}
+  class='{% include 'u-cx' with cx %}'
+  role='button'>
+  <span class='f aic jcc'>
+    {{ cta }}
+  </span>
+</{{ tag }}>

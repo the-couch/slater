@@ -1,0 +1,91 @@
+{%- assign product = all_products[section.settings.product] -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+{% if product == empty %}
+  {%- assign section_onboarding = true -%}
+  {%- assign onboarding_title = 'homepage.onboarding.product_title' | t -%}
+{% endif %}
+
+<div data-section-id="{{ section.id }}" data-component="product" itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: '800x' }}">
+  <meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+  <script class='js-product-json' type='text/template'>
+    {
+      "selectedOrFirstAvailableVariant": {{ current_variant.id | json }},
+      "product": {{ product | json }}
+    }
+  </script>
+
+  {% if product.featured_image.src != blank %}
+    <img src="{{ product.featured_image.src | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
+  {% else %}
+    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+  {% endif %}
+
+  {% if product.images.size > 1 %}
+    <ul>
+      {% for image in product.images %}
+        <li>
+          <a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>
+            <img src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <h1>{{ product.title | default: onboarding_title }}</h1>
+  {% if product.vendor != blank %}
+    <p>{{ product.vendor }}</p>
+  {% endif %}
+
+  <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+    <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+    <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+
+    {% include 'add-to-cart-form' %}
+
+  </div>
+
+  <div class="rte">
+    {{ product.description }}
+  </div>
+
+  {% if section.settings.show_share_buttons %}
+    {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+  {% endif %}
+
+  {% unless product == empty %}
+    <script type="application/json" data-product-json>
+      {{ product | json }}
+    </script>
+  {% endunless %}
+</div>
+
+{% schema %}
+  {
+    "name": "Featured product",
+    "settings": [
+      {
+        "type": "product",
+        "id": "product",
+        "label": "Product"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured product",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

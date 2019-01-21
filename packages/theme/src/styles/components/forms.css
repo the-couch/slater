@@ -1,0 +1,74 @@
+form {
+  margin: 0;
+}
+input,
+textarea,
+select {
+  display: block;
+  outline: 0;
+  border-radius: 0;
+  border: 0;
+  position: relative;
+  font-size: inherit;
+  background-color: transparent;
+  padding: 0;
+  color: var(--ruby);
+  border-bottom: 1px solid var(--ruby);
+
+  &:focus {
+    /* border-color: black; */
+  }
+  &::-webkit-input-placeholder {
+    color: var(--ruby);
+  }
+  /* Change the white to any color ;) */
+  &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px white inset;
+  }
+}
+input,
+select {
+  height: 55px;
+}
+input[type='checkbox'] {
+  height: auto;
+}
+textarea {
+  max-width: 100%;
+  overflow: auto;
+  resize: vertical;
+  min-height: 55px;
+  padding-top: 0.5em;
+}
+.input--reset {
+  height: auto;
+  padding: 0;
+}
+.select-wrapper {
+  display: block;
+  position: relative;
+
+  svg {
+  }
+
+  select {
+    appearance: none;
+    padding-right: 50px;
+    width: 100%;
+  }
+
+  &.is-boxed {
+    svg {
+      right: 2em;
+    }
+    select {
+      height: 75px;
+      padding-left: 2em;
+      padding-right: 2em;
+
+      &:focus {
+        border-color: black;
+      }
+    }
+  }
+}

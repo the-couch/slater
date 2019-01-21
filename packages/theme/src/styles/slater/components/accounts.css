@@ -1,0 +1,460 @@
+.responsive-table {
+  th {
+    text-align: left;
+    font-size: 0.875rem;
+  }
+}
+.responsive-table-row td {
+  border-bottom: 1px solid white;
+  font-size: 0.875rem;
+}
+
+tfoot td {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.shopify-challenge__container {
+  padding-top: 200px;
+  min-height: 100vh;
+  background: white;
+  max-width: 100% !important;
+}
+.recharge .table {
+  min-width: 500px;
+}
+.page__customers__billing {
+  .rc_text--base {
+    width: 50% !important;
+  }
+}
+.rc_subscriptions__subscription__items {
+  th {
+    font-size: 0.875rem;
+  }
+  th, td {
+    padding: 0 5px;
+  }
+  tbody {
+    font-size: 0.875rem;
+    /* background-color: var(--lite-pink); */
+  }
+  .th-product {
+    width: 200px;
+  }
+  .th-amount  {
+    text-indent: -9999px;
+    position: relative;
+    width: 40px;
+    &:before {
+      content: 'QTY';
+      text-indent: 0;
+      position: absolute;
+      display: block;
+    }
+  }
+  .th-price {
+    width: 50px;
+  }
+  .th-next-charge-date {
+    text-indent: -9999px;
+    position: relative;
+    width: 100px;
+    &:before {
+      content: 'Upcoming';
+      text-indent: 0;
+      position: absolute;
+      display: block;
+    }
+  }
+  .th-frequency {
+    text-indent: -9999px;
+    position: relative;
+    width: 50px;
+    &:before {
+      content: 'FRQ';
+      text-indent: 0;
+      position: absolute;
+      display: block;
+    }
+  }
+  .th-next-charge-date {
+    width: 100px;
+  }
+}
+
+/**
+ * Recharge Subscriptions
+ */
+
+.re__schedule__orders {
+  text-align: left;
+}
+
+.recharge a {
+  text-decoration: underline;
+  &.rc_button {
+    text-decoration: underline;
+  }
+}
+
+.user-customer {
+  .recharge .rc_button {
+    font-family: 'Apercu';
+    transition: all .25s;
+    position: relative;
+    cursor: pointer;
+    padding: 1rem 3rem;
+    color: var(--ruby);
+    outline: none;
+    display: inline-block;
+    text-align: center;
+    font-size: 1rem;
+    border: 2px solid var(--ruby);
+    width: 100%;
+    border-color: var(--ruby);
+    background-color: rgba(255,255,255,0);
+    text-decoration: none;
+    font-weight: 500;
+    &:before {
+      content: '';
+    }
+    &:hover {
+      background-color: var(--ruby);
+      color: white;
+    }
+  }
+}
+
+.rc_toggler__block {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ruby);
+}
+
+.rc_layout {
+  .rc_product-item__list {
+    img {
+      max-width: 100px;
+    }
+  }
+}
+
+.recharge .rc_product-item__list .rc_product-item {
+  width: 100% !important;
+  img {
+    max-width: 50px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+  }
+  .rc_product-item__inner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .grid-view-item__image-wrapper {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .grid-view-item__title  {
+    font-weight: bold;
+  }
+  .rc_product-item__inner {
+    &:hover {
+      background-color: var(--ruby);
+    }
+  }
+}
+
+.rc_form__search {
+  display: flex;
+  width: 100%;
+  label {
+    display: none;
+  }
+  .rc_form__group {
+    /* max-width: 340px; */
+    width: 100%;
+
+    display: flex;
+    button {
+      padding: 0;
+      min-width: 20px;
+      border: 0px !important;
+      border-bottom: 1px solid var(--ruby) !important;
+    }
+  }
+}
+input[name="product_search_field"] {
+  width: 100%;
+}
+
+#rc_subscriptions__items__next_shipment,
+#rc_subscriptions__items__schedule {
+  span {
+    width: 100%;
+  }
+  .rc_toggler__block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    select {
+      margin: 0 8px;
+    }
+    a {
+      width: 100%;
+    }
+  }
+}
+
+.page__customers__add-products__details {
+  .rc_product-detail-media {
+    .rc_product-detail__image {
+      max-width: 80px;
+      max-height: 80px;
+      width: auto;
+      height: auto;
+      padding-top: 30px;
+    }
+  }
+  .rc_form__group {
+    padding: 5px 0;
+  }
+  .rc_layout__md__6 {
+    &:first-child {
+      width: 20%;
+    }
+  }
+  .rc_product-detail__info {
+    a {
+      display: none;
+    }
+  }
+}
+
+.recharge p {
+  font-size: 1rem;
+}
+
+.recharge {
+  textarea {
+    width: 100% !important;
+    padding: 1rem;
+    max-width: 400px;
+    height: 100px;
+    background-color: white;
+  }
+  select {
+    border-radius: 0;
+    border: 1px solid #1F4068;
+  }
+}
+
+.rc_form__group {
+
+  select {
+    border-radius: 0;
+    border: 1px solid #1F4068;
+  }
+}
+
+.account-subscriptions {
+  padding-top: 150px;
+}
+
+.rc_subscriptions__subscription__item__product,
+.rc_subscriptions__subscription__item__product p {
+  font-size: 14px;
+}
+
+.purchase-address {
+  border-bottom: 1px solid var(--ruby);
+  border-top: 1px solid var(--ruby);
+  padding: 2rem 0;
+}
+
+.edit_address_link {
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+/**
+ * Should wrap every account page
+ */
+.account-wrapper {
+  min-height: 100vh;
+  padding-bottom: 5.33em;
+  padding-top: 120px;
+}
+
+/**
+ * Wraps the login/reset/signup forms
+ */
+.account-dialog {
+  max-width: 800px;
+  width: 100%;
+  @media (--m) {
+    padding: 5rem;
+  }
+  @media (--l) {
+    padding: 6rem;
+  }
+}
+
+/**
+ * The title and nav on each account page
+ */
+.account-titles {
+  margin: 2.5em 0;
+  &__link {
+    a {
+      transition: all .25s;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.account-titles__links {
+  margin-top: 1.33em;
+}
+
+/**
+ * Login
+ */
+/**
+ * Adds hash to URL, shows recover, hides login.
+ * Should only need this if javascript fails.
+ * */
+#recover:target {
+  display: block;
+  & + #login_form {
+    display: none;
+  }
+}
+
+/**
+ * Account home
+ *
+ * Nothing here yet!
+ */
+.account-home__order {
+  padding: 1.33em;
+
+  &:nth-of-type(even){
+    background-color: var(--gray);
+  }
+  &:nth-of-type(odd){
+    border: 1px solid var(--gray-medium);
+  }
+}
+
+/**
+ * Account order (single)
+ */
+.account-order {}
+.account-order__brief {
+  border: 1px solid var(--ruby);
+  .__row {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+}
+.account-order__brief__box {
+  padding: 0 5px;
+
+  @media (--m) {
+    width: 50%;
+  }
+}
+.account-order__alert {}
+.account-order__details {
+  margin-top: 2.5em;
+}
+.account-order__details__item {
+  &:nth-of-type(even){
+    background-color: var(--gray);
+  }
+  &:nth-of-type(odd){
+    border: 1px solid var(--gray-medium);
+  }
+}
+.account-order__totals {
+  margin-top: 2.5em;
+}
+.account-order__addresses {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.account-order__address {
+  padding: 0 5px;
+
+  @media (--m) {
+    width: 50%;
+  }
+}
+
+/**
+ * Addresses
+ */
+.address {
+}
+.address__footer {
+  button {
+    font-size: 12px;
+  }
+}
+.account-addresses__new {
+  font-size: 14px !important;
+  margin-bottom: 2.5em;
+}
+
+/**
+ * Address form
+ */
+.account-address__form {
+  &.is-edit-form {
+    padding-left: 1em;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      margin: auto;
+      width: 0; height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 15px solid white;
+      transform: translateY(-32px);
+    }
+  }
+}
+.account-address__form__fields {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.account-address__form__field {
+  padding: 0 5px;
+  width: 100%;
+  input {
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      opacity: 0.5;
+    }
+    &::-moz-placeholder { /* Firefox 19+ */
+      opacity: 0.5;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+      opacity: 0.5;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+      opacity: 0.5;
+    }
+  }
+  @media (--s){
+    width: 50%;
+  }
+}

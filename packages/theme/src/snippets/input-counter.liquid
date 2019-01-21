@@ -1,0 +1,37 @@
+{% comment %}
+/components/counter.css
+{% endcomment %}
+
+{% assign min = min | default: '1' %}
+{% assign max = max | default: '' %}
+
+<div class='counter-wrapper rel'>
+  <div class='counter rel f aic'>
+    <button type=button>-</button>
+    <input type=number name=quantity value=1 min={{min}} max={{max}}>
+    <button type=button>+</button>
+  </div>
+
+  <script>
+    (function counter (counter) {
+      var dec = counter.children[0]
+      var inp = counter.children[1]
+      var inc = counter.children[2]
+      var min = parseInt(inp.attributes.min.value)
+      var max = parseInt(inp.attributes.max.value)
+
+      var count = parseInt(inp.value)
+
+      function set (i) {
+        count = Math.max(min, Math.min(i, max || 10000))
+        inp.value = count
+      }
+
+      dec.onclick = e => set(--count)
+      inc.onclick = e => set(++count)
+      inp.onchange = e => set(parseInt(inp.value))
+
+      counter.parentNode.removeChild(document.currentScript)
+    })(document.currentScript.parentNode.children[0])
+  </script>
+</div>

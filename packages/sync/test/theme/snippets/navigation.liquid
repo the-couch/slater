@@ -1,0 +1,27 @@
+<nav role="navigation">
+  <ul class='f jcs'>
+    {% for link in linklists.main-menu.links %}
+      {% assign child_list_handle = link.title | handleize %}
+
+      {% comment %}For sub-menus{% endcomment %}
+      {% if menus[child_list_handle].links != blank %}
+        <li class="has-submenu{% if link.active %} active{% endif %}">
+          <a href="{{ link.url }}" class="site-nav__link">
+            {{ link.title }}
+          </a>
+          <ul class="site-nav__submenu">
+            {% for childlink in menus[child_list_handle].links %}
+              <li {% if childlink.active %}class="site-nav--active"{% endif %}>
+                <a href="{{ childlink.url }}" class="site-nav__link">{{ childlink.title | escape }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% else %}
+        <li class=" {% if link.active %}active{% endif %} mr1">
+          <a href="{{ link.url }}" class="">{{ link.title }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>

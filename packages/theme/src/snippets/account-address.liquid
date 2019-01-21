@@ -1,0 +1,21 @@
+<div class='address bggl rel px1 {{ className }}'>
+  {% if default %}
+    <h6 class='address__default pv025 ph05 abs right small bgw caps track'>Default</h6>
+  {% endif %}
+
+  <h6>
+    <div class='medium mb1'>{{ address.name }}</div>
+    {% if address.company %}{{ address.company }}<br />{% endif %}
+    {{ address.street }}<br />
+    {{ address.city | capitalize }}{% if address.province %}, {{ address.province | upcase }} {% endif %} {{ address.zip | upcase }}<br />
+    {{ address.country }}<br />
+    {% if address.phone != '' %}{{ address.phone }}{% endif %}
+  </h6>
+
+  {% if edit %}
+    <div class='address__footer mt05'>
+      <button class='button--reset link--underline mr05 caps track medium' onclick='slater.toggleForm({{address.id}})'>Edit</button>
+      <button class='button--reset link--underline mr05 caps track medium' onclick='slater.removeAddress({{address.id}})'>Delete</button>
+    </div>
+  {% endif %}
+</div>
