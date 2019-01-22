@@ -20,6 +20,7 @@
   "dependencies": {
     "@friendsof/spaghetti": "^1.2.1",
     "@slater/sync": "^1.0.0-alpha.4",
+    "@slater/util": "^1.0.0-alpha.4",
     "ansi-colors": "^3.0.4",
     "chokidar": "^2.0.4",
     "commander": "^2.19.0",
@@ -33,5 +34,5 @@
     "socket.io": "^2.1.1",
     "yaml": "^1.0.0-rc.7"
   },
-  "gitHead": "432abc9f49ff86dc374d8278a60c6216ad910770"
+  "gitHead": "3f42ee88f89fdbd98dbe8ae1cbdcd6c1a010cca5"
 }

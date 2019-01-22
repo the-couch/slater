@@ -3,6 +3,7 @@
   "version": "0.8.0",
   "description": "the slater monorepo",
   "scripts": {
+    "publish": "NPM_CONFIG_OTP= ./node_modules/.bin/lerna publish",
     "bootstrap": "lerna bootstrap"
   },
   "repository": {
