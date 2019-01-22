@@ -1,0 +1,54 @@
+<div class='product-options-wrapper rel'>
+  {% unless product.has_only_default_variant %}
+    {% for option in product.options_with_values %}
+      {% if forloop.index0 == 1 %}
+        <div class='radio-group f aic' data-option-radio data-index={{ forloop.index0 }}>
+          {% for value in option.values %}
+            {%
+              include 'input-radio' with
+              label: value,
+              value: value,
+              name: option.name,
+              checked: option.selected_value == value
+            %}
+          {% endfor %}
+        </div>
+      {% else %}
+        {%- capture options -%}
+          {% for value in option.values %}
+            <option value='{{ value | escape }}'
+              {% if option.selected_value == value %}selected{% endif %}>
+              {{ value }}
+            </option>
+          {% endfor %}
+        {%- endcapture -%}
+        {%- capture attributes -%}
+          data-option-select
+          data-index='{{ forloop.index0 }}'
+        {%- endcapture -%}
+        {%
+          include 'input-select' with
+          label: option.name,
+          name: option.name,
+          attributes: attributes
+          options: options
+        %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
+
+  {%- capture options -%}
+    {% for variant in product.variants %}
+      <option value='{{ variant.id }}'
+        {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+        {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}</option>
+    {% endfor %}
+  {%- endcapture -%}
+  {%
+    include 'input-select' with
+    name: 'id',
+    options: options,
+    attributes: 'data-option-main',
+    style: ''
+  %}
+</div>

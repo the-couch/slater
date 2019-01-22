@@ -1,0 +1,118 @@
+{% include 'theme-provider' with theme: 'dark' %}
+
+<div class='account-login x y account-wrapper bg-p ac f aic jcc' data-component='accountLogin'>
+  <div class='outer x'>
+    <div class='account-login__recover account-dialog px2 hide ma js-recover-dialog'>
+      <h2 class='h3 serif mb05'>Forgot your password?</h2>
+      <p class='h6'>Enter your email and we will send you a password reset link.</p>
+
+      {% form 'recover_customer_password', class: 'mha' %}
+
+        {% if form.posted_successfully? %}
+          <span class='mb1 js-recover-success'>Success! Check your email for a link to reset your password.</span>
+        {% else %}
+          {%
+          include 'form-input-text' with
+          label: 'Email',
+          placeholder: 'Email',
+          name: 'email',
+          type: 'email'
+          %}
+
+          {% if form.errors %}
+            {% for field in form.errors %}
+              {% if field == 'form' %}
+                <p class='small cg'>{{ form.errors.messages[field] }}</p>
+              {% else %}
+                <p class='small cg'>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}.</p>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          <div class='mt1'>
+            {%
+            include 'button' with
+            tag: 'button',
+            type: 'submit',
+            cta: 'Reset password',
+            className: 'btn btn__blue'
+            %}
+          </div>
+        {% endif %}
+
+      {% endform %}
+
+      <a href='/accounts/login' class='block mt1 link--underline small cg js-recover-cancel no-ajax'>Cancel</a>
+    </div>
+
+    <div class='account-login__login account-dialog ma p2 js-login-dialog'>
+      <h1 class='serif mb05'>Sign In</h1>
+
+      {% form 'customer_login', class: 'ma' %}
+        <div class='mb1 pb05'>
+          {%
+          include 'form-input-text' with
+          label: 'Email',
+          placeholder: 'Email',
+          name: 'customer[email]',
+          className: 'mb1',
+          type: 'email'
+          %}
+
+          {%
+          include 'form-input-text' with
+          label: 'Password',
+          placeholder: 'Password',
+          name: 'customer[password]',
+          type: 'password',
+          className: 'mb1'
+          %}
+        </div>
+
+        {% if form.errors %}
+          {% for field in form.errors %}
+            {% if field == 'form' %}
+              <p class='small cg ac'>{{ form.errors.messages[field] }}</p>
+            {% else %}
+              <p class='small cg ac'>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</p>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        <div class='mt2'>
+          {%
+          include 'button' with
+          tag: 'button',
+          type: 'submit',
+          cta: 'Sign in',
+          className: 'btn btn__blue caps bold'
+          %}
+        </div>
+      {% endform %}
+
+      <div class='pt1 f aic small jcc'>
+        <div class='small cgm'>
+          <a class='mt1 cgm underline underline--gm no-ajax js-recover-trigger' href='#recover'>Forgot password?</a><br />
+          Don't have an account? <a class='mt1 cgm underline underline--gm no-ajax' href='/account/register'>Sign up</a>
+        </div>
+      </div>
+
+      {% if shop.checkout.guest_login %}
+        <div class='h1 px1'>
+          <hr class='cgm' />
+        </div>
+
+        {% form 'guest_login' %}
+          {%
+          include 'button' with
+          tag: 'button',
+          type: 'submit',
+          cta: 'Continue as a guest',
+          className: 'btn btn__blue',
+          outline: true
+          %}
+        {% endform %}
+      {% endif %}
+    </div>
+  </div>
+</div>

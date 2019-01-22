@@ -1,0 +1,55 @@
+<div class='account-register x y account-wrapper bg-p ac f aic jcc'>
+  <div class='outer x'>
+    <div class='account-dialog p2 ma'>
+      <h1 class='serif'>{{ 'customer.register.title' | t }}</h1>
+
+      {% form 'create_customer' %}
+        {{ form.errors | default_errors }}
+
+        {%
+          include 'form-input-text' with
+          placeholder: 'First Name',
+          name: 'customer[first_name]',
+          value: form.first_name,
+          type: 'text',
+          className: 'mb1'
+        %}
+        {%
+          include 'form-input-text' with
+          placeholder: 'Last Name',
+          name: 'customer[last_name]',
+          type: 'text',
+          className: 'mb1'
+        %}
+        {%
+          include 'form-input-text' with
+          placeholder: 'Email',
+          name: 'customer[email]',
+          type: 'email',
+          value: form.email,
+          spellcheck: "off",
+          autocapitalize: "off",
+          className: 'mb1'
+        %}
+
+        {%
+          include 'form-input-text' with
+          placeholder: 'Password',
+          name: 'customer[password]',
+          type: 'password',
+          className: 'mb1'
+        %}
+
+        <div class='mt2'>
+          <button type='submit' class='btn btn__blue caps bold' role='button'>Sign Up</button>
+        </div>
+        <div class='pt1 f aic small jcc'>
+          <div class='small cgm'>
+            <a href="{{ shop.url }}" class="mt1 cgm underline--gm underline no-ajax">{{ 'customer.register.cancel' | t }}</a><br />
+            Already have an account? <a class='mt1 cgm underline--gm underline no-ajax' href='/account/login'>Login</a>
+          </div>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>

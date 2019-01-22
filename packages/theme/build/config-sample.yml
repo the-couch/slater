@@ -1,0 +1,13 @@
+development:
+  password:
+  theme_id:
+  store: domain.myshopify.com
+  ignore_files:
+    - settings_data.json # Uncomment this line to avoid resetting theme settings
+
+# production:
+#   password:
+#   theme_id: "live"
+#   store: your-shop.myshopify.com
+#   ignore_files:
+#     #- settings_data.json # Uncomment this line to avoid resetting theme settings

@@ -1,0 +1,91 @@
+{% include 'theme-provider' with theme: 'dark' %}
+
+{% include 'account-titles' with title: 'Addresses' %}
+
+{% paginate customer.addresses by 100 %}
+
+<div class='account-wrapper'>
+  <section class='account-addresses outer'>
+    <div class='container--s mha'>
+      <button class='account-addresses__new button--reset link--underline caps track medium cg mb1' onclick='slater.toggleNewForm()'>Create new address</button>
+
+      {%
+      include 'account-address-form' with
+      id: 'new',
+      action: customer.new_address,
+      title: 'Add New Address',
+      cta: 'Add Address',
+      formClassName: 'mb1 pb1'
+      %}
+
+      {% comment %}
+        List all customer addresses with a unique edit form.
+        Also add pagination in case they have a large number of addresses
+      {% endcomment %}
+      {% for address in customer.addresses %}
+        {% if customer.default_address == address %}
+          {% assign default_addy = true %}
+        {% else %}
+          {% assign default_addy = false %}
+        {% endif %}
+        {%
+        include 'account-address' with
+        address: address,
+        default: default_addy,
+        edit: true,
+        className: 'mb1'
+        %}
+
+        {%
+        include 'account-address-form' with
+        id: address.id,
+        action: address,
+        title: 'Edit Address',
+        cta: 'Update Address',
+        formClassName: 'is-edit-form mb1'
+        %}
+      {% endfor %}
+
+      {% if customer.addresses == empty %}
+        <div class='bggl px1 ac'>You have no saved address.</div>
+      {% endif %}
+
+      {% include 'pagination' %}
+    </div>
+  </section>
+</div>
+
+<script>
+  window.slater = {
+    toggleForm: function(id) {
+      var el = document.getElementById('form_'+id)
+      el.style.display = el.style.display == 'none' ? '' : 'none'
+    },
+    toggleNewForm: function() {
+      var el = document.getElementById('form_new')
+      el.style.display = el.style.display == 'none' ? '' : 'none'
+    },
+    removeAddress: function removeAddress(id){
+      if (!confirm('Are you sure you wish to delete this address?')) return
+
+      var form = document.createElement('form')
+      var input = document.createElement('input');
+
+      form.setAttribute('method', 'post')
+      form.setAttribute('action', '/account/addresses/'+id)
+
+      input.setAttribute('type', 'hidden')
+      input.setAttribute('name', '_method')
+      input.setAttribute('value', 'delete')
+
+      form.appendChild(input)
+
+      document.body.appendChild(form)
+      form.submit()
+      document.body.removeChild(form)
+    }
+  }
+</script>
+
+{% endpaginate %}
+

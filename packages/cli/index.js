@@ -3,117 +3,131 @@
 
 const fs = require('fs-extra')
 const path = require('path')
-const c = require('ansi-colors')
 const onExit = require('exit-hook')
 const exit = require('exit')
 const chokidar = require('chokidar')
-const mm = require('micromatch')
+const merge = require('merge-deep')
 const yaml = require('yaml').default
-const command = require('commander')
 
+/**
+ * internal modules
+ */
 const spaghetti = require('@friendsof/spaghetti')
+const sync = require('@slater/sync')
 
-const themekit = require('@slater/sync')
-
+/**
+ * library specific deps
+ */
 const pkg = require('./package.json')
 const { socket, closeServer } = require('./lib/socket.js')
-const { log, join, resolve } = require('./lib/util.js')
+const reloadBanner = require('./lib/reloadBanner.js')
+const {
+  log,
+  join,
+  resolve,
+  exists,
+  match
+} = require('./lib/util.js')
 
-log(c.gray(`v${pkg.version}`))
-
-command
-  .version(pkg.version)
-  .command('build')
+const prog = require('commander')
+  .option('-w, --watch', 'watch for changes and deploy edited files')
+  .option('-c, --config <path>', 'specify a path to a slater config file')
+  .option('-d, --deploy <theme>', 'deploy a named theme from your config.yml file')
   .parse(process.argv)
 
-log(command)
+/**
+ * get config files
+ */
+const gitignore = exists('.gitignore', path => fs.readFileSync(path, 'utf8'))
+const slaterconfig = exists(prog.config || 'slater.config.js', path => require(path), true)
+const themeconfig = yaml.parse(exists('src/config.yml', path => (
+  fs.readFileSync(path, 'utf8')
+), true))[prog.deploy || 'development']
 
-const {
-  _: args,
-  config: configFile = 'slater.config.js',
-  env = 'development',
-  debug,
-  ...props
-} = require('minimist')(process.argv.slice(2))
+/**
+ * exit if the theme info isn't configured
+ */
+if (!themeconfig) {
+  log(c => ([
+    c.red('error'),
+    `${prog.deploy} theme configuration does not exist`
+  ]))
+  exit()
+}
 
-if (debug) require('inspector').open()
+/**
+ * combine ignored files
+ */
+const ignored = ['**/scripts/**', '**/styles/**', /DS_Store/]
+  .concat(themeconfig.ignore_files || [])
+  .concat(gitignore ? require('parse-gitignore')(gitignore) : [])
 
-const watch = args[0] === 'watch'
-const deploy = args[0] === 'deploy'
-const build = args[0] === 'build' || (!watch && !deploy)
-const gitignore = fs.readFileSync(join('.gitignore'))
-const userConfig = fs.existsSync(join(configFile)) ? require(join(configFile)) : {}
-const themeConfig = yaml.parse(fs.readFileSync(join('src/config.yml'), 'utf8'))[env]
+/**
+ * our "themekit"
+ */
+const theme = sync({
+  password: themeconfig.password,
+  store: themeconfig.store,
+  theme_id: themeconfig.theme_id,
+  ignore_files: ignored
+})
 
-let ignoredFiles = [
-  '**/scripts/**',
-  '**/styles/**',
-  /DS_Store/
-].concat(
-  themeConfig.ignore_files || []
-).concat(
-  gitignore ? require('parse-gitignore')(gitignore) : []
-)
+/**
+ * deep merge user config with defaults
+ */
+const config = merge({
+  in: '/src/scripts/index.js',
+  outDir:'/build/assets',
+  watch: prog.watch,
+  map: prog.watch ? 'inline-cheap-source-map' : false,
+  alias: {
+    scripts: resolve('/src/scripts'),
+    styles: resolve('/src/styles')
+  },
+  banner: prog.watch ? reloadBanner : false
+}, slaterconfig)
 
-// const theme = themekit({
-//   password: themeConfig.password,
-//   store: themeConfig.store,
-//   theme_id: themeConfig.theme_id,
-//   ignore_files: ignoredFiles
-// })
+/**
+ * overwrite paths to ensure they point to the cwd()
+ */
+config.in = join(config.in)
+config.outDir = join(config.outDir)
+config.filename = config.filename || path.basename(config.in, '.js')
 
-// const config = Object.assign({
-//   in: '/src/scripts/index.js',
-//   outDir:'/build/assets',
-//   watch,
-//   map: watch ? 'inline-cheap-source-map' : false,
-//   alias: {
-//     scripts: resolve('/src/scripts'),
-//     styles: resolve('/src/styles')
-//   },
-//   banner: watch ? `
-//     ;(function (global) {
-//       try {
-//         var ls = global.localStorage
+const bundle = spaghetti(config)
 
-//         var scrollPos = ls.getItem('slater-scroll')
+fs.copy(join('src'), join('build'), {
+  filter (src, dest) {
+    return !match(src, ignored)
+  }
+})
+  .then(() => {
+    log(c => ([ c.green('copied'), 'theme to build/']))
 
-//         if (scrollPos) {
-//           global.scrollTo(0, scrollPos)
-//         }
+    if (prog.watch) {
+      log('watching')
+      return
+    }
 
-//         var socketio = document.createElement('script')
+    log('building')
 
-//         socketio.src = 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js'
+    bundle.build()
+      .end(stats => {
+        log(stats)
+        log(c => ([
+          c.green(`compiled`),
+          `in ${stats.duration}ms`
+        ]))
+      })
 
-//         socketio.onload = function init () {
-//           var disconnected = false
-//           var socket = io('https://localhost:3000', {
-//             reconnectionAttempts: 3
-//           })
-//           socket.on('connect', () => console.log('@slater/cli connected'))
-//           socket.on('refresh', () => {
-//             ls.setItem('slater-scroll', global.scrollY)
-//             global.location.reload()
-//           })
-//           socket.on('disconnect', () => {
-//             disconnected = true
-//           })
-//           socket.on('reconnect_failed', e => {
-//             if (disconnected) return
-//             console.error("@slater/cli - Connection to the update server failed. Please visit https://localhost:3000 in your browser to trust the certificate. Then, refresh this page.")
-//           })
-//         }
-
-//         document.head.appendChild(socketio)
-//       } catch (e) {}
-//     })(this);
-//   ` : false
-// }, userConfig)
-
-// config.in = join(config.in)
-// config.outDir = join(config.outDir)
-// config.filename = config.filename || path.basename(config.in, '.js')
-
-// const bundle = spaghetti(config)
-
+    if (prog.deploy) {
+      log('deploying')
+      return
+    }
+  })
+  .catch(e => {
+    log(c => ([
+      c.red('failed top copy theme'),
+      e.message || e
+    ]))
+  })

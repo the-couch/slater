@@ -1,0 +1,17 @@
+<label class='radio f aic' for={{label}}>
+  <input
+    id={{label}}
+    type=radio
+    name={{name}}
+    value={{value}}
+    {{ attributes }}
+    {% if checked %}checked{% endif %}
+  />
+  <span>{{label}}</span>
+</label>
+
+{% assign label = blank %}
+{% assign name = blank %}
+{% assign value = blank %}
+{% assign attributes = blank %}
+{% assign checked = blank %}

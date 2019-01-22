@@ -1,0 +1,36 @@
+{%- capture uid -%}
+select{{name | default: label}}
+{%- endcapture -%}
+
+{%- capture cx -%}
+  select-wrapper x rel {{ className }}
+{%- endcapture -%}
+
+<div class='{{ cx }}'>
+  <label for='{{ id | default: uid | strip }}' class='hide'>{{ label }}</label>
+
+  <select
+    id='{{ id | default: uid | strip }}'
+    name='{{ name | default: label | strip }}'
+    value='{{ value }}'
+    {{ style }}
+    {{ attributes }}
+    {% if required %}required{% endif %}>
+    {% if placeholder %}<option disabled selected>{{ placeholder }}</option>{% endif %}
+    {{ options }}
+  </select>
+
+  <svg width='10px' height='6px' viewBox='0 0 10 6' class='abs right top bottom mva'>
+    <use xlink:href='#icon-chevron'></use>
+  </svg>
+</div>
+
+{% assign id = blank %}
+{% assign style = blank %}
+{% assign label = blank %}
+{% assign name = blank %}
+{% assign required = blank %}
+{% assign value = blank %}
+{% assign placeholder = blank %}
+{% assign options = blank %}
+{% assign attributes = blank %}

@@ -1,0 +1,13 @@
+development:
+  password: 737f2c9440775ce2aa1c378ea3a2a2e2
+  theme_id: 18170904623
+  store: slater-demo.myshopify.com
+  ignore_files:
+    - settings_data.json # Uncomment this line to avoid resetting theme settings
+
+production:
+  password: 737f2c9440775ce2aa1c378ea3a2a2e2
+  theme_id: 12518883375
+  store: slater-demo.myshopify.com
+  ignore_files:
+    - settings_data.json # Uncomment this line to avoid resetting theme settings

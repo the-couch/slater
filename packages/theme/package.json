@@ -10,7 +10,7 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "devDependencies": {
-    "@slater/cli": "^1.0.0"
+    "@slater/cli": "^1.0.0-alpha.2"
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
@@ -24,5 +24,5 @@
     "w2t": "0.0.2",
     "webpack": "^4.26.1"
   },
-  "gitHead": "64e67911ae00cfaac9557678a2080d4a5f0cad20"
+  "gitHead": "d4c96e8a03fbb6f8043ad61aeaf473e5f59ccd3e"
 }
