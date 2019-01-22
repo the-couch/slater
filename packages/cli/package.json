@@ -18,7 +18,7 @@
     "webpack": "^4.26.0"
   },
   "dependencies": {
-    "@friendsof/spaghetti": "^1.1.1",
+    "@friendsof/spaghetti": "^1.2.1",
     "@slater/sync": "^1.0.0-alpha.3",
     "ansi-colors": "^3.0.4",
     "chokidar": "^2.0.4",
@@ -26,11 +26,12 @@
     "exit": "^0.1.2",
     "exit-hook": "^2.0.0",
     "fs-extra": "^7.0.0",
+    "log-update": "^2.3.0",
     "merge-deep": "^3.0.2",
     "micromatch": "^3.1.10",
     "parse-gitignore": "^1.0.1",
     "socket.io": "^2.1.1",
     "yaml": "^1.0.0-rc.7"
   },
-  "gitHead": "d4c96e8a03fbb6f8043ad61aeaf473e5f59ccd3e"
+  "gitHead": "432abc9f49ff86dc374d8278a60c6216ad910770"
 }

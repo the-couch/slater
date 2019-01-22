@@ -7,6 +7,7 @@ const onExit = require('exit-hook')
 const exit = require('exit')
 const chokidar = require('chokidar')
 const merge = require('merge-deep')
+const write = require('log-update')
 const yaml = require('yaml').default
 
 /**
@@ -58,7 +59,7 @@ if (!themeconfig) {
 /**
  * combine ignored files
  */
-const ignored = ['**/scripts/**', '**/styles/**', /DS_Store/]
+const ignored = ['**/scripts/**', '**/styles/**', 'DS_Store']
   .concat(themeconfig.ignore_files || [])
   .concat(gitignore ? require('parse-gitignore')(gitignore) : [])
 
@@ -94,40 +95,171 @@ config.in = join(config.in)
 config.outDir = join(config.outDir)
 config.filename = config.filename || path.basename(config.in, '.js')
 
-const bundle = spaghetti(config)
+/**
+ * utilities
+ */
+function copyFile (p) {
+  const pathname = p.split('/src')[1]
 
+  return fs.copy(p, join('/build', pathname))
+    .catch(e => {
+      log(c => ([
+        c.red(`error`),
+        `copying ${pathname} failed`,
+        e.message || e || ''
+      ]))
+    })
+}
+
+function deleteFile (p) {
+  const pathname = p.split('/src')[1]
+
+  return fs.remove(join('/build', pathname))
+    .catch(e => {
+      log(c => ([
+        c.red(`error`),
+        `deleting ${pathname} failed`,
+        e.message || e || ''
+      ]))
+    })
+}
+
+function syncFile (p) {
+  const pathname = p.split('/build')[1]
+
+  return theme.sync(p)
+    .then(() => socket.emit('refresh'))
+    .then(() => {
+      log(c => ([
+        c.blue(`synced`),
+        pathname
+      ]))
+    })
+    .catch(e => {
+      log(c => ([
+        c.red(`error`),
+        `uploading ${pathname} failed`,
+        e.message || e || ''
+      ]))
+    })
+}
+
+function unsyncFile (p) {
+  const pathname = p.split('/build')[1]
+
+  return theme.unsync(p)
+    .then(() => socket.emit('refresh'))
+    .then(() => {
+      log(c => ([
+        c.blue(`unsynced`),
+        pathname
+      ]))
+    })
+    .catch(e => {
+      log(c => ([
+        c.red(`error`),
+        `unsyncing ${pathname} failed`,
+        e.message || e || ''
+      ]))
+    })
+}
+
+function logAssets ({ duration, assets }) {
+  log(c => `${c.green(`built assets`)} in ${duration}ms\n${assets.reduce((_, asset, i) => {
+    const size = asset.size.gzip ? asset.size.gzip + 'kb gzipped' : asset.size.raw + 'kb'
+    return _ += `  > ${c.green(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
+  }, '')}`)
+}
+
+/**
+ * go go go
+ */
 fs.copy(join('src'), join('build'), {
   filter (src, dest) {
     return !match(src, ignored)
   }
-})
-  .then(() => {
-    log(c => ([ c.green('copied'), 'theme to build/']))
+}).then(() => {
+  if (prog.watch) {
+    log(c => c.green('watching'))
 
-    if (prog.watch) {
-      log('watching')
-      return
-    }
+    const watchers = [
+      chokidar.watch(join('/src'), {
+        persistent: true,
+        ignoreInitial: true,
+        ignore: ignored
+      })
+        .on('add', copyFile)
+        .on('change', copyFile)
+        .on('unlink', deleteFile),
 
-    log('building')
+      chokidar.watch(join('/build'), {
+        ignore: /DS_Store/,
+        persistent: true,
+        ignoreInitial: true
+      })
+        .on('add', syncFile)
+        .on('change', syncFile)
+        .on('unlink', unsyncFile)
+    ]
 
-    bundle.build()
+    spaghetti(config)
+      .watch()
       .end(stats => {
-        log(stats)
+        logAssets(stats)
+      })
+      .error(err => {
         log(c => ([
-          c.green(`compiled`),
-          `in ${stats.duration}ms`
+          c.red(`error`),
+          err ? err.message || err : ''
         ]))
       })
 
-    if (prog.deploy) {
-      log('deploying')
-      return
-    }
-  })
-  .catch(e => {
-    log(c => ([
-      c.red('failed top copy theme'),
-      e.message || e
-    ]))
-  })
+    onExit(() => watchers.map(w => w.close()))
+
+    return
+  }
+
+  log(c => c.green('building'))
+
+  spaghetti(config)
+    .build()
+    .end(stats => {
+      logAssets(stats)
+
+      if (prog.deploy) {
+        log(c => c.green('deploying'))
+
+        theme.sync([ join('/build') ], (total, rest) => {
+          const complete = total - rest
+          const percent = Math.ceil((complete / total) * 100)
+          write(`uploading ${complete} of ${total} files (${percent}%)`)
+        })
+          .then(() => {
+            log(c => ([
+              c.green(`deployed to ${prog.deploy} theme`)
+            ]))
+            exit()
+          })
+          .catch(e => {
+            log(c => ([
+              c.red('deploy failed'), e
+            ]))
+            exit()
+          })
+      } else {
+        exit()
+      }
+    })
+    .error(err => {
+      log(c => ([
+        c.red(`error`),
+        err ? err.message || err : ''
+      ]))
+    })
+})
+.catch(e => {
+  log(c => ([
+    c.red('initial theme copy failed'),
+    e.message || e
+  ]))
+})

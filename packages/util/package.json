@@ -1,0 +1,17 @@
+{
+  "name": "@slater/util",
+  "version": "1.0.0-alpha.3",
+  "description": "shopify theme management toolkit",
+  "main": "index.js",
+  "scripts": {},
+  "author": "https://thecouch.nyc",
+  "license": "MIT",
+  "homepage": "https://github.com/the-couch/slater#readme",
+  "dependencies": {
+    "ansi-colors": "^3.0.4",
+    "exit": "^0.1.2",
+    "exit-hook": "^2.0.0",
+    "fs-extra": "^7.0.0",
+    "micromatch": "^3.1.10"
+  }
+}
