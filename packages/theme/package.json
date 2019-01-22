@@ -1,6 +1,6 @@
 {
   "name": "@slater/theme",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "scripts": {
     "start": "slater watch",
     "deploy:development": "slater deploy",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "devDependencies": {
-    "@slater/cli": "^1.0.0-alpha.4"
+    "@slater/cli": "^1.0.0-alpha.5"
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
