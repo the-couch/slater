@@ -57,5 +57,6 @@
     "socket.io": "^2.1.1",
     "webpack": "^4.26.1",
     "yaml": "^1.0.0-rc.7"
-  }
+  },
+  "gitHead": "64e67911ae00cfaac9557678a2080d4a5f0cad20"
 }
