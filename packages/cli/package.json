@@ -1,6 +1,6 @@
 {
   "name": "@slater/cli",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "shopify theme management toolkit",
   "main": "index.js",
   "bin": {
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@friendsof/spaghetti": "^1.1.1",
-    "@slater/sync": "^1.0.0-alpha.2",
+    "@slater/sync": "^1.0.0-alpha.3",
     "ansi-colors": "^3.0.4",
     "chokidar": "^2.0.4",
     "commander": "^2.19.0",
