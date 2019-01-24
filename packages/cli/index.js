@@ -3,69 +3,58 @@
 
 const c = require('ansi-colors')
 const exit = require('exit')
-const write = require('log-update')
 const wait = require('w2t')
 
 const sync = require('@slater/sync')
-const { log } = require('@slater/util')
+const { logger } = require('@slater/util')
 
 const pkg = require('./package.json')
 const createApp = require('./lib/app.js')
-const getConfigs = require('./lib/getConfigs.js')
 
 const prog = require('commander')
   .version(pkg.version)
-  .option('-c, --config <path>', 'specify a path to a slater config file')
-  .option('-e, --env <environment>', 'specify a named theme from your config.yml file')
+  .option('-c, --config <path>', 'specify a path to a config.yml file')
+  .option('-t, --theme <name>', 'specify a named theme from your config.yml file')
+  .option('-s, --slater <path>', 'specify a path to a slater config file')
+
+const log = logger('@slater/cli')
 
 prog
   .command('watch')
   .action(() => {
     const app = createApp({
       watch: true,
-      config: prog.config,
-      env: prog.env
+      ...prog
     })
 
     app.watch()
   })
 
 prog
-  .command('deploy')
+  .command('build')
   .action(() => {
     const app = createApp({
-      config: prog.config,
-      env: prog.env
+      slater: prog.slater,
+      ...prog
     })
 
-    app.build(() => app.deploy())
+    app.build()
   })
 
 prog
   .command('sync [paths...]')
   .action(paths => {
-    const { themeconfig } = getConfigs({
-      config: prog.config,
-      env: prog.env
-    })
-    const theme = sync(themeconfig)
+    const theme = sync(prog)
 
     wait(1000, [
       theme
         .sync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          write(
-            c.gray(`@slater/cli`),
-            c.blue(`syncing`),
-            complete,
-            c.gray(`of`),
-            total,
-            c.gray(`files - ${c.blue(percent + '%')}`)
-          )
+          log.info('syncing', percent + '%', true)
         })
     ]).then(() => {
-      write(c.gray(`@slater/cli`), c.blue(`syncing complete`))
+      log.info('sync', 'complete', true)
       exit()
     })
   })
@@ -74,36 +63,22 @@ prog
   .command('unsync [paths...]')
   .action(paths => {
     if (!paths.length) {
-      log(c => ([
-        c.red('error'),
-        `must specify paths to unsync`
-      ]))
+      log.error('plz specify paths to unsync')
 
       return exit()
     }
 
-    const { themeconfig } = getConfigs({
-      config: prog.config,
-      env: prog.env
-    })
-    const theme = sync(themeconfig)
+    const theme = sync(prog)
 
     wait(1000, [
       theme
         .unsync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          write(
-            c.gray(`@slater/cli`),
-            c.blue(`unsyncing`),
-            complete,
-            c.gray(`of`),
-            total,
-            c.gray(`files - ${c.blue(percent + '%')}`)
-          )
+          log.info('syncing', percent + '%', true)
         })
     ]).then(() => {
-      write(c.gray(`@slater/cli`), c.blue(`syncing complete`))
+      log.info('syncing', 'complete', true)
       exit()
     })
   })

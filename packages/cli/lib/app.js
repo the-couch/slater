@@ -4,8 +4,6 @@ const onExit = require('exit-hook')
 const exit = require('exit')
 const chokidar = require('chokidar')
 const merge = require('merge-deep')
-const write = require('log-update')
-const yaml = require('yaml').default
 
 /**
  * internal modules
@@ -13,7 +11,7 @@ const yaml = require('yaml').default
 const spaghetti = require('@friendsof/spaghetti')
 const sync = require('@slater/sync')
 const {
-  log,
+  logger,
   join,
   resolve,
   exists,
@@ -24,7 +22,10 @@ const {
  * library specific deps
  */
 const { socket, closeServer } = require('./socket.js')
-const getConfigs = require('./getConfigs.js')
+const getSpaghettiConfig = require('./getSpaghettiConfig.js')
+
+
+const log = logger('@slater/cli')
 
 /**
  * utilities
@@ -34,11 +35,7 @@ function copyFile (p) {
 
   return fs.copy(p, join('/build', pathname))
     .catch(e => {
-      log(c => ([
-        c.red(`error`),
-        `copying ${pathname} failed`,
-        e.message || e || ''
-      ]))
+      log.error(`copying ${pathname} failed\n${e.message || e}`)
     })
 }
 
@@ -47,29 +44,21 @@ function deleteFile (p) {
 
   return fs.remove(join('/build', pathname))
     .catch(e => {
-      log(c => ([
-        c.red(`error`),
-        `deleting ${pathname} failed`,
-        e.message || e || ''
-      ]))
+      log.error(`deleting ${pathname} failed\n${e.message || e}`)
     })
 }
 
-function logAssets ({ duration, assets }) {
-  log(c => `${c.green(`built assets`)} in ${duration}ms\n${assets.reduce((_, asset, i) => {
+function logAssets ({ duration, assets }, persist) {
+  log.info('built', ` in ${duration}ms\n${assets.reduce((_, asset, i) => {
     const size = asset.size.gzip ? asset.size.gzip + 'kb gzipped' : asset.size.raw + 'kb'
-    return _ += `  > ${c.green(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
-  }, '')}`)
+    return _ += `  > ${log.colors.gray(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
+  }, '')}`, persist)
 }
 
 
 module.exports = function createApp (options) {
-  const { spaghetticonfig, themeconfig } = getConfigs(options)
-
-  /**
-   * our "themekit"
-   */
-  const theme = sync(themeconfig)
+  const spaghetticonfig = getSpaghettiConfig(options)
+  const theme = sync(options)
 
   function syncFile (p) {
     const pathname = p.split('/build')[1]
@@ -77,17 +66,10 @@ module.exports = function createApp (options) {
     return theme.sync(p)
       .then(() => socket.emit('refresh'))
       .then(() => {
-        log(c => ([
-          c.blue(`synced`),
-          pathname
-        ]))
+        log.info('synced', pathname)
       })
       .catch(e => {
-        log(c => ([
-          c.red(`error`),
-          `uploading ${pathname} failed`,
-          e.message || e || ''
-        ]))
+        log.erorr(`syncing ${pathname} failed\n${e.message || e || ''}`)
       })
   }
 
@@ -97,23 +79,16 @@ module.exports = function createApp (options) {
     return theme.unsync(p)
       .then(() => socket.emit('refresh'))
       .then(() => {
-        log(c => ([
-          c.blue(`unsynced`),
-          pathname
-        ]))
+        log.info('unsynced', pathname)
       })
       .catch(e => {
-        log(c => ([
-          c.red(`error`),
-          `unsyncing ${pathname} failed`,
-          e.message || e || ''
-        ]))
+        log.erorr(`unsyncing ${pathname} failed\n${e.message || e || ''}`)
       })
   }
 
   return {
     watch () {
-      log(c => c.green('watching'))
+      log.info('watching')
 
       const watchers = [
         chokidar.watch(join('/src'), {
@@ -138,51 +113,41 @@ module.exports = function createApp (options) {
       spaghetti(spaghetticonfig)
         .watch()
         .end(stats => {
-          logAssets(stats)
+          logAssets(stats, false)
         })
         .error(err => {
-          log(c => ([
-            c.red(`error`),
-            err ? err.message || err : ''
-          ]))
+          log.error(error.message || e || '')
         })
 
       onExit(() => watchers.map(w => w.close()))
     },
     build (cb) {
-      log(c => c.green('building'))
+      log.info('building', '', true)
 
       return spaghetti(spaghetticonfig)
         .build()
         .end(stats => {
-          logAssets(stats)
+          logAssets(stats, true)
           cb ? cb() : exit()
         })
         .error(err => {
-          log(c => ([
-            c.red(`error`),
-            err ? err.message || err : ''
-          ]))
+          log.error(error.message || e || '')
         })
     },
     deploy () {
-      log(c => c.green('deploying'))
+      log.info('syncing', '', true)
 
       return theme.sync([ join('/build') ], (total, rest) => {
         const complete = total - rest
         const percent = Math.ceil((complete / total) * 100)
-        write(`uploading ${complete} of ${total} files (${percent}%)`)
+        log.info('syncing', percent + '%', true)
       })
         .then(() => {
-          log(c => ([
-            c.green(`deployed to ${options.env} theme`)
-          ]))
+          log.info('deployed', `to ${options.theme} theme`, true)
           exit()
         })
         .catch(e => {
-          log(c => ([
-            c.red('deploy failed'), e
-          ]))
+          log.error(`deploy failed\n${e.message || e || ''}`)
           exit()
         })
     }

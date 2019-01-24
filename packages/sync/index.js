@@ -3,25 +3,49 @@ const path = require('path')
 const assert = require('assert')
 const exit = require('exit')
 const c = require('ansi-colors')
-const zip = require('zip-folder')
-const fetch = require('node-fetch')
 const wait = require('w2t')
 const readdir = require('recursive-readdir')
-const { any: match } = require('micromatch')
+const yaml = require('yaml').default
 
-const { log, resolve } = require('@slater/util')
+const {
+  logger,
+  resolve,
+  exists
+} = require('@slater/util')
 
 const pkg = require('./package.json')
 
-module.exports = function init (config = {}) {
+const log = logger('@slater/sync')
+
+module.exports = function init (options) {
+  const gitignore = exists('.gitignore', path => fs.readFileSync(path, 'utf8'))
+  const themeconfig = yaml.parse(exists(options.config || './config.yml', path => (
+    fs.readFileSync(path, 'utf8')
+  ), true))[options.theme || 'development']
+
+  /**
+   * exit if the theme info isn't configured
+   */
+  if (!themeconfig) {
+    log.error(`hmmmm can't seem to find your ${options.theme} theme`)
+    exit()
+  }
+
+  /**
+   * combine ignored files
+   */
+  const ignored = ['**/scripts/**', '**/styles/**', 'DS_Store']
+    .concat(themeconfig.ignore_files || [])
+    .concat(gitignore ? require('parse-gitignore')(gitignore) : [])
+
+  themeconfig.ignore_files = ignored
+
   const {
     password,
     theme_id,
     store,
-    ignore_files = [],
-    cwd = process.cwd(),
-    quiet
-  } = config
+    ignore_files = []
+  } = themeconfig
 
   /**
    * filled on each sync request, emptied when successful
@@ -43,18 +67,6 @@ module.exports = function init (config = {}) {
       body: JSON.stringify(body)
     })
   }
-
-  /*
-  function bootstrap (opts = {}) {
-    assert(typeof opts, 'object', `Expected opts to be an object`)
-
-    fs.ensureDir(join('temp'))
-
-    zip(join(opts.src), join('temp/theme.zip'), e => {
-      if (e) {}//log(c.red(`bootstrap failed`), e)
-    })
-  }
-  */
 
   function upload ({ key, file }) {
     const encoded = Buffer.from(fs.readFileSync(file), 'utf-8').toString('base64')
@@ -145,7 +157,7 @@ module.exports = function init (config = {}) {
           queue.reduce((_, f) => {
             if (_.indexOf(f.key) > -1) {
               const dirs = files
-                .map(f => f.replace(cwd, ''))
+                .map(f => f.replace(process.cwd(), ''))
                 .reduce((_, f) => {
                   const frag = f.split('/')[1]
                   if (_.indexOf(frag) > -1) return _
@@ -153,15 +165,12 @@ module.exports = function init (config = {}) {
                 }, [])
                 .filter(f => fs.lstatSync(f).isDirectory())
 
-              log(c => ([
-                c.red('error'),
-                [
-                  `looks like you have some duplicate files! `,
-                  `Are you sure you want to sync these directories?\n`,
+              log.error([
+                  `plz only specify one theme directory\n`,
                 ].concat(dirs.map(dir => (
-                  `  > ${dir}/\n`
+                  `  ${log.colors.gray('>')} ${dir}/\n`
                 ))).join('')
-              ]))
+              )
 
               exit()
             }

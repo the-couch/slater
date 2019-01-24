@@ -1,7 +1,9 @@
 const fs = require('fs-extra')
 const exit = require('exit')
-const log = require('./log.js')
+const logger = require('./logger.js')
 const join = require('./join.js')
+
+const log = logger('@slater/util')
 
 module.exports = function exists (file, cb, required) {
   const path = join(file)
@@ -9,11 +11,7 @@ module.exports = function exists (file, cb, required) {
   if (fs.existsSync(path)) return cb(path)
 
   if (required) {
-    log(c => ([
-      c.red('error'),
-      `${file} does not exist`
-    ]))
-
+    log.error(`${file} does not exist`)
     exit()
   }
 }

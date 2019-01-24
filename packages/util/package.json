@@ -12,7 +12,9 @@
     "exit": "^0.1.2",
     "exit-hook": "^2.0.0",
     "fs-extra": "^7.0.0",
-    "micromatch": "^3.1.10"
+    "log-update": "^2.3.0",
+    "micromatch": "^3.1.10",
+    "neat-log": "^3.1.0"
   },
-  "gitHead": "a8a6805acc99c043e60dd479b01b7bf392957c6e"
+  "gitHead": "3006d713a8cd4337958bf5632e090ecffafd4eed"
 }

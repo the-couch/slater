@@ -6,44 +6,18 @@ const yaml = require('yaml').default
 const write = require('log-update')
 const exit = require('exit')
 const wait = require('w2t')
-const { log, exists, join } = require('@slater/util')
+const { logger, exists, join } = require('@slater/util')
 
 const pkg = require('./package.json')
 
 const prog = require('commander')
-  .option('-c, --config <path>', 'specify a path to a Shopify config.yml file')
-  .option('-t, --theme <name>', 'specify a theme name from your config file')
+  .option('-c, --config <path>', 'specify a path to a config.yml file')
+  .option('-t, --theme <name>', 'specify a named theme from your config.yml file')
   .parse(process.argv)
 
-const gitignore = exists('.gitignore', path => fs.readFileSync(path, 'utf8'))
-const themeconfig = yaml.parse(exists(prog.config || './config.yml', path => (
-  fs.readFileSync(path, 'utf8')
-), true))[prog.theme || 'development']
+const theme = require('./index.js')(prog)
 
-/**
- * exit if the theme info isn't configured
- */
-if (!themeconfig) {
-  log(c => ([
-    c.red('error'),
-    `${prog.deploy} theme configuration does not exist`
-  ]))
-  exit()
-}
-
-/**
- * combine ignored files
- */
-const ignored = ['**/scripts/**', '**/styles/**', 'DS_Store']
-  .concat(themeconfig.ignore_files || [])
-  .concat(gitignore ? require('parse-gitignore')(gitignore) : [])
-
-const theme = require('./index.js')({
-  password: themeconfig.password,
-  store: themeconfig.store,
-  theme_id: themeconfig.theme_id,
-  ignore_files: ignored
-})
+const log = logger('@slater/sync')
 
 prog
   .command('sync [paths...]')
@@ -53,17 +27,10 @@ prog
         .sync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          write(
-            c.gray(`@slater/sync`),
-            c.blue(`syncing`),
-            complete,
-            c.gray(`of`),
-            total,
-            c.gray(`files - ${c.blue(percent + '%')}`)
-          )
+          log.info('syncing', percent + '%', true)
         })
     ]).then(() => {
-      write(c.gray(`@slater/sync`), c.blue(`syncing complete`))
+      log.info('syncing', 'complete', true)
       exit()
     })
   })
@@ -85,17 +52,10 @@ prog
         .unsync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          write(
-            c.gray(`@slater/sync`),
-            c.blue(`unsyncing`),
-            complete,
-            c.gray(`of`),
-            total,
-            c.gray(`files - ${c.blue(percent + '%')}`)
-          )
+          log.info('syncing', percent + '%', true)
         })
     ]).then(() => {
-      write(c.gray(`@slater/sync`), c.blue(`syncing complete`))
+      log.info('syncing', 'complete', true)
       exit()
     })
   })
