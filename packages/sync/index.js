@@ -1,6 +1,7 @@
-const assert = require('assert')
-const path = require('path')
 const fs = require('fs-extra')
+const path = require('path')
+const assert = require('assert')
+const exit = require('exit')
 const c = require('ansi-colors')
 const zip = require('zip-folder')
 const fetch = require('node-fetch')
@@ -8,7 +9,7 @@ const wait = require('w2t')
 const readdir = require('recursive-readdir')
 const { any: match } = require('micromatch')
 
-const { resolve } = require('@slater/util')
+const { log, resolve } = require('@slater/util')
 
 const pkg = require('./package.json')
 
@@ -127,14 +128,45 @@ module.exports = function init (config = {}) {
     paths = paths.length ? paths : ['.']
 
     const deploy = fs.lstatSync(paths[0]).isDirectory()
+    const ignored = ignore_files.concat([
+      '*.yml',
+      '.DS_Store',
+      'node_modules'
+    ])
 
     return new Promise((res, rej) => {
       if (deploy) {
-        readdir(resolve(paths[0]), ignore_files.concat([ '*.yml', '.DS_Store' ]), (err, files) => {
+        readdir(resolve(paths[0]), ignored, (err, files) => {
           queue = files.map(file => ({
             key: sanitize(file),
             file
           })).filter(f => f.key)
+
+          queue.reduce((_, f) => {
+            if (_.indexOf(f.key) > -1) {
+              const dirs = files
+                .map(f => f.replace(cwd, ''))
+                .reduce((_, f) => {
+                  const frag = f.split('/')[1]
+                  if (_.indexOf(frag) > -1) return _
+                  return _.concat(frag)
+                }, [])
+                .filter(f => fs.lstatSync(f).isDirectory())
+
+              log(c => ([
+                c.red('error'),
+                [
+                  `looks like you have some duplicate files! `,
+                  `Are you sure you want to sync these directories?\n`,
+                ].concat(dirs.map(dir => (
+                  `  > ${dir}/\n`
+                ))).join('')
+              ]))
+
+              exit()
+            }
+            return _.concat(f.key)
+          }, [])
 
           res(enqueue(
             upload,

@@ -24,7 +24,7 @@ const {
  * library specific deps
  */
 const { socket, closeServer } = require('./socket.js')
-const reloadBanner = require('./reloadBanner.js')
+const getConfigs = require('./getConfigs.js')
 
 /**
  * utilities
@@ -62,62 +62,14 @@ function logAssets ({ duration, assets }) {
   }, '')}`)
 }
 
+
 module.exports = function createApp (options) {
-  const gitignore = exists('.gitignore', path => fs.readFileSync(path, 'utf8'))
-  const slaterconfig = exists(options.config || 'slater.config.js', path => require(path), true)
-  const themeconfig = yaml.parse(exists('src/config.yml', path => (
-    fs.readFileSync(path, 'utf8')
-  ), true))[options.env || 'development']
-
-  /**
-   * exit if the theme info isn't configured
-   */
-  if (!themeconfig) {
-    log(c => ([
-      c.red('error'),
-      `${options.env} theme configuration does not exist`
-    ]))
-    exit()
-  }
-
-  /**
-   * combine ignored files
-   */
-  const ignored = ['**/scripts/**', '**/styles/**', 'DS_Store']
-    .concat(themeconfig.ignore_files || [])
-    .concat(gitignore ? require('parse-gitignore')(gitignore) : [])
-
-  /**
-   * deep merge user config with defaults
-   */
-  const config = merge({
-    in: '/src/scripts/index.js',
-    outDir:'/build/assets',
-    watch: options.watch,
-    map: options.watch ? 'inline-cheap-source-map' : false,
-    alias: {
-      scripts: resolve('/src/scripts'),
-      styles: resolve('/src/styles')
-    },
-    banner: options.watch ? reloadBanner : false
-  }, slaterconfig)
-
-  /**
-   * overwrite paths to ensure they point to the cwd()
-   */
-  config.in = join(config.in)
-  config.outDir = join(config.outDir)
-  config.filename = config.filename || path.basename(config.in, '.js')
+  const { spaghetticonfig, themeconfig } = getConfigs(options)
 
   /**
    * our "themekit"
    */
-  const theme = sync({
-    password: themeconfig.password,
-    store: themeconfig.store,
-    theme_id: themeconfig.theme_id,
-    ignore_files: ignored
-  })
+  const theme = sync(themeconfig)
 
   function syncFile (p) {
     const pathname = p.split('/build')[1]
@@ -167,7 +119,7 @@ module.exports = function createApp (options) {
         chokidar.watch(join('/src'), {
           persistent: true,
           ignoreInitial: true,
-          ignore: ignored
+          ignore: themeconfig.ignored_files
         })
           .on('add', copyFile)
           .on('change', copyFile)
@@ -183,7 +135,7 @@ module.exports = function createApp (options) {
           .on('unlink', unsyncFile)
       ]
 
-      spaghetti(config)
+      spaghetti(spaghetticonfig)
         .watch()
         .end(stats => {
           logAssets(stats)
@@ -197,14 +149,14 @@ module.exports = function createApp (options) {
 
       onExit(() => watchers.map(w => w.close()))
     },
-    build () {
+    build (cb) {
       log(c => c.green('building'))
 
-      return spaghetti(config)
+      return spaghetti(spaghetticonfig)
         .build()
         .end(stats => {
           logAssets(stats)
-          exit()
+          cb ? cb() : exit()
         })
         .error(err => {
           log(c => ([

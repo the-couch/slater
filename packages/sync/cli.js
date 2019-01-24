@@ -46,26 +46,35 @@ const theme = require('./index.js')({
 })
 
 prog
-  .command('upload [paths...]')
+  .command('sync [paths...]')
   .action(paths => {
-    theme
-      .sync(paths, (total, rest) => {
-        const complete = total - rest
-        const percent = Math.ceil((complete / total) * 100)
-        write(`uploading ${complete} of ${total} files (${percent}%)`)
-      })
-      .then(() => {
-        write(`uploading complete`)
-      })
+    wait(1000, [
+      theme
+        .sync(paths, (total, rest) => {
+          const complete = total - rest
+          const percent = Math.ceil((complete / total) * 100)
+          write(
+            c.gray(`@slater/sync`),
+            c.blue(`syncing`),
+            complete,
+            c.gray(`of`),
+            total,
+            c.gray(`files - ${c.blue(percent + '%')}`)
+          )
+        })
+    ]).then(() => {
+      write(c.gray(`@slater/sync`), c.blue(`syncing complete`))
+      exit()
+    })
   })
 
 prog
-  .command('remove [paths...]')
+  .command('unsync [paths...]')
   .action(paths => {
     if (!paths.length) {
       log(c => ([
         c.red('error'),
-        `must specify paths to remove`
+        `must specify paths to unsync`
       ]))
 
       return exit()
@@ -76,12 +85,19 @@ prog
         .unsync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          write(`removing ${complete} of ${total} files (${percent}%)`)
+          write(
+            c.gray(`@slater/sync`),
+            c.blue(`unsyncing`),
+            complete,
+            c.gray(`of`),
+            total,
+            c.gray(`files - ${c.blue(percent + '%')}`)
+          )
         })
-    ])
-      .then(() => {
-        write(`removing complete`)
-      })
+    ]).then(() => {
+      write(c.gray(`@slater/sync`), c.blue(`syncing complete`))
+      exit()
+    })
   })
 
 prog.parse(process.argv)
