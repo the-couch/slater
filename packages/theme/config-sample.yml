@@ -5,9 +5,9 @@ development:
   ignore_files:
     - settings_data.json
 
-# production:
-#   password:
-#   theme_id: "live"
-#   store: your-shop.myshopify.com
-#   ignore_files:
-#     - settings_data.json
+production:
+  password:
+  theme_id:
+  store: domain.myshopify.com
+  ignore_files:
+    - settings_data.json

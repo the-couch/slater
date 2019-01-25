@@ -30,7 +30,7 @@ module.exports = function getSpaghettiConfig (options) {
     in: '/src/scripts/index.js',
     outDir:'/build/assets',
     watch: options.watch,
-    map: options.watch ? 'inline-cheap-source-map' : false,
+    map: options.watch ? 'inline-cheap-source-map' : 'cheap-module-source-map',
     alias: {
       '/': resolve(process.cwd())
     },

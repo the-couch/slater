@@ -1,9 +1,0 @@
-<nav role='navigation'>
-  <ul class='f'>
-    {% for link in linklists.main-menu.links %}
-      <li class='{% if link.active %}is-active{% endif %} mr1'>
-        <a href='{{ link.url }}' class='mr1'>{{ link.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-</nav>

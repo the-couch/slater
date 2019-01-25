@@ -1,12 +1,16 @@
 #! /usr/bin/env node
 'use strict'
 
+const fs = require('fs-extra')
+const path = require('path')
 const c = require('ansi-colors')
 const exit = require('exit')
 const wait = require('w2t')
+const download = require('download')
+const extract = require('extract-zip')
 
 const sync = require('@slater/sync')
-const { logger } = require('@slater/util')
+const { logger, resolve, join } = require('@slater/util')
 
 const pkg = require('./package.json')
 const createApp = require('./lib/app.js')
@@ -81,6 +85,42 @@ prog
       log.info('syncing', 'complete', true)
       exit()
     })
+  })
+
+prog
+  .command('init <path>')
+  .action(p => {
+    const dir = resolve(p)
+    const reldir = dir.replace(process.cwd(), '')
+    const tempfile = path.join(dir, 'temp.zip')
+    const release = `https://github.com/the-couch/slater/archive/v${pkg.version}.zip`
+    const extracted = path.join(dir, `slater-${pkg.version}`)
+
+    log.info('initializing', reldir, true)
+
+    fs.ensureDir(dir)
+      .then(() => download(release, dir, { filename: 'temp.zip' }))
+        .then(() => {
+          return new Promise((res, rej) => {
+            extract(tempfile, { dir }, e => {
+              if (e) rej(e)
+              res(fs.copy(
+                path.join(extracted, '/packages/theme'),
+                dir
+              ))
+            })
+          })
+        })
+        .then(() => fs.remove(tempfile))
+        .then(() => fs.remove(extracted))
+        .then(() => {
+          log.info('initiaizing', 'complete', true)
+          exit()
+        })
+        .catch(e => {
+          log.error(e.message || e)
+          exit()
+        })
   })
 
 if (!process.argv.slice(2).length) {
