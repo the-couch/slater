@@ -19,11 +19,6 @@ files, run:
 ```
 slater init <project root>
 ```
-For existing projects, the following will output the default configs only, which
-you will then need to customize to fit your project structure.
-```
-slater bootstrap <project root>
-```
 
 ### Configuration
 
