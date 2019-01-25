@@ -26,23 +26,27 @@ module.exports = function getSpaghettiConfig (options) {
   /**
    * deep merge user config with defaults
    */
-  const spaghetticonfig = merge({
-    in: '/src/scripts/index.js',
-    outDir:'/build/assets',
-    watch: options.watch,
-    map: options.watch ? 'inline-cheap-source-map' : 'cheap-module-source-map',
-    alias: {
-      '/': resolve(process.cwd())
+  const config = merge({
+    js: {
+      in: '/src/scripts/index.js',
+      outDir: '/build/assets',
+      map: options.watch ? 'inline-cheap-source-map' : 'cheap-module-source-map',
+      alias: {
+        '/': resolve(process.cwd())
+      },
+      banner: options.watch ? reloadBanner : false
     },
-    banner: options.watch ? reloadBanner : false
+    in: '/src',
+    out:'/build',
+    watch: options.watch
   }, slaterconfig)
 
   /**
    * overwrite paths to ensure they point to the cwd()
    */
-  spaghetticonfig.in = join(spaghetticonfig.in)
-  spaghetticonfig.outDir = join(spaghetticonfig.outDir)
-  spaghetticonfig.filename = spaghetticonfig.filename || path.basename(spaghetticonfig.in, '.js')
+  config.js.in = join(config.js.in)
+  config.js.outDir = join(config.js.outDir)
+  config.js.filename = config.js.filename || path.basename(config.js.in, '.js')
 
-  return spaghetticonfig
+  return config
 }

@@ -15,7 +15,8 @@ const {
   join,
   resolve,
   exists,
-  match
+  match,
+  sanitize
 } = require('@slater/util')
 
 /**
@@ -30,21 +31,18 @@ const log = logger('@slater/cli')
 /**
  * utilities
  */
-function copyFile (p) {
-  const pathname = p.split('/src')[1]
-
-  return fs.copy(p, join('/build', pathname))
+function copyFile ({ filename, src, dest }) {
+  console.log(filename, src, dest)
+  return fs.copy(src, dest)
     .catch(e => {
-      log.error(`copying ${pathname} failed\n${e.message || e}`)
+      log.error(`copying ${filename} failed\n${e.message || e}`)
     })
 }
 
-function deleteFile (p) {
-  const pathname = p.split('/src')[1]
-
-  return fs.remove(join('/build', pathname))
+function deleteFile ({ filename, src, dest }) {
+  return fs.remove(dest)
     .catch(e => {
-      log.error(`deleting ${pathname} failed\n${e.message || e}`)
+      log.error(`deleting ${filename} failed\n${e.message || e}`)
     })
 }
 
@@ -55,38 +53,45 @@ function logAssets ({ duration, assets }, persist) {
   }, '')}`, persist)
 }
 
+function formatFile (filepath, src, dest) {
+  if (!filepath) return {}
+
+  const filename = sanitize(filepath)
+
+  return {
+    filename,
+    src: filepath,
+    dest: path.resolve(process.cwd(), dest, filename)
+  }
+}
 
 module.exports = function createApp (options) {
-  const spaghetticonfig = getSpaghettiConfig(options)
+  const config = getSpaghettiConfig(options)
   const theme = sync(options)
 
-  function syncFile (p) {
-    if (!p) return Promise.resolve(true)
+  function syncFile ({ filename, src, dest }) {
+    if (!filename) return Promise.resolve(true)
 
-    const pathname = p.split('/build')[1]
-
-    return theme.sync(p)
+    return theme.sync(dest)
       .then(() => socket.emit('refresh'))
       .then(() => {
-        log.info('synced', pathname)
+        log.info('synced', filename)
       })
       .catch(e => {
-        log.error(`syncing ${pathname} failed\n${e.message || e || ''}`)
+        log.error(`syncing ${filename} failed\n${e.message || e || ''}`)
       })
   }
 
-  function unsyncFile (p) {
-    if (!p) return Promise.resolve(true)
+  function unsyncFile ({ filename, src, dest }) {
+    if (!filename) return Promise.resolve(true)
 
-    const pathname = p.split('/build')[1]
-
-    return theme.unsync(p)
+    return theme.unsync(dest)
       .then(() => socket.emit('refresh'))
       .then(() => {
-        log.info('unsynced', pathname)
+        log.info('unsynced', filename)
       })
       .catch(e => {
-        log.error(`unsyncing ${pathname} failed\n${e.message || e || ''}`)
+        log.error(`unsyncing ${filename} failed\n${e.message || e || ''}`)
       })
   }
 
@@ -95,26 +100,26 @@ module.exports = function createApp (options) {
       log.info('watching')
 
       const watchers = [
-        chokidar.watch(join('/src'), {
+        chokidar.watch(join(config.in), {
           persistent: true,
           ignoreInitial: true,
           ignore: theme.config.ignored_files
         })
-          .on('add', copyFile)
-          .on('change', copyFile)
-          .on('unlink', deleteFile),
+          .on('add', file => copyFile(formatFile(file, config.in, config.out)))
+          .on('change', file => copyFile(formatFile(file, config.in, config.out)))
+          .on('unlink', file => deleteFile(formatFile(file, config.in, config.out))),
 
-        chokidar.watch(join('/build'), {
+        chokidar.watch(path.join(process.cwd(), config.out), {
           ignore: /DS_Store/,
           persistent: true,
           ignoreInitial: true
         })
-          .on('add', syncFile)
-          .on('change', syncFile)
-          .on('unlink', unsyncFile)
+          .on('add', file => syncFile(formatFile(file, config.in, config.out)))
+          .on('change', file => syncFile(formatFile(file, config.in, config.out)))
+          .on('unlink', file => unsyncFile(formatFile(file, config.in, config.out)))
       ]
 
-      spaghetti(spaghetticonfig)
+      spaghetti(config.js)
         .watch()
         .end(stats => {
           logAssets(stats, false)
@@ -128,7 +133,7 @@ module.exports = function createApp (options) {
     build (cb) {
       log.info('building', '', true)
 
-      return spaghetti(spaghetticonfig)
+      return spaghetti(config.js)
         .build()
         .end(stats => {
           logAssets(stats, true)
@@ -136,23 +141,6 @@ module.exports = function createApp (options) {
         })
         .error(e => {
           log.error(e.message || e || '')
-        })
-    },
-    deploy () {
-      log.info('syncing', '', true)
-
-      return theme.sync([ join('/build') ], (total, rest) => {
-        const complete = total - rest
-        const percent = Math.ceil((complete / total) * 100)
-        log.info('syncing', percent + '%', true)
-      })
-        .then(() => {
-          log.info('deployed', `to ${options.theme} theme`, true)
-          exit()
-        })
-        .catch(e => {
-          log.error(`deploy failed\n${e.message || e || ''}`)
-          exit()
         })
     }
   }

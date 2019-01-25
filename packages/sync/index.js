@@ -11,7 +11,8 @@ const yaml = require('yaml').default
 const {
   logger,
   resolve,
-  exists
+  exists,
+  sanitize
 } = require('@slater/util')
 
 const pkg = require('./package.json')
@@ -205,17 +206,6 @@ module.exports = function init (options) {
       remove,
       createProgressCallback(cb)(queue.length)
     ))
-  }
-
-  function sanitize (p) {
-    if (!p) return null
-    if (/^\//.test(p)) {
-      return sanitize(p.substr(1))
-    }
-    if (!/^(layout|templates|sections|snippets|config|locales|assets)/.test(p)) {
-      return sanitize(p.split('/').slice(1).join('/'))
-    }
-    return p
   }
 
   return {
