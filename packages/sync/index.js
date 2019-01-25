@@ -4,6 +4,7 @@ const assert = require('assert')
 const exit = require('exit')
 const c = require('ansi-colors')
 const wait = require('w2t')
+const fetch = require('node-fetch')
 const readdir = require('recursive-readdir')
 const yaml = require('yaml').default
 
@@ -51,6 +52,11 @@ module.exports = function init (options) {
     config.ignore_files = config.ignore_files.concat(conf.ignore_files || [])
   }
 
+  if (!config.password || !config.theme_id || !config.store) {
+    log.error(`looks like your config.yml file is incorrect`)
+    exit()
+  }
+
   /**
    * filled on each sync request, emptied when successful
    */
@@ -75,8 +81,6 @@ module.exports = function init (options) {
   function upload ({ key, file }) {
     const encoded = Buffer.from(fs.readFileSync(file), 'utf-8').toString('base64')
 
-    return Promise.resolve(true)
-
     return api('PUT', {
       asset: {
         key,
@@ -86,17 +90,12 @@ module.exports = function init (options) {
       .then(res => res ? res.json() : {})
       .then(({ errors, asset }) => {
         if (errors) {
-          throw errors
+          throw { errors }
         }
 
         return {
           key,
           errors
-        }
-      })
-      .catch(e => {
-        return {
-          errors: e
         }
       })
   }
@@ -108,7 +107,7 @@ module.exports = function init (options) {
       .then(res => res ? res.json() : {})
       .then(({ errors, asset }) => {
         if (errors) {
-          throw errors
+          throw { errors }
         }
 
         return {
@@ -116,16 +115,13 @@ module.exports = function init (options) {
           errors
         }
       })
-      .catch(e => {
-        return {
-          errors: e
-        }
-      })
   }
 
   function enqueue (action, cb) {
     return new Promise((res, rej) => {
       ;(function push (p) {
+        if (!p) res()
+
         wait(500, [
           action(p)
         ])
@@ -177,6 +173,8 @@ module.exports = function init (options) {
             return _.concat(f.key)
           }, [])
 
+          if (!queue.length) res()
+
           res(enqueue(
             upload,
             createProgressCallback(cb)(queue.length)
@@ -187,6 +185,8 @@ module.exports = function init (options) {
           key: sanitize(file),
           file
         })).filter(f => f.key)
+
+        if (!queue.length) res()
 
         res(enqueue(
           upload,

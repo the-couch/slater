@@ -21,7 +21,7 @@ const reloadBanner = require('./reloadBanner.js')
 const log = logger('@slater/cli')
 
 module.exports = function getSpaghettiConfig (options) {
-  const slaterconfig = exists(options.slater || 'slater.config.js', path => require(path), true)
+  const slaterconfig = exists(options.slater, path => require(path), true)
 
   /**
    * deep merge user config with defaults

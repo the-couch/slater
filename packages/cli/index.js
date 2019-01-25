@@ -28,7 +28,9 @@ prog
   .action(() => {
     const app = createApp({
       watch: true,
-      ...prog
+      config: prog.config || 'config.yml',
+      theme: prog.theme || 'development',
+      slater: prog.slater || 'slater.config.js'
     })
 
     app.watch()
@@ -39,7 +41,9 @@ prog
   .action(() => {
     const app = createApp({
       slater: prog.slater,
-      ...prog
+      config: prog.config || 'config.yml',
+      theme: prog.theme || 'development',
+      slater: prog.slater || 'slater.config.js'
     })
 
     app.build()
@@ -48,7 +52,10 @@ prog
 prog
   .command('sync [paths...]')
   .action(paths => {
-    const theme = sync(prog)
+    const theme = sync({
+      config: prog.config || 'config.yml',
+      theme: prog.theme || 'development'
+    })
 
     wait(1000, [
       theme
@@ -72,7 +79,10 @@ prog
       return exit()
     }
 
-    const theme = sync(prog)
+    const theme = sync({
+      config: prog.config || 'config.yml',
+      theme: prog.theme || 'development'
+    })
 
     wait(1000, [
       theme

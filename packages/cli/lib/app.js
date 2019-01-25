@@ -61,6 +61,8 @@ module.exports = function createApp (options) {
   const theme = sync(options)
 
   function syncFile (p) {
+    if (!p) return Promise.resolve(true)
+
     const pathname = p.split('/build')[1]
 
     return theme.sync(p)
@@ -69,11 +71,13 @@ module.exports = function createApp (options) {
         log.info('synced', pathname)
       })
       .catch(e => {
-        log.erorr(`syncing ${pathname} failed\n${e.message || e || ''}`)
+        log.error(`syncing ${pathname} failed\n${e.message || e || ''}`)
       })
   }
 
   function unsyncFile (p) {
+    if (!p) return Promise.resolve(true)
+
     const pathname = p.split('/build')[1]
 
     return theme.unsync(p)
@@ -82,7 +86,7 @@ module.exports = function createApp (options) {
         log.info('unsynced', pathname)
       })
       .catch(e => {
-        log.erorr(`unsyncing ${pathname} failed\n${e.message || e || ''}`)
+        log.error(`unsyncing ${pathname} failed\n${e.message || e || ''}`)
       })
   }
 
@@ -115,8 +119,8 @@ module.exports = function createApp (options) {
         .end(stats => {
           logAssets(stats, false)
         })
-        .error(err => {
-          log.error(error.message || e || '')
+        .error(e => {
+          log.error(e.message || e || '')
         })
 
       onExit(() => watchers.map(w => w.close()))
@@ -130,8 +134,8 @@ module.exports = function createApp (options) {
           logAssets(stats, true)
           cb ? cb() : exit()
         })
-        .error(err => {
-          log.error(error.message || e || '')
+        .error(e => {
+          log.error(e.message || e || '')
         })
     },
     deploy () {
