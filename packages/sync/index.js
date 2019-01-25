@@ -18,34 +18,38 @@ const pkg = require('./package.json')
 const log = logger('@slater/sync')
 
 module.exports = function init (options) {
-  const gitignore = exists('.gitignore', path => fs.readFileSync(path, 'utf8'))
-  const themeconfig = yaml.parse(exists(options.config || './config.yml', path => (
-    fs.readFileSync(path, 'utf8')
-  ), true))[options.theme || 'development']
-
-  /**
-   * exit if the theme info isn't configured
-   */
-  if (!themeconfig) {
-    log.error(`hmmmm can't seem to find your ${options.theme} theme`)
-    exit()
+  let config = {
+    password: options.password,
+    theme_id: options.theme_id,
+    store: options.store,
+    ignore_files: [].concat(options.ignore_files || [], [
+      '**/scripts/**',
+      '**/styles/**',
+      'DS_Store',
+      '*.yml',
+      '.DS_Store',
+      'node_modules'
+    ])
   }
 
-  /**
-   * combine ignored files
-   */
-  const ignored = ['**/scripts/**', '**/styles/**', 'DS_Store']
-    .concat(themeconfig.ignore_files || [])
-    .concat(gitignore ? require('parse-gitignore')(gitignore) : [])
+  if (options.config) {
+    const conf = yaml.parse(exists(options.config || './config.yml', path => (
+      fs.readFileSync(path, 'utf8')
+    ), true))[options.theme || 'development']
 
-  themeconfig.ignore_files = ignored
+    /**
+     * exit if the theme info isn't configured
+     */
+    if (!conf) {
+      log.error(`hmmmm can't seem to find your ${options.theme} theme`)
+      exit()
+    }
 
-  const {
-    password,
-    theme_id,
-    store,
-    ignore_files = []
-  } = themeconfig
+    config.password = conf.password
+    config.theme_id = conf.theme_id
+    config.store = conf.store
+    config.ignore_files = config.ignore_files.concat(conf.ignore_files || [])
+  }
 
   /**
    * filled on each sync request, emptied when successful
@@ -57,10 +61,10 @@ module.exports = function init (options) {
   }
 
   function api (method, body) {
-    return fetch(`https://${store}/admin/themes/${theme_id}/assets.json`, {
+    return fetch(`https://${config.store}/admin/themes/${config.theme_id}/assets.json`, {
       method,
       headers: {
-        'X-Shopify-Access-Token': password,
+        'X-Shopify-Access-Token': config.password,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
@@ -140,11 +144,7 @@ module.exports = function init (options) {
     paths = paths.length ? paths : ['.']
 
     const deploy = fs.lstatSync(paths[0]).isDirectory()
-    const ignored = ignore_files.concat([
-      '*.yml',
-      '.DS_Store',
-      'node_modules'
-    ])
+    const ignored = config.ignore_files
 
     return new Promise((res, rej) => {
       if (deploy) {
@@ -220,6 +220,7 @@ module.exports = function init (options) {
 
   return {
     sync,
-    unsync
+    unsync,
+    config
   }
 }

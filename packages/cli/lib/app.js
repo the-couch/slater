@@ -94,7 +94,7 @@ module.exports = function createApp (options) {
         chokidar.watch(join('/src'), {
           persistent: true,
           ignoreInitial: true,
-          ignore: themeconfig.ignored_files
+          ignore: theme.config.ignored_files
         })
           .on('add', copyFile)
           .on('change', copyFile)
