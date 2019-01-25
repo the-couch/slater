@@ -1,53 +1,64 @@
-# @slater/cli
-Shopify theme development toolkit.
+# slater
+A Shopify theme development toolkit.
 
-```
-npm i @slater/cli --save-dev
-```
+## Features
+- bare-bones base theme
+- JS and CSS compilation via Webpack and Babel
+- live reloading
+- easy config
+- simple CLI
 
-# Usage
-Place your entire theme within the `/src` directory, including a
-Shopify-standard `config.yml`.
-
-JS/CSS is compiled using [rollup](https://github.com/rollup/rollup) and
-[postcss](https://github.com/postcss/postcss). This library expects a single
-entrypoint at `/src/scripts/index.js`, so just import your modules and
-stylesheets there and you should be good to go.
-
-Example structure:
+## Install
 ```bash
-- package.json
-- src/
-  |- config.yml # standard issue Shopify
-  |- scripts/
-    |- index.js
-  |- styles/
-    |- main.css
-  |- layout/
-  |- templates/
-  |- sections/
-  |- snippets/
-  |- locales/
-  |- config/
-  |- assets/
+npm i -g slater
 ```
 
-## watch
+## Getting Started
+To get set up out of the box with the slater base theme and default config
+files, run:
+```
+slater init <project root>
+```
+For existing projects, the following will output the default configs only, which
+you will then need to customize to fit your project structure.
+```
+slater bootstrap <project root>
+```
+
+### Configuration
+
+### Development
+The following will watch your source directory for file changes, as well
+as compile any edits to your JS or CSS, before uploading the edited files to
+your configured Shopify them.
 ```
 slater watch
 ```
 
-## build
-Build JavaScript and CSS, copy theme to `/build` directory.
+### Production
+To compile and minify assets for production:
 ```
 slater build
 ```
 
-## deploy
-Build JavaScript and CSS, copy theme to `/build` directory, push to Shopify.
+### Syncing Files
+Upload one or more files or directories using `@slater/sync` under the hood.
 ```
-slater deploy
+slater sync build/snippets/nav.liquid
+slater sync build/snippets/nav.liquid build/templates/index.liquid
+slater sync build/snippets
 ```
+
+### Deployment
+```
+slater build && slater sync build/
+```
+
+## Options
+Any of the core commands can be combined with the following options.
+- `--config <path>` - specify a path to a config.yml file
+- `--theme <name>` - specify a named theme from your config.yml file
+- `--slater <path>` - specify a path to your slater config file
 
 ## Live-reloading & HTTPS
 `slater` uses an local SSL certification to correspond with Shopify's HTTPS
@@ -57,32 +68,9 @@ security exception for the `slater` cert (this is safe). To do this, load
 the instructions for adding an exception. If it works, you should see this in
 your browser window:
 ```
-@slater/cli successfully connected
-```
-
-## Options
-### `--env`
-Specify a theme from `config.yml`. Defaults to `development`.
-```
-slater deploy --env=production
-```
-
-### Config File
-`slater` also supports a `slater.config.js` as well, which supports all the same
-options as
-[@friendsof/spaghetti](https://github.com/the-couch/spaghetti#config).
-
-```javascript
-// slater.config.js
-module.exports = {
-  jsx: 'preact.h',
-  map: 'inline-cheap-source-map',
-  alias: {
-    foo: './bar'
-  }
-}
+slater successfully connected
 ```
 
 ## License
 MIT License
-(c) The Couch
+© The Couch

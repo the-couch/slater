@@ -1,37 +1,49 @@
 # @slater/sync
-A subset of [@Shopify/themekit](https://github.com/Shopify/themekit) API written in JavaScript.
+Sync files between your local machine and a remote Shopify theme.
 
 ## Usage
-All methods return `Promise`s.
-
-First, create an instance:
 ```javascript
 const sync = require('@slater/sync')
 
 const theme = sync({
+  config: './config.yml',
+  theme: 'development'
+})
+
+// or skip the config.yml
+const theme = sync({
   password: 'abcde12345',
   store: 'slater-demo.myshopify.com',
   theme_id: 123456789,
-  cwd: process.cwd(),
   ignore_files: [
     'settings_data.json'
   ]
 })
 ```
-### upload
+
+### sync
 ```javascript
-theme.upload('templates/index.liquid', './path/to/file.liquid')
+theme.sync([
+  './build/snippets/nav.liquid'
+])
+
+// multiple files
+theme.sync([
+  './build/snippets/nav.liquid',
+  './build/templates/index.liquid'
+])
+
+// or a directory
+theme.sync([
+  './build/snippets/'
+])
 ```
-### remove
+
+### unsync
 ```javascript
-theme.remove('templates/index.liquid')
-```
-### deploy
-Replace all remote theme files with local versions.
-```javascript
-theme.deploy()
+theme.unsync([ 'templates/index.liquid' ])
 ```
 
 ## License
 MIT License
-(c) The Couch
+© The Couch

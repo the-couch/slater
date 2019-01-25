@@ -1,6 +1,6 @@
 # @slater/theme
-A bare-bones base theme, batteries included.
+Some assembly required. Batteries included.
 
 ## License
 MIT License
-(c) The Couch
+© The Couch
