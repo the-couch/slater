@@ -5,6 +5,8 @@ const exit = require('exit')
 const chokidar = require('chokidar')
 const merge = require('merge-deep')
 
+const anymatch = require('anymatch')
+
 /**
  * internal modules
  */
@@ -23,7 +25,7 @@ const {
  * library specific deps
  */
 const { socket, closeServer } = require('./socket.js')
-const getSpaghettiConfig = require('./getSpaghettiConfig.js')
+const getConfig = require('./getConfig.js')
 
 
 const log = logger('@slater/cli')
@@ -32,7 +34,6 @@ const log = logger('@slater/cli')
  * utilities
  */
 function copyFile ({ filename, src, dest }) {
-  console.log(filename, src, dest)
   return fs.copy(src, dest)
     .catch(e => {
       log.error(`copying ${filename} failed\n${e.message || e}`)
@@ -61,12 +62,12 @@ function formatFile (filepath, src, dest) {
   return {
     filename,
     src: filepath,
-    dest: path.resolve(process.cwd(), dest, filename)
+    dest: path.join(process.cwd(), dest, filename)
   }
 }
 
 module.exports = function createApp (options) {
-  const config = getSpaghettiConfig(options)
+  const config = getConfig(options)
   const theme = sync(options)
 
   function syncFile ({ filename, src, dest }) {
@@ -96,6 +97,19 @@ module.exports = function createApp (options) {
   }
 
   return {
+    copy () {
+      return new Promise((res, rej) => {
+        fs.emptyDir(join(config.out))
+          .then(() => {
+            fs.copy(join(config.in), join(config.out), {
+              filter (src, dest) {
+                console.log(src, match(src, theme.config.ignore_files))
+                return !match(src, theme.config.ignore_files)
+              }
+            }).then(res).catch(rej)
+          }).catch(rej)
+      })
+    },
     watch () {
       log.info('watching')
 
@@ -103,11 +117,21 @@ module.exports = function createApp (options) {
         chokidar.watch(join(config.in), {
           persistent: true,
           ignoreInitial: true,
-          ignore: theme.config.ignored_files
+          ignore: theme.config.ignore_files
         })
-          .on('add', file => copyFile(formatFile(file, config.in, config.out)))
-          .on('change', file => copyFile(formatFile(file, config.in, config.out)))
-          .on('unlink', file => deleteFile(formatFile(file, config.in, config.out))),
+          .on('add', file => {
+            // @see https://github.com/paulmillr/chokidar/issues/773
+            if (match(file, theme.config.ignore_files)) return
+            copyFile(formatFile(file, config.in, config.out))
+          })
+          .on('change', file => {
+            if (match(file, theme.config.ignore_files)) return
+            copyFile(formatFile(file, config.in, config.out))
+          })
+          .on('unlink', file => {
+            if (match(file, theme.config.ignore_files)) return
+            deleteFile(formatFile(file, config.in, config.out))
+          }),
 
         chokidar.watch(path.join(process.cwd(), config.out), {
           ignore: /DS_Store/,

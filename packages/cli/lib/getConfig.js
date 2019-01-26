@@ -20,7 +20,7 @@ const reloadBanner = require('./reloadBanner.js')
 
 const log = logger('@slater/cli')
 
-module.exports = function getSpaghettiConfig (options) {
+module.exports = function getConfig (options) {
   const slaterconfig = exists(options.slater, path => require(path), true)
 
   /**

@@ -26,7 +26,9 @@ module.exports = function init (options) {
     store: options.store,
     ignore_files: [].concat(options.ignore_files || [], [
       '**/scripts/**',
+      '**/scripts',
       '**/styles/**',
+      '**/styles',
       'DS_Store',
       '*.yml',
       '.DS_Store',
@@ -139,6 +141,12 @@ module.exports = function init (options) {
   function sync (paths = [], cb) {
     paths = [].concat(paths)
     paths = paths.length ? paths : ['.']
+    paths = paths.map(p => (
+      path.join(
+        process.cwd(),
+        path.resolve(process.cwd(), p)
+      )
+    ))
 
     const deploy = fs.lstatSync(paths[0]).isDirectory()
     const ignored = config.ignore_files

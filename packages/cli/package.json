@@ -22,6 +22,7 @@
     "@slater/sync": "^1.0.0-alpha.10",
     "@slater/util": "^1.0.0-alpha.10",
     "ansi-colors": "^3.0.4",
+    "anymatch": "^2.0.0",
     "chokidar": "^2.0.4",
     "commander": "^2.19.0",
     "download": "^7.1.0",
@@ -40,5 +41,5 @@
     "w2t": "0.0.2",
     "yaml": "^1.0.0-rc.7"
   },
-  "gitHead": "d3ed8d339c90f79b66535b8516d5d20d567f36c0"
+  "gitHead": "06868aa03c649eadf0a5f99020901015f4ff86af"
 }

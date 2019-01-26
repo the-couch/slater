@@ -14,6 +14,7 @@ const { logger, resolve, join } = require('@slater/util')
 
 const pkg = require('./package.json')
 const createApp = require('./lib/app.js')
+const getConfig = require('./lib/getConfig.js')
 
 const prog = require('commander')
   .version(pkg.version)
@@ -33,7 +34,7 @@ prog
       slater: prog.slater || 'slater.config.js'
     })
 
-    app.watch()
+    app.copy().then(app.watch)
   })
 
 prog
@@ -46,16 +47,22 @@ prog
       slater: prog.slater || 'slater.config.js'
     })
 
-    app.build()
+    app.copy().then(app.build)
   })
 
 prog
   .command('sync [paths...]')
   .action(paths => {
-    const theme = sync({
+    const options = {
       config: prog.config || 'config.yml',
-      theme: prog.theme || 'development'
-    })
+      theme: prog.theme || 'development',
+      slater: prog.slater || 'slater.config.js'
+    }
+
+    const config = getConfig(options)
+    const theme = sync(options)
+
+    paths = paths && paths.length ? paths : config.out
 
     wait(1000, [
       theme
@@ -79,10 +86,16 @@ prog
       return exit()
     }
 
-    const theme = sync({
+    const options = {
       config: prog.config || 'config.yml',
-      theme: prog.theme || 'development'
-    })
+      theme: prog.theme || 'development',
+      slater: prog.slater || 'slater.config.js'
+    }
+
+    const config = getConfig(options)
+    const theme = sync(options)
+
+    paths = paths && paths.length ? paths : config.out
 
     wait(1000, [
       theme
