@@ -11,6 +11,7 @@ const extract = require('extract-zip')
 const sync = require('@slater/sync')
 const {
   logger,
+  abs,
   getConfig
 } = require('@slater/util')
 
