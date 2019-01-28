@@ -1,172 +1,196 @@
-#! /usr/bin/env node
-'use strict'
-
 const fs = require('fs-extra')
 const path = require('path')
+const onExit = require('exit-hook')
 const exit = require('exit')
-const wait = require('w2t')
-const download = require('download')
-const extract = require('extract-zip')
+const chokidar = require('chokidar')
 
+/**
+ * internal modules
+ */
+const spaghetti = require('@friendsof/spaghetti')
 const sync = require('@slater/sync')
 const {
   logger,
-  getShopifyConfig,
-  getSlaterConfig
+  match,
+  sanitize
 } = require('@slater/util')
 
-const pkg = require('./package.json')
-const createApp = require('./lib/createApp.js')
-
-const prog = require('commander')
-  .version(pkg.version)
-  .option('-c, --config <path>', 'specify a path to a config.yml file')
-  .option('-t, --theme <name>', 'specify a named theme from your config.yml file')
-  .option('-s, --slater <path>', 'specify a path to a slater config file')
+/**
+ * library specific deps
+ */
+const { socket, closeServer } = require('./lib/socket.js')
+const reloadBanner = require('./lib/reloadBanner.js')
 
 const log = logger('@slater/cli')
 
-prog
-  .command('watch')
-  .action(() => {
-    const options = {
-      watch: true,
-      config: prog.config || 'config.yml',
-      theme: prog.theme || 'development',
-      slater: prog.slater || 'slater.config.js'
-    }
+/**
+ * kinda gross, but looks nice in the console
+ */
+function logAssets ({ duration, assets }, persist) {
+  log.info('built', ` in ${duration}ms\n${assets.reduce((_, asset, i) => {
+    const size = asset.size.gzip ? asset.size.gzip + 'kb gzipped' : asset.size.raw + 'kb'
+    return _ += `  > ${log.colors.gray(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
+  }, '')}`, persist)
+}
 
-    const slaterconfig = getSlaterConfig(options)
-    const shopifyconfig = getShopifyConfig(options)
+/**
+ * input absolute filepath, return
+ *   - its filename (as a Shopify "key")
+ *   - where it's coming from
+ *   - where it's going
+ *
+ *   e.g. "/Users/user/Sites/projects/my-project/src/snippets/snip.liquid"
+ *
+ *   {
+ *     filename: "snippets/snip.liquid",
+ *     src: "/Users/user/Sites/projects/my-project/src/snippets/snip.liquid",
+ *     dest: "/Users/user/Sites/projects/my-project/build/snippets/snip.liquid"
+*    }
+ */
+function formatFile (filepath, src, dest) {
+  if (!filepath) return {}
 
-    const app = createApp(slaterconfig, shopifyconfig)
+  const filename = sanitize(filepath)
 
-    app.copy().then(app.watch)
-  })
+  return {
+    filename,
+    src: filepath,
+    dest: path.join(dest, filename)
+  }
+}
 
-prog
-  .command('build')
-  .action(() => {
-    const options = {
-      watch: true,
-      config: prog.config || 'config.yml',
-      theme: prog.theme || 'development',
-      slater: prog.slater || 'slater.config.js'
-    }
+module.exports = function createApp (config) {
+  const theme = sync(config.theme)
 
-    const slaterconfig = getSlaterConfig(options)
-    const shopifyconfig = getShopifyConfig(options)
-
-    const app = createApp(slaterconfig, shopifyconfig)
-
-    app.copy().then(app.build)
-  })
-
-prog
-  .command('sync [paths...]')
-  .action(paths => {
-    const options = {
-      config: prog.config || 'config.yml',
-      theme: prog.theme || 'development',
-      slater: prog.slater || 'slater.config.js'
-    }
-
-    const slaterconfig = getSlaterConfig(options)
-    const shopifyconfig = getShopifyConfig(options)
-
-    const theme = sync(shopifyconfig)
-
-    paths = paths && paths.length ? paths : slaterconfig.out
-
-    wait(1000, [
-      theme
-        .sync(paths, (total, rest) => {
-          const complete = total - rest
-          const percent = Math.ceil((complete / total) * 100)
-          log.info('syncing', percent + '%', true)
-        })
-    ]).then(() => {
-      log.info('sync', 'complete', true)
-      exit()
-    })
-  })
-
-prog
-  .command('unsync [paths...]')
-  .action(paths => {
-    if (!paths.length) {
-      log.error('plz specify paths to unsync')
-
-      return exit()
-    }
-
-    const options = {
-      config: prog.config || 'config.yml',
-      theme: prog.theme || 'development',
-      slater: prog.slater || 'slater.config.js'
-    }
-
-    const slaterconfig = getSlaterConfig(options)
-    const shopifyconfig = getShopifyConfig(options)
-
-    const theme = sync(shopifyconfig)
-
-    paths = paths && paths.length ? paths : slaterconfig.out
-
-    wait(1000, [
-      theme
-        .unsync(paths, (total, rest) => {
-          const complete = total - rest
-          const percent = Math.ceil((complete / total) * 100)
-          log.info('syncing', percent + '%', true)
-        })
-    ]).then(() => {
-      log.info('syncing', 'complete', true)
-      exit()
-    })
-  })
-
-prog
-  .command('init <path>')
-  .action(p => {
-    const dir = abs(p)
-    const reldir = dir.replace(process.cwd(), '')
-    const tempfile = path.join(dir, 'temp.zip')
-    const release = `https://github.com/the-couch/slater/archive/v${pkg.version}.zip`
-    const extracted = path.join(dir, `slater-${pkg.version}`)
-
-    log.info('initializing', reldir, true)
-
-    fs.ensureDir(dir)
-      .then(() => download(release, dir, { filename: 'temp.zip' }))
-        .then(() => {
-          return new Promise((res, rej) => {
-            extract(tempfile, { dir }, e => {
-              if (e) rej(e)
-              res(fs.copy(
-                path.join(extracted, '/packages/theme'),
-                dir
-              ))
+  return {
+    copy () {
+      return new Promise((res, rej) => {
+        fs.emptyDir(config.out)
+          .then(() => {
+            fs.copy(config.in, config.out, {
+              filter (src, dest) {
+                return !match(src, config.theme.ignore)
+              }
             })
+              .then(res)
+              .catch(e => {
+                log.error(e.message || e)
+                rej(e)
+                exit()
+              })
           })
-        })
-        .then(() => fs.remove(tempfile))
-        .then(() => fs.remove(extracted))
-        .then(() => {
-          log.info('initiaizing', 'complete', true)
-          exit()
-        })
-        .catch(e => {
-          log.error(e.message || e)
-          exit()
-        })
-  })
+          .catch(e => {
+            log.error(e.message || e)
+            rej(e)
+            exit()
+          })
+      })
+    },
+    build () {
+      log.info('building', '', true)
 
-if (!process.argv.slice(2).length) {
-  prog.outputHelp(txt => {
-    console.log(txt)
-    exit()
-  })
-} else {
-  prog.parse(process.argv)
+      return new Promise((res, rej) => {
+        spaghetti(config.spaghetti)
+          .build()
+          .end(stats => {
+            logAssets(stats, true)
+            res()
+          })
+          .error(e => {
+            log.error(e.message || e || '')
+            rej(e)
+          })
+      })
+    },
+    watch () {
+      log.info('watching')
+
+      /**
+       * utilities for watch task only
+       */
+      function copyFile ({ filename, src, dest }) {
+        return fs.copy(src, dest)
+          .catch(e => {
+            log.error(`copying ${filename} failed\n${e.message || e}`)
+          })
+      }
+      function deleteFile ({ filename, src, dest }) {
+        return fs.remove(dest)
+          .catch(e => {
+            log.error(`deleting ${filename} failed\n${e.message || e}`)
+          })
+      }
+      function syncFile ({ filename, src, dest }) {
+        if (!filename) return Promise.resolve(true)
+
+        return theme.sync(dest)
+          .then(() => socket.emit('refresh'))
+          .then(() => {
+            log.info('synced', filename)
+          })
+          .catch(e => {
+            log.error(`syncing ${filename} failed\n${e.message || e || ''}`)
+          })
+      }
+      function unsyncFile ({ filename, src, dest }) {
+        if (!filename) return Promise.resolve(true)
+
+        return theme.unsync(dest)
+          .then(() => socket.emit('refresh'))
+          .then(() => {
+            log.info('unsynced', filename)
+          })
+          .catch(e => {
+            log.error(`unsyncing ${filename} failed\n${e.message || e || ''}`)
+          })
+      }
+
+      const watchers = [
+        chokidar.watch(config.in, {
+          persistent: true,
+          ignoreInitial: true,
+          ignore: config.theme.ignore
+        })
+          .on('add', file => {
+            // @see https://github.com/paulmillr/chokidar/issues/773
+            if (match(file, config.theme.ignore)) return
+            copyFile(formatFile(file, config.in, config.out))
+          })
+          .on('change', file => {
+            if (match(file, config.theme.ignore)) return
+            copyFile(formatFile(file, config.in, config.out))
+          })
+          .on('unlink', file => {
+            if (match(file, config.theme.ignore)) return
+            deleteFile(formatFile(file, config.in, config.out))
+          }),
+
+        chokidar.watch(config.out, {
+          ignore: /DS_Store/,
+          persistent: true,
+          ignoreInitial: true
+        })
+          .on('add', file => syncFile(formatFile(file, config.in, config.out)))
+          .on('change', file => syncFile(formatFile(file, config.in, config.out)))
+          .on('unlink', file => unsyncFile(formatFile(file, config.in, config.out)))
+      ]
+
+      spaghetti(Object.assign(config.spaghetti, {
+        map: 'inline-cheap-source-map',
+        banner: reloadBanner
+      }))
+        .watch()
+        .end(stats => {
+          logAssets(stats, false)
+        })
+        .error(e => {
+          log.error(e.message || e || '')
+        })
+
+      onExit(() => {
+        watchers.map(w => w.close())
+        closeServer()
+      })
+    }
+  }
 }

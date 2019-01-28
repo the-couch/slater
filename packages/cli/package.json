@@ -4,7 +4,7 @@
   "description": "shopify theme management toolkit",
   "main": "index.js",
   "bin": {
-    "slater": "./index.js"
+    "slater": "./cli.js"
   },
   "keywords": [
     "shopify",

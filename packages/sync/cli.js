@@ -8,7 +8,7 @@ const exit = require('exit')
 const wait = require('w2t')
 const {
   logger,
-  getShopifyConfig
+  getConfig
 } = require('@slater/util')
 
 const pkg = require('./package.json')
@@ -16,11 +16,12 @@ const pkg = require('./package.json')
 const log = logger('@slater/sync')
 
 const prog = require('commander')
-  .option('-c, --config <path>', 'specify a path to a config.yml file')
-  .option('-t, --theme <name>', 'specify a named theme from your config.yml file')
+  .version(pkg.version)
+  .option('-c, --config <path>', 'specify the path to your config file')
+  .option('-t, --theme <name>', 'specify a named theme from your config file')
   .parse(process.argv)
 
-const theme = require('./index.js')(getShopifyConfig(prog))
+const theme = require('./index.js')(getConfig(prog))
 
 prog
   .command('sync [paths...]')
@@ -32,10 +33,15 @@ prog
           const percent = Math.ceil((complete / total) * 100)
           log.info('syncing', percent + '%', true)
         })
-    ]).then(() => {
-      log.info('syncing', 'complete', true)
-      exit()
-    })
+    ])
+      .then(() => {
+        log.info('syncing', 'complete', true)
+        exit()
+      })
+      .catch(({ errors, key }) => {
+        log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
+        exit()
+      })
   })
 
 prog
@@ -57,10 +63,15 @@ prog
           const percent = Math.ceil((complete / total) * 100)
           log.info('syncing', percent + '%', true)
         })
-    ]).then(() => {
-      log.info('syncing', 'complete', true)
-      exit()
-    })
+    ])
+      .then(() => {
+        log.info('syncing', 'complete', true)
+        exit()
+      })
+      .catch(({ errors, key }) => {
+        log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
+        exit()
+      })
   })
 
 prog.parse(process.argv)

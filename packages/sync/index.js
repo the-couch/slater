@@ -29,7 +29,7 @@ module.exports = function init (config) {
   }
 
   function api (method, body) {
-    return fetch(`https://${config.store}/admin/themes/${config.theme_id}/assets.json`, {
+    return fetch(`https://${config.store}/admin/themes/${config.id}/assets.json`, {
       method,
       headers: {
         'X-Shopify-Access-Token': config.password,
@@ -52,12 +52,15 @@ module.exports = function init (config) {
       .then(res => res ? res.json() : {})
       .then(({ errors, asset }) => {
         if (errors) {
-          throw { errors }
+          throw {
+            key,
+            errors
+          }
         }
 
         return {
           key,
-          errors
+          asset
         }
       })
   }
@@ -69,12 +72,15 @@ module.exports = function init (config) {
       .then(res => res ? res.json() : {})
       .then(({ errors, asset }) => {
         if (errors) {
-          throw { errors }
+          throw {
+            key,
+            errors
+          }
         }
 
         return {
           key,
-          errors
+          asset
         }
       })
   }
@@ -92,7 +98,11 @@ module.exports = function init (config) {
             if (queue.length) return push(queue.pop())
             res()
           })
-          .catch(rej)
+          .catch(e => {
+            cb && cb(queue.length)
+            if (queue.length) return push(queue.pop())
+            rej(e)
+          })
       })(queue.pop())
     })
   }
@@ -103,11 +113,16 @@ module.exports = function init (config) {
     paths = paths.map(p => abs(p))
 
     const deploy = fs.lstatSync(paths[0]).isDirectory()
-    const ignored = config.ignore_files
+    const ignored = config.ignore
 
     return new Promise((res, rej) => {
       if (deploy) {
-        readdir(abs(paths[0]), ignored, (err, files) => {
+        readdir(abs(paths[0]), ignored, (e, files) => {
+          if (e) {
+            log.error(e.message || e)
+            exit()
+          }
+
           queue = files.map(file => ({
             key: sanitize(file),
             file
@@ -124,8 +139,9 @@ module.exports = function init (config) {
                 }, [])
                 .filter(f => fs.lstatSync(f).isDirectory())
 
-              log.error([
-                  `plz only specify one theme directory\n`,
+              log.error(
+                [
+                  `plz only specify one theme directory\n`
                 ].concat(dirs.map(dir => (
                   `  ${log.colors.gray('>')} ${dir}/\n`
                 ))).join('')
@@ -149,7 +165,11 @@ module.exports = function init (config) {
           file
         })).filter(f => f.key)
 
-        if (!queue.length) res()
+        if (!queue.length) {
+          log.info('syncing', `nothing was synced`)
+          res()
+          return
+        }
 
         res(enqueue(
           upload,
