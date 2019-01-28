@@ -6,18 +6,22 @@ const yaml = require('yaml').default
 const write = require('log-update')
 const exit = require('exit')
 const wait = require('w2t')
-const { logger, exists, join } = require('@slater/util')
+const {
+  logger,
+  exists,
+  getShopifyConfig
+} = require('@slater/util')
 
 const pkg = require('./package.json')
+
+const log = logger('@slater/sync')
 
 const prog = require('commander')
   .option('-c, --config <path>', 'specify a path to a config.yml file')
   .option('-t, --theme <name>', 'specify a named theme from your config.yml file')
   .parse(process.argv)
 
-const theme = require('./index.js')(prog)
-
-const log = logger('@slater/sync')
+const theme = require('./index.js')(getShopifyConfig(prog))
 
 prog
   .command('sync [paths...]')

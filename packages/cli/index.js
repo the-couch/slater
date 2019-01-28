@@ -3,18 +3,20 @@
 
 const fs = require('fs-extra')
 const path = require('path')
-const c = require('ansi-colors')
 const exit = require('exit')
 const wait = require('w2t')
 const download = require('download')
 const extract = require('extract-zip')
 
 const sync = require('@slater/sync')
-const { logger, resolve, join } = require('@slater/util')
+const {
+  logger,
+  getShopifyConfig,
+  getSlaterConfig
+} = require('@slater/util')
 
 const pkg = require('./package.json')
 const createApp = require('./lib/app.js')
-const getConfig = require('./lib/getConfig.js')
 
 const prog = require('commander')
   .version(pkg.version)
@@ -34,9 +36,10 @@ prog
       slater: prog.slater || 'slater.config.js'
     }
 
-    const config = getConfig(options)
-    const theme = sync(options)
-    const app = createApp(config, theme)
+    const slaterconfig = getSlaterConfig(options)
+    const shopifyconfig = getShopifyConfig(options)
+
+    const app = createApp(slaterconfig, shopifyconfig)
 
     app.copy().then(app.watch)
   })
@@ -51,9 +54,10 @@ prog
       slater: prog.slater || 'slater.config.js'
     }
 
-    const config = getConfig(options)
-    const theme = sync(options)
-    const app = createApp(config, theme)
+    const slaterconfig = getSlaterConfig(options)
+    const shopifyconfig = getShopifyConfig(options)
+
+    const app = createApp(slaterconfig, shopifyconfig)
 
     app.copy().then(app.build)
   })
@@ -67,10 +71,12 @@ prog
       slater: prog.slater || 'slater.config.js'
     }
 
-    const config = getConfig(options)
-    const theme = sync(options)
+    const slaterconfig = getSlaterConfig(options)
+    const shopifyconfig = getShopifyConfig(options)
 
-    paths = paths && paths.length ? paths : config.out
+    const theme = sync(shopifyconfig)
+
+    paths = paths && paths.length ? paths : slaterconfig.out
 
     wait(1000, [
       theme
@@ -100,10 +106,12 @@ prog
       slater: prog.slater || 'slater.config.js'
     }
 
-    const config = getConfig(options)
-    const theme = sync(options)
+    const slaterconfig = getSlaterConfig(options)
+    const shopifyconfig = getShopifyConfig(options)
 
-    paths = paths && paths.length ? paths : config.out
+    const theme = sync(shopifyconfig)
+
+    paths = paths && paths.length ? paths : slaterconfig.out
 
     wait(1000, [
       theme
@@ -121,7 +129,7 @@ prog
 prog
   .command('init <path>')
   .action(p => {
-    const dir = resolve(p)
+    const dir = abs(p)
     const reldir = dir.replace(process.cwd(), '')
     const tempfile = path.join(dir, 'temp.zip')
     const release = `https://github.com/the-couch/slater/archive/v${pkg.version}.zip`

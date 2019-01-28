@@ -11,10 +11,12 @@
     "ansi-colors": "^3.0.4",
     "exit": "^0.1.2",
     "exit-hook": "^2.0.0",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^7.0.1",
     "log-update": "^2.3.0",
+    "merge-deep": "^3.0.2",
     "micromatch": "^3.1.10",
-    "neat-log": "^3.1.0"
+    "neat-log": "^3.1.0",
+    "yaml": "^1.3.1"
   },
-  "gitHead": "a859f7352bd46351e134735e19ea185ba8ffa595"
+  "gitHead": "0b3f1a09211d2085c00638a352340185a1ea0834"
 }

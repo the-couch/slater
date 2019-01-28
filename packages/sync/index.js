@@ -10,7 +10,7 @@ const yaml = require('yaml').default
 
 const {
   logger,
-  resolve,
+  abs,
   exists,
   sanitize
 } = require('@slater/util')
@@ -19,47 +19,7 @@ const pkg = require('./package.json')
 
 const log = logger('@slater/sync')
 
-module.exports = function init (options) {
-  let config = {
-    password: options.password,
-    theme_id: options.theme_id,
-    store: options.store,
-    ignore_files: [].concat(options.ignore_files || [], [
-      '**/scripts/**',
-      '**/scripts',
-      '**/styles/**',
-      '**/styles',
-      'DS_Store',
-      '*.yml',
-      '.DS_Store',
-      'node_modules'
-    ])
-  }
-
-  if (options.config) {
-    const conf = yaml.parse(exists(options.config || './config.yml', path => (
-      fs.readFileSync(path, 'utf8')
-    ), true))[options.theme || 'development']
-
-    /**
-     * exit if the theme info isn't configured
-     */
-    if (!conf) {
-      log.error(`whoops, we can't find your ${options.theme} theme!`)
-      exit()
-    }
-
-    config.password = conf.password
-    config.theme_id = conf.theme_id
-    config.store = conf.store
-    config.ignore_files = config.ignore_files.concat(conf.ignore_files || [])
-  }
-
-  if (!config.password || !config.theme_id || !config.store) {
-    log.error(`have a look at the configuration for your ${options.theme} theme`)
-    exit()
-  }
-
+module.exports = function init (config) {
   /**
    * filled on each sync request, emptied when successful
    */
@@ -141,14 +101,14 @@ module.exports = function init (options) {
   function sync (paths = [], cb) {
     paths = [].concat(paths)
     paths = paths.length ? paths : ['.']
-    paths = paths.map(p => path.resolve(process.cwd(), p))
+    paths = paths.map(p => abs(p))
 
     const deploy = fs.lstatSync(paths[0]).isDirectory()
     const ignored = config.ignore_files
 
     return new Promise((res, rej) => {
       if (deploy) {
-        readdir(resolve(paths[0]), ignored, (err, files) => {
+        readdir(abs(paths[0]), ignored, (err, files) => {
           queue = files.map(file => ({
             key: sanitize(file),
             file

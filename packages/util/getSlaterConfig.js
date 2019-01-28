@@ -1,4 +1,19 @@
-module.exports = `
+const path = require('path')
+const merge = require('merge-deep')
+const exit = require('exit')
+
+/**
+ * internal modules
+ */
+const {
+  logger,
+  abs,
+  exists
+} = require('@slater/util')
+
+const log = logger('@slater/util')
+
+const reloadBanner = `
   ;(function (global) {
     try {
       var ls = global.localStorage
@@ -36,3 +51,36 @@ module.exports = `
     } catch (e) {}
   })(this);
 `
+
+module.exports = function getConfig (options) {
+  const slaterconfig = exists(options.slater, p => require(p), true)
+
+  /**
+   * deep merge user config with defaults
+   */
+  const config = merge({
+    js: {
+      in: '/src/scripts/index.js',
+      outDir: '/build/assets',
+      map: options.watch ? 'inline-cheap-source-map' : 'cheap-module-source-map',
+      alias: {
+        '/': process.cwd()
+      },
+      banner: options.watch ? reloadBanner : false
+    },
+    in: '/src',
+    out:'/build',
+    watch: options.watch
+  }, slaterconfig)
+
+  /**
+   * overwrite paths to ensure they point to the cwd()
+   */
+  config.in = abs(config.in)
+  config.out = abs(config.out)
+  config.js.in = abs(config.js.in)
+  config.js.outDir = abs(config.js.outDir)
+  config.js.filename = config.js.filename || path.basename(config.js.in, '.js')
+
+  return config
+}
