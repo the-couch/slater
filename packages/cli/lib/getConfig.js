@@ -44,6 +44,8 @@ module.exports = function getConfig (options) {
   /**
    * overwrite paths to ensure they point to the cwd()
    */
+  config.in = join(config.in)
+  config.out = join(config.out)
   config.js.in = join(config.js.in)
   config.js.outDir = join(config.js.outDir)
   config.js.filename = config.js.filename || path.basename(config.js.in, '.js')

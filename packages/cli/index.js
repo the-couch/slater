@@ -27,12 +27,16 @@ const log = logger('@slater/cli')
 prog
   .command('watch')
   .action(() => {
-    const app = createApp({
+    const options = {
       watch: true,
       config: prog.config || 'config.yml',
       theme: prog.theme || 'development',
       slater: prog.slater || 'slater.config.js'
-    })
+    }
+
+    const config = getConfig(options)
+    const theme = sync(options)
+    const app = createApp(config, theme)
 
     app.copy().then(app.watch)
   })
@@ -40,12 +44,16 @@ prog
 prog
   .command('build')
   .action(() => {
-    const app = createApp({
-      slater: prog.slater,
+    const options = {
+      watch: true,
       config: prog.config || 'config.yml',
       theme: prog.theme || 'development',
       slater: prog.slater || 'slater.config.js'
-    })
+    }
+
+    const config = getConfig(options)
+    const theme = sync(options)
+    const app = createApp(config, theme)
 
     app.copy().then(app.build)
   })

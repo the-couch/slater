@@ -5,8 +5,6 @@ const exit = require('exit')
 const chokidar = require('chokidar')
 const merge = require('merge-deep')
 
-const anymatch = require('anymatch')
-
 /**
  * internal modules
  */
@@ -62,14 +60,11 @@ function formatFile (filepath, src, dest) {
   return {
     filename,
     src: filepath,
-    dest: path.join(process.cwd(), dest, filename)
+    dest: path.join(dest, filename)
   }
 }
 
-module.exports = function createApp (options) {
-  const config = getConfig(options)
-  const theme = sync(options)
-
+module.exports = function createApp (config, theme) {
   function syncFile ({ filename, src, dest }) {
     if (!filename) return Promise.resolve(true)
 
@@ -99,11 +94,10 @@ module.exports = function createApp (options) {
   return {
     copy () {
       return new Promise((res, rej) => {
-        fs.emptyDir(join(config.out))
+        fs.emptyDir(config.out)
           .then(() => {
-            fs.copy(join(config.in), join(config.out), {
+            fs.copy(config.in, config.out, {
               filter (src, dest) {
-                console.log(src, match(src, theme.config.ignore_files))
                 return !match(src, theme.config.ignore_files)
               }
             }).then(res).catch(rej)
@@ -114,7 +108,7 @@ module.exports = function createApp (options) {
       log.info('watching')
 
       const watchers = [
-        chokidar.watch(join(config.in), {
+        chokidar.watch(config.in, {
           persistent: true,
           ignoreInitial: true,
           ignore: theme.config.ignore_files
@@ -133,7 +127,7 @@ module.exports = function createApp (options) {
             deleteFile(formatFile(file, config.in, config.out))
           }),
 
-        chokidar.watch(path.join(process.cwd(), config.out), {
+        chokidar.watch(config.out, {
           ignore: /DS_Store/,
           persistent: true,
           ignoreInitial: true

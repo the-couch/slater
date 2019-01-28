@@ -45,7 +45,7 @@ module.exports = function init (options) {
      * exit if the theme info isn't configured
      */
     if (!conf) {
-      log.error(`hmmmm can't seem to find your ${options.theme} theme`)
+      log.error(`whoops, we can't find your ${options.theme} theme!`)
       exit()
     }
 
@@ -56,7 +56,7 @@ module.exports = function init (options) {
   }
 
   if (!config.password || !config.theme_id || !config.store) {
-    log.error(`looks like your config.yml file is incorrect`)
+    log.error(`have a look at the configuration for your ${options.theme} theme`)
     exit()
   }
 
@@ -141,12 +141,7 @@ module.exports = function init (options) {
   function sync (paths = [], cb) {
     paths = [].concat(paths)
     paths = paths.length ? paths : ['.']
-    paths = paths.map(p => (
-      path.join(
-        process.cwd(),
-        path.resolve(process.cwd(), p)
-      )
-    ))
+    paths = paths.map(p => path.resolve(process.cwd(), p))
 
     const deploy = fs.lstatSync(paths[0]).isDirectory()
     const ignored = config.ignore_files
