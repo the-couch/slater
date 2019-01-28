@@ -5,12 +5,8 @@ const exit = require('exit')
 /**
  * internal modules
  */
-const {
-  logger,
-  abs,
-  exists
-} = require('@slater/util')
-
+const abs = require('./abs.js')
+const logger = require('./logger.js')
 const log = logger('@slater/util')
 
 module.exports = function getShopifyConfig (options) {
@@ -31,9 +27,17 @@ module.exports = function getShopifyConfig (options) {
   }
 
   if (options.config) {
-    const conf = yaml.parse(exists(options.config || './config.yml', path => (
-      fs.readFileSync(path, 'utf8')
-    ), true))[options.theme || 'development']
+    const configpath = abs(options.config)
+    const exists = fs.existsSync(configpath)
+
+    if (!exists) {
+      log.error(`looks like your config.yml is missing`)
+      exit()
+    }
+
+    const conf = yaml.parse(
+      fs.readFileSync(configpath, 'utf8')
+    )[options.theme || 'development']
 
     /**
      * exit if the theme info isn't configured

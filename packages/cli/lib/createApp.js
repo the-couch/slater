@@ -1,6 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 const onExit = require('exit-hook')
+const exit = require('exit')
 const chokidar = require('chokidar')
 
 /**
@@ -73,8 +74,19 @@ module.exports = function createApp (config, shopifyconfig) {
               filter (src, dest) {
                 return !match(src, shopifyconfig.ignore_files)
               }
-            }).then(res).catch(rej)
-          }).catch(rej)
+            })
+              .then(res)
+              .catch(e => {
+                log.error(e.message || e)
+                rej(e)
+                exit()
+              })
+          })
+          .catch(e => {
+            log.error(e.message || e)
+            rej(e)
+            exit()
+          })
       })
     },
     build () {

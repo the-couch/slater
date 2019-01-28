@@ -8,7 +8,6 @@ const exit = require('exit')
 const wait = require('w2t')
 const {
   logger,
-  exists,
   getShopifyConfig
 } = require('@slater/util')
 

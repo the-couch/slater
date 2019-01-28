@@ -11,7 +11,6 @@ const yaml = require('yaml').default
 const {
   logger,
   abs,
-  exists,
   sanitize
 } = require('@slater/util')
 

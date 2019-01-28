@@ -16,7 +16,7 @@ const {
 } = require('@slater/util')
 
 const pkg = require('./package.json')
-const createApp = require('./lib/app.js')
+const createApp = require('./lib/createApp.js')
 
 const prog = require('commander')
   .version(pkg.version)

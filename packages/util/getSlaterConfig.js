@@ -1,3 +1,4 @@
+const fs = require('fs-extra')
 const path = require('path')
 const merge = require('merge-deep')
 const exit = require('exit')
@@ -5,12 +6,8 @@ const exit = require('exit')
 /**
  * internal modules
  */
-const {
-  logger,
-  abs,
-  exists
-} = require('@slater/util')
-
+const abs = require('./abs.js')
+const logger = require('./logger.js')
 const log = logger('@slater/util')
 
 const reloadBanner = `
@@ -53,7 +50,15 @@ const reloadBanner = `
 `
 
 module.exports = function getConfig (options) {
-  const slaterconfig = exists(options.slater, p => require(p), true)
+  const configpath = abs(options.slater)
+  const exists = fs.existsSync(configpath)
+
+  if (!exists) {
+    log.error(`looks like your ${options.slater} file is missing`)
+    exit()
+  }
+
+  const slaterconfig = require(configpath)
 
   /**
    * deep merge user config with defaults
