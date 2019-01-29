@@ -21,7 +21,7 @@ module.exports = function getConfig (options) {
   /**
    * deep merge user config with defaults
    */
-  const config = merge({
+  const config = Object.assign({
     in: '/src',
     out:'/build',
     assets: '/src/scripts/index.js'
@@ -56,19 +56,32 @@ module.exports = function getConfig (options) {
   /**
    * overwrite paths to ensure they point to the cwd()
    */
-  config.in = abs(config.in)
-  config.out = abs(config.out)
-  config.assets = abs(config.assets)
+  config.in = abs(config.in || '/src')
+  config.out = abs(config.out || '/build')
 
   // spaghetti options
-  config.spaghetti = {
-    in: config.assets,
+  let spaghetti = {
     outDir: path.join(config.out, 'assets'), // has to go here
-    filename: path.basename(config.assets, '.js'),
     alias: {
       '/': process.cwd()
     }
   }
+
+  if (typeof config.assets === 'string') {
+    config.assets = abs(config.assets)
+    spaghetti.in = config.assets
+  } else {
+    spaghetti = merge({}, spaghetti, config.assets)
+  }
+
+  /**
+   * overwrite and paths that might be user defined
+   */
+  spaghetti.in = abs(spaghetti.in)
+  spaghetti.outDir = abs(spaghetti.outDir)
+  spaghetti.filename = spaghetti.filename || path.basename(spaghetti.in, '.js')
+
+  config.spaghetti = spaghetti
 
   return config
 }
