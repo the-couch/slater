@@ -128,8 +128,8 @@ module.exports = function createApp (config) {
           .then(() => {
             log.info('synced', filename)
           })
-          .catch(e => {
-            log.error(`syncing ${filename} failed\n${e.message || e || ''}`)
+          .catch(({ errors, key }) => {
+            log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
           })
       }
       function unsyncFile ({ filename, src, dest }) {
@@ -140,8 +140,8 @@ module.exports = function createApp (config) {
           .then(() => {
             log.info('unsynced', filename)
           })
-          .catch(e => {
-            log.error(`unsyncing ${filename} failed\n${e.message || e || ''}`)
+          .catch(({ errors, key }) => {
+            log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
           })
       }
 
