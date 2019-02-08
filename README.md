@@ -191,6 +191,15 @@ your browser window:
 @slater/cli successfully connected
 ```
 
+## In the Wild
+
+List of sites out in the wild currently running some version of Slater. Feel free to PR to add sites if you end up using Slater.
+
+- [Wool & Oak](https://www.woolandoak.com)
+- [Blume](https://www.meetblume.com)
+- [Fur](https://www.furyou.com)
+- [Dims Home](https://www.dimshome.com)
+
 ## License
 MIT License
 © The Couch
