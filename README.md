@@ -13,6 +13,9 @@ A Shopify theme development toolkit.
 npm i -g @slater/cli
 ```
 
+## Guides
+[Adding Slater to any existing Theme](https://medium.com/the-couch/getting-started-with-slater-bundling-and-deployment-with-any-existing-shopify-theme-d994a17f590f)
+
 ## Getting Started
 The easist way to get started with `slater` is `slater init`. `init` outputs a
 default folder structure into the directory of your choice.
