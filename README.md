@@ -21,14 +21,14 @@ default folder structure into the directory of your choice.
 slater init <root>
 ```
 
-You'll need to define one or more themes in the provided `slater.config.js` file
-to deploy to, similar to a standard Shopify `config.yml` file.
-
 Don't forget to install the dependencies.
 
 ```bash
 npm install
 ```
+
+You'll need to define one or more themes in the provided `slater.config.js` file
+to deploy to, similar to a standard Shopify `config.yml` file.
 
 ```javascript
 module.exports = {
