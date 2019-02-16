@@ -1,6 +1,6 @@
 {
   "name": "@slater/theme",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "slater watch",
     "deploy:development": "slater build && slater sync --theme development",
