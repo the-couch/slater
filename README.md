@@ -24,6 +24,12 @@ slater init <root>
 You'll need to define one or more themes in the provided `slater.config.js` file
 to deploy to, similar to a standard Shopify `config.yml` file.
 
+Don't forget to install the dependencies.
+
+```bash
+npm install
+```
+
 ```javascript
 module.exports = {
   themes: {
