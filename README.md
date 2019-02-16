@@ -115,7 +115,7 @@ slater watch
 Compiles assets and copies all files from the `config.in` directory to the
 `config.out` directory.
 ```bash
-slater watch
+slater build
 ```
 
 #### `sync`
