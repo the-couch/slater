@@ -1,3 +1,6 @@
+/**
+ * default config
+ */
 module.exports = {
   in: '/src',
   out: '/build',

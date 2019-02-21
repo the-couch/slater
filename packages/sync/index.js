@@ -19,6 +19,21 @@ const pkg = require('./package.json')
 const log = logger('@slater/sync')
 
 module.exports = function init (config) {
+  if (!config.id) {
+    log.error(`theme id is missing from config`)
+    exit()
+  }
+
+  if (!config.password) {
+    log.error(`theme API password is missing from config`)
+    exit()
+  }
+
+  if (!config.store) {
+    log.error(`store url is missing from config`)
+    exit()
+  }
+
   /**
    * filled on each sync request, emptied when successful
    */

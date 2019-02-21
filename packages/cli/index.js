@@ -60,8 +60,6 @@ function formatFile (filepath, src, dest) {
 }
 
 module.exports = function createApp (config) {
-  const theme = sync(config.theme)
-
   return {
     copy () {
       return new Promise((res, rej) => {
@@ -104,6 +102,8 @@ module.exports = function createApp (config) {
     },
     watch () {
       log.info('watching')
+
+      const theme = sync(config.theme)
 
       /**
        * utilities for watch task only

@@ -27,15 +27,16 @@ module.exports = function getConfig (options) {
     assets: '/src/scripts/index.js'
   }, require(configpath))
 
-  if (!config.themes) {
-    log.error(`you haven't defined any themes!`)
-    exit()
-  }
-
   /*
    * add reference to theme we're dealing with
    */
-  config.theme = config.themes[options.theme || 'development']
+  config.theme = {}
+
+  try {
+    config.theme = config.themes[options.theme || 'development']
+  } catch (e) {
+    log.warn(`config`, `config for ${options.theme || 'development'} theme is missing`)
+  }
 
   if (!config.theme) {
     log.error(`your ${options.theme} theme appears to be missing`)

@@ -13,6 +13,13 @@ module.exports = function logger (scope) {
       ].filter(Boolean).join(' '))
       scoped = true
     },
+    warn (action, message, persist) {
+      (persist ? write : log)([
+        (!scoped || persist) && c.gray(scope),
+        c.yellow(action) + ' ' + (message || '')
+      ].filter(Boolean).join(' '))
+      scoped = true
+    },
     error (message) {
       write([
         !scoped && c.gray(scope),

@@ -3,8 +3,9 @@
   "version": "1.0.2",
   "scripts": {
     "start": "slater watch",
-    "deploy:development": "slater build && slater sync --theme development",
-    "deploy:production": "slater build && slater sync --env production"
+    "build": "slater build",
+    "deploy:development": "slater build && slater sync",
+    "deploy:production": "slater build && slater sync --theme production"
   },
   "author": "https://thecouch.nyc",
   "license": "MIT",
