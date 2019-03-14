@@ -99,6 +99,20 @@ And reference each using the `--theme` flag on the CLI (defaults to
 slater sync --theme production
 ```
 
+#### Using SCSS
+
+We used postCSS by default, but you can push a custom config object to enable SCSS compiling, modify your `slater.config.js` as follows:
+
+```javascript
+module.exports = {
+  // ...
+  assets: {
+    in: '/src/scripts/index.js',
+    sass: true
+  }
+}
+```
+
 #### Assets
 `slater` uses [spaghetti](https://github.com/the-couch/spaghetti) internally to
 compile JS and CSS, using most goodies you'll want from the Babel and PostCSS
