@@ -1,0 +1,40 @@
+/**
+ * /snippets/component-image.liquid
+ */
+.image {
+  background: var(--green);
+  text-align: center;
+  overflow: hidden;
+  transition: opacity 200ms var(--cubic);
+
+  &::before {
+    content: attr(data-alt);
+    display: block;
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    margin: auto;
+    font-size: 0.88rem;
+    font-family: 'NB International Mono', monospace;
+    opacity: 0.6;
+    max-width: 200px;
+    max-height: 50px;
+    overflow: hidden;
+    z-index: 0;
+    transition: opacity 200ms var(--cubic);
+  }
+
+  img {
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 200ms var(--cubic);
+  }
+
+  &.is-loaded {
+    &::before {
+      opacity: 0;
+    }
+    img {
+      opacity: 1;
+    }
+  }
+}

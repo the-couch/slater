@@ -5,31 +5,23 @@
       - itemprop [url, logo] etc
 {% endcomment %}
 
-<header role='banner' id='header' data-component='header'>
+<header role='banner' id='header' data-component='header' class='slater-header fix left top x bg-white'>
   <div class='outer'>
     <div class='container--l mxa'>
-      <div class='f jcb aic'>
-        <h1 itemscope itemtype='http://schema.org/Organization'>
-          <a href='/'><em>Slater</em></a>
+      <div class='slater-header__inner f jcb aic'>
+        <h1 itemscope itemtype='http://schema.org/Organization' class='p'>
+          <a href='/'>slater</a>
         </h1>
 
         <div class='f jcb fw'>
-          <a class='mx05' href='/search'>Search</a>
-
-          {% if shop.customer_accounts_enabled %}
-            <a class='mx05' href='/account'>Account</a>
-          {% endif %}
-
-          <a href='/cart' class='ml1 js-cart-drawer-toggle'>
+          <a href='/cart' class='block js-cart-drawer-toggle'>
             Cart
-            <span class='js-cart-count'>{{ cart.item_count }}</span>
+            (<span class='js-cart-count'>{{ cart.item_count }}</span>)
           </a>
         </div>
-      </div>
-
-      <div class='pt1'>
-        {% include 'navigation' %}
       </div>
     </div>
   </div>
 </header>
+
+<div class='slater-header__spacer'></div>

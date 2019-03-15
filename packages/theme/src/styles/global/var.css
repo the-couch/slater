@@ -6,11 +6,6 @@
 @custom-media --1400 (min-width: 87.5em);
 
 :root {
-  --200: 200ms;
-  --400: 400ms;
-  --600: 600ms;
-  --800: 800ms;
-  --1000: 1000ms;
   --ease: ease-in-out;
   --cubic: cubic-bezier(.12,.67,.53,1);
 }

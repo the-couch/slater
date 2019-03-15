@@ -1,5 +1,3 @@
-import { defaultTo } from './utils.js'
-
 /**
  * Currency Helpers
  * -----------------------------------------------------------------------------
@@ -29,9 +27,9 @@ export function formatMoney (cents, format = '${{amount}}') {
   const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/
 
   function formatWithDelimiters (number, precision, thousands, decimal) {
-    precision = defaultTo(precision, 2)
-    thousands = defaultTo(thousands, ',')
-    decimal = defaultTo(decimal, '.')
+    precision = precision || 2
+    thousands = thousands || ','
+    decimal = decimal || '.'
 
     if (isNaN(number) || number == null) {
       return 0

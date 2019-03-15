@@ -1,6 +1,6 @@
 import fetch from 'unfetch'
 import mitt from 'mitt'
-import app from '../app.js'
+import app from '@/app.js'
 
 const ev = mitt()
 

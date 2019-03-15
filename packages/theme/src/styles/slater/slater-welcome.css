@@ -1,0 +1,10 @@
+.slater-welcome {
+  min-height: calc(100vh - 160px);
+}
+.slater-welcome__inner {
+  padding: 32px 0;
+  max-width: 450px;
+}
+.slater-welcome__title {
+  line-height: 1.5;
+}

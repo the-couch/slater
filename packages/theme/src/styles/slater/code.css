@@ -1,0 +1,6 @@
+pre {
+  background: var(--green);
+  color: var(--black);
+  font-size: 1rem;
+  padding: 1em 1.5em;
+}

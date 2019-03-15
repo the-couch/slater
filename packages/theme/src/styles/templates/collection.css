@@ -1,0 +1,24 @@
+.collection {
+  padding: 32px 0;
+}
+.collection__grid {
+}
+.collection__grid__row {
+  margin-left: -1em;
+  margin-right: -1em;
+}
+.collection__grid__item {
+  padding: 0 1em;
+  margin-bottom: 32px;
+  width: 100%;
+
+  @media (--400) {
+    width: 50%;
+  }
+  @media (--800) {
+    width: 33.333333%;
+  }
+  @media (--1200) {
+    width: 25%;
+  }
+}

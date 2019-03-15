@@ -1,0 +1,23 @@
+{%- capture cx -%}
+  button rel {{ className }}
+  {% if outline == true %}button--outline{% endif %}
+  {% if small == true %}button--small{% endif %}
+{%- endcapture -%}
+
+<{{ tag | default: 'a' }}
+  {% if href %}href='{{ href }}'{% endif %}
+  {% if name %}name='{{ name }}'{% endif %}
+  {% if disabled %}disabled{% endif %}
+  type='{{ type | default: 'button' }}'
+  class='{{ cx | strip }}'
+  role='button'>
+  {{ cta | strip }}
+</{{ tag | default: 'a' }}>
+
+{% assign cta = blank %}
+{% assign className = blank %}
+{% assign href = blank %}
+{% assign name = blank %}
+{% assign disabled = false %}
+{% assign type = 'button' %}
+{% assign cx = '' %}

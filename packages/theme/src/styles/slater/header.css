@@ -1,0 +1,20 @@
+.slater-header {
+}
+.slater-header__inner {
+  border-bottom: 2px solid var(--black);
+  height: 65px;
+  @media (--600) {
+    height: 80px;
+  }
+}
+
+/**
+ * a placeholder element to "naturally" fill the space
+ * beneath a fixed nav
+ */
+.slater-header__spacer {
+  height: 65px;
+  @media (--600) {
+    height: 80px;
+  }
+}

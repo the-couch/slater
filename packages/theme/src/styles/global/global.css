@@ -1,0 +1,6 @@
+#root {
+  transition: opacity 200ms var(--cubic);
+}
+.is-transitioning #root {
+  opacity: 0;
+}

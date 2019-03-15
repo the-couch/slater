@@ -7,15 +7,34 @@
 @import 'svbstrate/src/lib/forms.css';
 @import 'svbstrate/src/lib/z-index.css';
 
-@import 'lib/var.css';
-@import 'lib/colors.css';
-@import 'lib/typography.css';
+@import 'global/var.css';
+@import 'global/colors.css';
+@import 'global/typography.css';
+@import 'global/global.css';
+@import 'global/lists.css';
+@import 'global/forms.css';
+@import 'global/containers.css';
 
 @import 'components/buttons.css';
-@import 'components/forms.css';
-@import 'components/lists.css';
-@import 'components/containers.css';
-@import 'components/site-overlay.css';
+@import 'components/image.css';
 @import 'components/counter.css';
 
-@import 'slater/components/cart-drawer';
+@import 'templates/collection.css';
+
+/**
+ * slater demo
+ *
+ * you might want to delete these
+ *
+ * or not, up to you
+ */
+@import 'slater/code.css';
+@import 'slater/typography.css';
+@import 'slater/header.css';
+@import 'slater/footer.css';
+@import 'slater/slater-welcome.css';
+@import 'slater/cart-drawer.css';
+
+#preview-bar-iframe {
+  display: none !important;
+}

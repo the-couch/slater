@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,400i,700,700i');
 
 body {
-  color: #000;
+  color: var(--black);
   font-family: 'Roboto Mono', -apple-system, system-ui, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   font-size: 100%;
   line-height: 1.7;
@@ -18,108 +18,70 @@ h1, h2, h3, h4, h5, h6 {
 }
 .h0 {
   font-size: calc((54 /16) * 1rem);
-  @media (--m) {
+  @media (--600) {
     font-size: calc((96 /16) * 1rem);
   }
 }
 .s1,
 h1, .h1 {
-  font-size: calc((34 /16) * 1rem);
-  @media (--s) {
-    font-size: calc((54 /16) * 1rem);
-  }
-  @media (--m) {
-    font-size: calc((110 /16) * 1rem);
+  font-size: calc((32 /16) * 1rem);
+  @media (--600) {
+    font-size: calc((50 /16) * 1rem);
   }
 }
-
-h1.hero-h1 {
-  @media (--s) {
-    font-size: calc((70/16) * 1rem);
-  }
-  @media (--m) {
-    font-size: calc((90/16) * 1rem);
-  }
-  @media (--l) {
-    font-size: calc((110/16) * 1rem);
-  }
-}
-
 h1, .h1 {
   line-height: 1.1;
 }
 .s2,
 h2, .h2 {
-  font-size: calc((32 /16) * 1rem);
-  @media (--m) {
-    font-size: calc((54 /16) * 1rem);
-  }
-  @media (--l) {
-    font-size: calc((72 /16) * 1rem);
+  font-size: calc((24 /16) * 1rem);
+  @media (--600) {
+    font-size: calc((32 /16) * 1rem);
   }
 }
 h2, .h2 {
-  line-height: 1.3;
+  line-height: 1.2;
 }
 .s3,
 h3, .h3 {
-  font-size: calc((28 /16) * 1rem);
-  @media (--m) {
-    font-size: calc((32 /16) * 1rem);
-  }
-  @media (--l) {
-    font-size: calc((60 /16) * 1rem);
+  font-size: calc((22 /16) * 1rem);
+  @media (--600) {
+    font-size: calc((24 /16) * 1rem);
   }
 }
 h3, .h3 {
   line-height: 1.3;
-  @media (--l) {
-    line-height: 1.4;
-  }
 }
 .s4,
 h4, .h4 {
-  font-size: calc((26 /16) * 1rem);
-  @media (--m) {
-    font-size: calc((35 /16) * 1rem);
-  }
-  @media (--l) {
-    font-size: calc((48 /16) * 1rem);
+  font-size: calc((18 /16) * 1rem);
+  @media (--600) {
+    font-size: calc((22 /16) * 1rem);
   }
 }
 h4, .h4 {
-  line-height: 1.5;
-  @media (--l) {
-    line-height: 1.1;
-  }
+  line-height: 1.4;
 }
 .s5,
 h5, .h5 {
-  font-size: calc((15 /16) * 1rem);
-  letter-spacing: 0.05rem;
+  font-size: calc((16 /16) * 1rem);
 }
 h5, .h5 {
   line-height: 1.5;
 }
 .s6,
 h6, .h6 {
-  font-size: calc((26 /16) * 1rem);
+  font-size: calc((14 /16) * 1rem);
 }
 h6, .h6 {
-  line-height: 1.2;
+  line-height: 1.5;
 }
 .s0,
 p, .p {
-  font-size: calc((16/16) * 1rem);
-  @media (--m) {
-    font-size: calc((18/16) * 1rem);
-  }
+  font-size: 1rem;
 }
 p, .p {
-  line-height: 1.7;
-}
-p {
-  margin: 1em 0;
+  line-height: 1.6;
 }
 small, .small {
   font-size: calc((12 /16) * 1rem);
@@ -144,6 +106,7 @@ blockquote {
 }
 a {
   color: inherit;
+  text-decoration: none;
 }
 hr {
   display: block;

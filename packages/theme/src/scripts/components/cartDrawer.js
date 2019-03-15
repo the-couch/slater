@@ -1,8 +1,8 @@
-import { fetchCart } from '../slater/cart'
-import { getSizedImageUrl, imageSize } from '../slater/images'
-import { formatMoney } from '../slater/currency'
 import { component } from 'picoapp'
-import app from '../app.js'
+import { fetchCart } from '@/lib/cart.js'
+import { getSizedImageUrl, imageSize } from '@/lib/images.js'
+import { formatMoney } from '@/lib/currency.js'
+import app from '@/app.js'
 
 const X = `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentcolor" stroke-width="3" style="display:inline-block;vertical-align:middle;overflow:visible;"><path d="M1.0606601717798212 1.0606601717798212 L14.939339828220179 14.939339828220179"></path><path d="M14.939339828220179 1.0606601717798212 L1.0606601717798212 14.939339828220179"></path></svg>`
 

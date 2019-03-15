@@ -1,42 +1,43 @@
-import operator from 'operator'
-import app from './app.js'
-import { fetchCart } from './slater/cart'
-import './slater/util/select.js'
-
 import '../styles/main.css'
+import '@/lib/select.js'
+import lazim from 'lazim'
+import app from '@/app.js'
+import router from '@/router.js'
+import { fetchCart } from '@/lib/cart.js'
 
-function transition () {
-  return new Promise(res => {
-    document.body.classList.add('is-transitioning')
-    setTimeout(res, 600)
-    setTimeout(() => document.body.classList.remove('is-transitioning'), 800)
-  })
-}
+/**
+ * store binding fn
+ */
+const images = lazim()
 
-const router = operator('#root', [
-  transition
-])
+/**
+ * bind on page load
+ */
+images()
 
-router.on('before', state => {
-  return Promise.all([
-    app.unmount()
-  ])
+router.on('after', () => {
+  app.unmount()
+  app.mount()
+
+  /**
+   * bind new images
+   */
+  images()
 })
 
-router.on('after', ({ title, pathname }) => {
-  document.title = title
-  window.history.pushState({}, '', pathname)
-})
+/**
+ * load any data that your site needs on fist load
+ */
+Promise.all([
+  fetchCart()
+]).then(([ cart ]) => {
+  /**
+   * add the cart data to the picoapp instance
+   */
+  app.hydrate({ cart })
 
-document.addEventListener('DOMContentLoaded', e => {
-  Promise.all([
-    fetchCart()
-  ]).then(([ cart ]) => {
-    app.hydrate({ cart: cart })
-    app.mount()
-  })
+  /**
+   * mount any components defined on the page
+   */
+  app.mount()
 })
-
-console.groupCollapsed('Slater credits 🍝  taco')
-console.log('Development by The Couch https://thecouch.nyc')
-console.groupEnd()

@@ -1,9 +1,8 @@
-import { addVariant } from '../slater/cart.js'
 import { component } from 'picoapp'
-import wait from 'w2t'
-import radio from '../slater/radio.js'
-import options from '../slater/options.js'
-import getProductJson from '../slater/getProductJson.js'
+import { addVariant } from '@/lib/cart.js'
+import radio from '@/lib/radio.js'
+import options from '@/lib/options.js'
+import getProductJson from '@/lib/getProductJson.js'
 
 export default component(({ node }) => {
   const opts = options(node)

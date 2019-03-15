@@ -29,11 +29,11 @@
     <script>
       window.theme = {
         strings: {
-          addToCart: {{ 'products.product.add_to_cart' | t | json }},
-          soldOut: {{ 'products.product.sold_out' | t | json }},
-          unavailable: {{ 'products.product.unavailable' | t | json }}
+          addToCart: "{{ 'products.product.add_to_cart' | t }}",
+          soldOut: "{{ 'products.product.sold_out' | t }}",
+          unavailable: "{{ 'products.product.unavailable' | t }}"
         },
-        moneyFormat: {{ shop.money_format | json }}
+        moneyFormat: "{{ shop.money_format }}"
       }
     </script>
 
@@ -43,16 +43,6 @@
   </head>
 
   <body>
-    <!-- Remove for production -->
-    <header class='py025 bct'>
-      <div class='outer'>
-        <div class='container--l mxa'>
-          <h5><a class='cw' href='https://github.com/the-couch/slater-theme'>Download this starter theme</a></h5>
-        </div>
-      </div>
-    </header>
-    <!-- End Remove for production -->
-
     {% section 'header' %}
 
     <main role='main' id='root'>

@@ -1,0 +1,22 @@
+<div class='image x rel f aic jcc rel {{ className }}' data-src='{{ src }}' data-alt='{{ alt }}'>
+  <img class='block z1 {%if fill%}x y abs fill{%else%}x rel{%endif%}' alt='{{ alt }}' />
+</div>
+
+{% comment %}
+<pre>
+  DEBUG image.liquid
+
+  src:{{ src }}
+  file:{{ file }}
+  asset:{{ asset }}
+  size:{{ size }}
+  product:{{ product }}
+  _src:{{ _src }}
+</pre>
+{% endcomment %}
+
+{% comment %}reset{% endcomment %}
+{% assign src = blank %}
+{% assign alt = blank %}
+{% assign className = blank %}
+{% assign fill = false %}

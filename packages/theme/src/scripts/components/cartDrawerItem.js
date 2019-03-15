@@ -1,5 +1,5 @@
-import { removeAddon, updateAddon } from '../slater/cart.js'
 import { component } from 'picoapp'
+import { removeAddon, updateAddon } from '@/lib/cart.js'
 
 export default component(({ node: item, state }) => {
   const button = item.getElementsByTagName('button')[0]

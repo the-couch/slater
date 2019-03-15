@@ -1,17 +1,17 @@
-<footer class='outer'>
-  <div class='container--l mxa'>
-    {% assign footer_menu = section.settings.footer_menu %}
+<footer class='slater-footer'>
+  <div class='outer'>
+    <div class='container--l mxa'>
+      <div class='slater-footer__inner f aic'>
+        {% assign footer_menu = section.settings.footer_menu %}
 
-    {% if linklists[footer_menu].links.size > 0 %}
-      <ul>
-        {% for link in linklists[footer_menu].links %}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
-    <div>
-      <small>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}</small>
+        {% if linklists[footer_menu].links.size > 0 %}
+          <ul class='f aic'>
+            {% for link in linklists[footer_menu].links %}
+              <li class='mr1 pr1'><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
     </div>
   </div>
 </footer>
