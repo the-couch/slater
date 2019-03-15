@@ -1,6 +1,14 @@
 # slater
 A Shopify theme development toolkit.
 
+<br />
+
+> This project is an active work in progress. The CLI is stable, but the theme
+> needs some TLC. Want to help? We'd love to have you. Ideas, feedback,
+> critiques 👉 shoot us an Issue.
+
+<br />
+
 ## Features
 - bare-bones base theme
 - JS and CSS compilation via [spaghetti](https://github.com/the-couch/spaghetti)
@@ -100,8 +108,8 @@ slater sync --theme production
 ```
 
 #### Using SCSS
-
-We used postCSS by default, but you can push a custom config object to enable SCSS compiling, modify your `slater.config.js` as follows:
+We used PostCSS by default, but you can push a custom config object to enable
+SCSS compiling. Modify your `slater.config.js` as follows:
 
 ```javascript
 module.exports = {
@@ -222,6 +230,25 @@ List of sites out in the wild currently running some version of Slater. Feel fre
 - [Blume](https://www.meetblume.com)
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
+
+## Contributors
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/estrattonbailey.png?s=150">
+        <br />
+        <a href="https://github.com/estrattonbailey">Eric Bailey</a>
+      </td>
+      <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/iamkevingreen.png?s=150">
+        <br />
+        <a href="https://github.com/iamkevingreen">Kevin Green</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## License
 MIT License
