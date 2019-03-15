@@ -207,7 +207,7 @@ app.copy()
 `slater` uses an local SSL certification to correspond with Shopify's HTTPS
 hosted themes. To take advantage of live-reloading, you need to create a
 security exception for the `slater` cert (this is safe). To do this, load
-[https://localhost:3000](https://localhost:3000) in your browser, and following
+[https://localhost:3000](https://localhost:3000) in your browser, and follow
 the instructions for adding an exception. If it works, you should see this in
 your browser window:
 ```
