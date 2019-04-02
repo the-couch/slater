@@ -17,9 +17,9 @@
     "lazim": "^1.0.0",
     "mitt": "^1.1.3",
     "operator": "^1.2.4",
-    "picoapp": "^2.0.2",
+    "picoapp": "^3.0.0-0",
     "sliced": "^1.0.1",
-    "svbstrate": "^4.1.0",
+    "svbstrate": "^4.1.1",
     "unfetch": "^4.1.0"
   },
   "gitHead": "2a30334f153d0ea7cff932df8a31f05c3a38adcf"

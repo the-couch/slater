@@ -32,7 +32,8 @@
 @import 'slater/typography.css';
 @import 'slater/header.css';
 @import 'slater/footer.css';
-@import 'slater/slater-welcome.css';
+@import 'slater/welcome.css';
+@import 'slater/product.css';
 @import 'slater/cart-drawer.css';
 
 #preview-bar-iframe {

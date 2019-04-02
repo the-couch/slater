@@ -77,7 +77,7 @@
   </section>
 
   {% if paginate.pages > 1 %}
-    {% include 'pagination' %}
+    {{ paginate | default_pagination }}
   {% endif %}
 </div>
 

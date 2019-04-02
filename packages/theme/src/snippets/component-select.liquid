@@ -1,0 +1,35 @@
+{%- capture uid -%}
+  select{{name | default: label}}
+{%- endcapture -%}
+
+{%- capture cx -%}
+  select-wrapper x rel {{ className }}
+{%- endcapture -%}
+
+<div class='{{ cx }}' style='{{ style }}'>
+  <label for='{{ id | default: uid | strip }}' class='hide'>{{ label }}</label>
+
+  <div class='rel'>
+    <select
+      id='{{ id | default: uid | strip }}'
+      name='{{ name | default: label | strip }}'
+      value='{{ value }}'
+      {{ attributes }}
+      {% if required %}required{% endif %}>
+      {% if placeholder %}<option disabled selected>{{ placeholder }}</option>{% endif %}
+      {{ options }}
+    </select>
+
+    <img class='abs top right bottom mya mr1' src='https://icon.now.sh/chevron/down' alt='chevron icon' />
+  </div>
+</div>
+
+{% assign id = blank %}
+{% assign style = blank %}
+{% assign label = blank %}
+{% assign name = blank %}
+{% assign required = blank %}
+{% assign value = blank %}
+{% assign placeholder = blank %}
+{% assign options = blank %}
+{% assign attributes = blank %}
