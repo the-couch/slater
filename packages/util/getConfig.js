@@ -60,6 +60,7 @@ module.exports = function getConfig (options) {
   config.in = abs(config.in || '/src')
   config.out = abs(config.out || '/build')
 
+            // sourceMapFilename: `{{  '[file].map' | asset_url }}`
   // spaghetti options
   let spaghetti = {
     outDir: path.join(config.out, 'assets'), // has to go here
@@ -79,7 +80,10 @@ module.exports = function getConfig (options) {
    * overwrite and paths that might be user defined
    */
   spaghetti.in = abs(spaghetti.in)
-  spaghetti.outDir = abs(spaghetti.outDir)
+  spaghetti.output = {
+    path: abs(spaghetti.outDir)
+  }
+
   spaghetti.filename = spaghetti.filename || path.basename(spaghetti.in, '.js')
 
   config.spaghetti = spaghetti

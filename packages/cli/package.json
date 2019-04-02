@@ -18,7 +18,7 @@
     "webpack": "^4.26.0"
   },
   "dependencies": {
-    "@friendsof/spaghetti": "^1.2.1",
+    "@friendsof/spaghetti": "^1.4.0",
     "@slater/sync": "^1.0.4",
     "@slater/util": "^1.0.4",
     "ansi-colors": "^3.0.4",

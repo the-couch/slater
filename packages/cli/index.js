@@ -3,6 +3,7 @@ const path = require('path')
 const onExit = require('exit-hook')
 const exit = require('exit')
 const chokidar = require('chokidar')
+const webpack = require('webpack')
 
 /**
  * internal modules
@@ -27,10 +28,11 @@ const log = logger('@slater/cli')
  * kinda gross, but looks nice in the console
  */
 function logAssets ({ duration, assets }, persist) {
-  log.info('built', ` in ${duration}ms\n${assets.reduce((_, asset, i) => {
-    const size = asset.size.gzip ? asset.size.gzip + 'kb gzipped' : asset.size.raw + 'kb'
-    return _ += `  > ${log.colors.gray(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
-  }, '')}`, persist)
+  log.info('built', ` in ${duration}ms`)
+  // log.info('built', ` in ${duration}ms\n${assets.reduce((_, asset, i) => {
+  //   const size = asset.size.gzip ? asset.size.gzip + 'kb gzipped' : asset.size.raw + 'kb'
+  //   return _ += `  > ${log.colors.gray(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
+  // }, '')}`, persist)
 }
 
 /**
@@ -176,6 +178,7 @@ module.exports = function createApp (config) {
       ]
 
       spaghetti(Object.assign(config.spaghetti, {
+        watch: true,
         map: 'inline-cheap-source-map',
         banner: reloadBanner
       }))
