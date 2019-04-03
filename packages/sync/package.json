@@ -1,6 +1,6 @@
 {
   "name": "@slater/sync",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "shopify theme deployment utility",
   "main": "index.js",
   "bin": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "dependencies": {
-    "@slater/util": "^1.0.4",
+    "@slater/util": "^1.1.0",
     "ansi-colors": "^3.0.4",
     "exit": "^0.1.2",
     "fs-extra": "^7.0.1",
