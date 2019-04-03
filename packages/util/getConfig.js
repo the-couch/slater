@@ -43,6 +43,8 @@ module.exports = function getConfig (options) {
     exit()
   }
 
+  config.theme.name = options.theme || 'development'
+
   config.theme.ignore = [].concat(config.theme.ignore || [], [
     '**/scripts/**',
     '**/scripts',

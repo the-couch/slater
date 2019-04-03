@@ -4,6 +4,7 @@ const onExit = require('exit-hook')
 const exit = require('exit')
 const chokidar = require('chokidar')
 const webpack = require('webpack')
+const link = require('terminal-link')
 
 /**
  * internal modules
@@ -106,6 +107,14 @@ module.exports = function createApp (config) {
       log.info('watching')
 
       const theme = sync(config.theme)
+
+      log.info(
+        'syncing',
+        link(
+          `${config.theme.name} theme`,
+          `https://${config.theme.store}/?fts=0&preview_theme_id=${config.theme.id}`
+        )
+      )
 
       /**
        * utilities for watch task only
