@@ -1,5 +1,4 @@
 import { component } from 'picoapp'
-import { fetchCart } from '@/lib/cart.js'
 import { getSizedImageUrl, imageSize } from '@/lib/images.js'
 import { formatMoney } from '@/lib/currency.js'
 import app from '@/app.js'
@@ -56,7 +55,7 @@ function renderItems (items) {
   )
 }
 
-export default component(({ node, state, actions }) => {
+export default component((node, ctx) => {
   const overlay = node.querySelector('.js-overlay')
   const closeButton = node.querySelector('.js-close')
   const subtotal = node.querySelector('.js-subtotal')
@@ -86,71 +85,12 @@ export default component(({ node, state, actions }) => {
     }, 400)
   }
 
-  render(state.cart)
+  render(ctx.state.cart)
 
   overlay.addEventListener('click', close)
   closeButton.addEventListener('click', close)
 
-  return {
-    onStateChange ({cart, cartOpen}) {
-      console.log('state is changing?', cartOpen)
-      cartOpen ? open(cart) : null
-    }
-  }
+  ctx.on('cart:toggle', ({ cart, cartOpen }) => {
+    cartOpen && open(cart)
+  })
 })
-
-//
-// export default outer => {
-//   let isOpen = false
-//
-//   const overlay = outer.querySelector('.js-overlay')
-//   const closeButton = outer.querySelector('.js-close')
-//   const subtotal = outer.querySelector('.js-subtotal')
-//   const itemsRoot = outer.querySelector('.js-items')
-//   const loading = itemsRoot.innerHTML
-//
-//   function render () {
-//     fetchCart().then(cart => {
-//       itemsRoot.innerHTML = renderItems(cart.items)
-//       subtotal.innerHTML = formatMoney(cart.total_price)
-//       setTimeout(() => {
-//         scripts.mount()
-//       }, 0)
-//     })
-//   }
-//
-//   function open () {
-//     outer.classList.add('is-active')
-//
-//     itemsRoot.innerHTML = loading
-//
-//     setTimeout(() => {
-//       outer.classList.add('is-visible')
-//       isOpen = true
-//       setTimeout(render, 10)
-//     }, 50)
-//   }
-//
-//   function close () {
-//     outer.classList.remove('is-visible')
-//
-//     setTimeout(() => {
-//       outer.classList.remove('is-active')
-//       isOpen = false
-//     }, 400)
-//   }
-//
-//   on('updated', ({ cart }) => {
-//     isOpen ? render() : open()
-//   })
-//   on('addon', ({ cart }) => {
-//     isOpen ? render() : open()
-//   })
-//   overlay.addEventListener('click', close)
-//   closeButton.addEventListener('click', close)
-//
-//   return {
-//     open,
-//     close: close
-//   }
-// }

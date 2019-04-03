@@ -8,8 +8,11 @@ export default component((node, ctx) => {
     cartToggles[i].addEventListener('click', e => {
       e.preventDefault()
 
-      ctx.emit('cart:toggle', state => ({ cartOpen: !state.cartOpen }))
-      // ctx.emit('cartOpen', state => !state.cartOpen)
+      ctx.emit('cart:toggle', state => {
+        return {
+          cartOpen: !state.cartOpen
+        }
+      })
     })
   }
 

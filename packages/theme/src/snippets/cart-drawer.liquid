@@ -1,18 +1,18 @@
 <section class='cart-drawer-outer fix fill x z10' data-component='cartDrawer'>
   <div class='cart-drawer-overlay abs fill js-overlay'></div>
-  <div class='cart-drawer y x abs top right bottom bcw js-drawer f'>
-    <header class='outer y abs top left f aic'>
+  <div class='cart-drawer y x f abs top right bottom bg-green js-drawer'>
+    <header class='outer y abs top left x'>
       <div class='f aic rel y'>
         <button class='abs left button--reset js-close'>
           &lt;
         </button>
 
-        <h3 class='mv0 serif ac fill-y'>Your Cart</h3>
+        <h3 class='mv0 serif ac x'>Your Cart</h3>
       </div>
     </header>
 
-    <div class='cart-drawer__items outer outer--v x y'>
-      <div class='js-items rel fill-x fill-y'>
+    <div class='cart-drawer__items outer x y'>
+      <div class='js-items rel x y'>
         <div class='abs fill'>
           <svg viewBox="0 0 100 86" class='loader abs fill mxa cg'>
             <use xlink:href="#logo"></use>
@@ -21,15 +21,15 @@
       </div>
     </div>
 
-    <footer class='outer outer--v abs bottom left right'>
+    <footer class='outer abs bottom left right'>
       <h5 class='mv1 sans track caps ac medium'>Subtotal: <span class='js-subtotal'>$-.--</span></h5>
 
       {%
-      include 'button' with
+      include 'component-button' with
       tag: 'a',
       cta: 'Checkout',
       href: '/checkout',
-      className: 'fill-y no-ajax'
+      className: 'y no-ajax'
       %}
     </footer>
   </div>
