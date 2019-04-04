@@ -1,6 +1,6 @@
 {
   "name": "@slater/theme",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scripts": {
     "start": "slater watch",
     "build": "slater build",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "devDependencies": {
-    "@slater/cli": "^1.1.1"
+    "@slater/cli": "^1.1.2"
   },
   "dependencies": {
     "lazim": "^1.0.0",
