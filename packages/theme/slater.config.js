@@ -14,11 +14,11 @@ module.exports = {
   },
   themes: {
     development: {
-      id: '18170904623',
-      password: 'b8e05961e855c04c3806662da2549a30',
-      store: 'slater-demo.myshopify.com',
+      id: '',
+      password: '',
+      store: '',
       ignore: [
-        'settings_data.json' // ignore this to avoid overriding theme settings on sync
+        'settings_data.json' // leave this here to avoid overriding theme settings on sync
       ]
     }
   }
