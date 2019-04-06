@@ -2,8 +2,8 @@
   "name": "@slater/theme",
   "version": "1.1.2",
   "scripts": {
-    "start": "slater watch",
-    "build": "slater build",
+    "start": "slater watch --config test.config.js",
+    "build": "slater build --config test.config.js",
     "deploy:development": "slater build && slater sync",
     "deploy:production": "slater build && slater sync --theme production"
   },
@@ -14,6 +14,7 @@
     "@slater/cli": "^1.1.2"
   },
   "dependencies": {
+    "choozy": "0.0.3",
     "lazim": "^1.0.0",
     "mitt": "^1.1.3",
     "operator": "^1.2.4",
@@ -22,5 +23,5 @@
     "svbstrate": "^4.1.1",
     "unfetch": "^4.1.0"
   },
-  "gitHead": "bc7711913782a12d01480942f8a6dc017a755dda"
+  "gitHead": "61181907cee0e6d14c870f7930294df020009f76"
 }
