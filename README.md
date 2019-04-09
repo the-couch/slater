@@ -1,6 +1,8 @@
 # slater
 A Shopify theme development toolkit.
 
+![slater](https://media.giphy.com/media/129ndN2vLNGvbW/giphy.gif)
+
 <br />
 
 > This project is an active work in progress. The CLI is stable, but the theme
