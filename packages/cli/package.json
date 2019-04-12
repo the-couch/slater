@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@friendsof/spaghetti": "^1.4.0",
+    "@slater/compiler": "^1.1.3",
     "@slater/sync": "^1.1.3",
     "@slater/util": "^1.1.3",
     "ansi-colors": "^3.0.4",
