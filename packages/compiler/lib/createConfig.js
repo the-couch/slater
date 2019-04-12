@@ -1,17 +1,8 @@
 const path = require('path')
 const clone = require('clone')
 const webpack = require('webpack')
-const match = require('matched')
-const clientReloader = require('./clientReloader.js')
 
 const cwd = process.cwd()
-
-function hasGlob (input) {
-  return [].concat(input).reduce((_, str) => {
-    if (/\*+/g.test(str)) return true
-    return _
-  }, false)
-}
 
 const baseConfig = {
   output: {
@@ -57,7 +48,7 @@ module.exports = function createConfig (conf, watch) {
   const wc = clone(baseConfig)
 
   wc.entry = {
-    [path.basename(conf.in, '.js')]: path.resolve(cwd, conf.in)
+    [path.basename(conf.in, '.js')]: path.join(cwd, path.resolve(cwd, conf.in))
   }
 
   /**
@@ -67,7 +58,7 @@ module.exports = function createConfig (conf, watch) {
   wc.output = Object.assign(
     wc.output,
     typeof conf.out === 'object' ? conf.out : {
-      path: path.resolve(cwd, conf.out)
+      path: path.join(cwd, path.resolve(cwd, conf.out))
     }
   )
 
@@ -84,10 +75,22 @@ module.exports = function createConfig (conf, watch) {
   ].filter(Boolean))
 
   ;[].concat(conf.presets || [])
-    .map(p => p({
-      config: wc,
-      watch
-    }))
+    .map(p => {
+      const props = {
+        config: wc,
+        watch
+      }
+
+      try {
+        typeof p === 'function' ? p(props) : (
+          Array.isArray(p) ? (
+            require(`../presets/${p[0]}.js`)(p[1])(props)
+          ) : (
+            require(`../presets/${p}.js`)()(props)
+          )
+        )
+      } catch (e) {}
+    })
 
   return wc
 }

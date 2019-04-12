@@ -9,6 +9,7 @@ const link = require('terminal-link')
 /**
  * internal modules
  */
+const compiler = require('@slater/compiler')
 const spaghetti = require('@friendsof/spaghetti')
 const sync = require('@slater/sync')
 const {
@@ -91,16 +92,18 @@ module.exports = function createApp (config) {
       log.info('building', '', true)
 
       return new Promise((res, rej) => {
-        spaghetti(config.spaghetti)
-          .build()
-          .end(stats => {
-            logAssets(stats, true)
-            res()
-          })
-          .error(e => {
-            log.error(e.message || e || '')
-            rej(e)
-          })
+        const bundle = compiler(config.assets)
+
+        bundle.on('error', e => {
+          log.error(e.message)
+          rej(e)
+        })
+        bundle.on('stats', stats => {
+          console.log(stats)
+          res(stats)
+        })
+
+        bundle.build()
       })
     },
     watch () {
@@ -186,22 +189,21 @@ module.exports = function createApp (config) {
           .on('unlink', file => unsyncFile(formatFile(file, config.in, config.out)))
       ]
 
-      spaghetti(Object.assign(config.spaghetti, {
-        watch: true,
-        map: 'inline-cheap-source-map',
-        banner: reloadBanner
-      }))
-        .watch()
-        .end(stats => {
-          logAssets(stats, false)
-        })
-        .error(e => {
-          log.error(e.message || e || '')
-        })
+      const bundle = compiler(config.assets)
+
+      bundle.on('error', e => {
+        log.error(e.message)
+      })
+      bundle.on('stats', stats => {
+        console.log(stats)
+      })
+
+      bundle.watch()
 
       onExit(() => {
         watchers.map(w => w.close())
         closeServer()
+        bundle.close()
       })
     }
   }

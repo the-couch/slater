@@ -8,7 +8,7 @@ const exit = require('exit')
  */
 const abs = require('./abs.js')
 const logger = require('./logger.js')
-const log = logger('@slater/util')
+const log = logger('slater')
 
 module.exports = function getConfig (options) {
   const configpath = abs(options.config || 'slater.config.js')
@@ -21,11 +21,22 @@ module.exports = function getConfig (options) {
   /**
    * deep merge user config with defaults
    */
-  const config = Object.assign({
+  const config = merge({
     in: '/src',
     out:'/build',
-    assets: '/src/scripts/index.js'
+    assets: {
+      in: '/src/scripts/index.js',
+      out: '/build/assets',
+      presets: [
+        'maps'
+      ]
+    }
   }, require(configpath))
+
+  config.assets.alias = {
+    '@': abs(path.dirname(config.assets.in)),
+    ...(config.assets.alias || {})
+  }
 
   /*
    * add reference to theme we're dealing with
@@ -61,34 +72,6 @@ module.exports = function getConfig (options) {
    */
   config.in = abs(config.in || '/src')
   config.out = abs(config.out || '/build')
-
-            // sourceMapFilename: `{{  '[file].map' | asset_url }}`
-  // spaghetti options
-  let spaghetti = {
-    outDir: path.join(config.out, 'assets'), // has to go here
-    alias: {
-      '/': process.cwd()
-    }
-  }
-
-  if (typeof config.assets === 'string') {
-    config.assets = abs(config.assets)
-    spaghetti.in = config.assets
-  } else {
-    spaghetti = merge({}, spaghetti, config.assets)
-  }
-
-  /**
-   * overwrite and paths that might be user defined
-   */
-  spaghetti.in = abs(spaghetti.in)
-  spaghetti.output = {
-    path: abs(spaghetti.outDir)
-  }
-
-  spaghetti.filename = spaghetti.filename || path.basename(spaghetti.in, '.js')
-
-  config.spaghetti = spaghetti
 
   return config
 }

@@ -1,5 +1,5 @@
+const fs = require('fs')
 const path = require('path')
-const exit = require('exit')
 const webpack = require('webpack')
 
 const createConfig = require('./lib/createConfig.js')
@@ -67,15 +67,18 @@ module.exports = conf => {
       let port = 4000
 
       conf.banner = conf.banner || ''
-      conf.banner += clientReloader(conf.__port)
+      conf.banner += clientReloader(port)
 
       const config = createConfig(conf, true)
 
-      server = require('http').createServer((req, res) => {
+      server = require('https').createServer({
+        key: fs.readFileSync(path.join(__dirname, '/lib/cert/server.key')),
+        cert: fs.readFileSync(path.join(__dirname, '/lib/cert/server.crt'))
+      }, (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' })
         res.write('slater running')
         res.end()
-      }).listen(conf.__port)
+      }).listen(port)
 
       socket = require('socket.io')(server, {
         serveClient: false
