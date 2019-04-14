@@ -3,8 +3,9 @@ A Shopify theme development toolkit.
 
 <br />
 
-> This project is an active work in progress. The CLI is stable, but the theme
-> needs some TLC. Want to help? We'd love to have you. Ideas, feedback,
+> This project is an active work in progress! The CLI for compiling/syncing themes is stable, but **the theme itself is not**. However, if you're comfortable hacking around our code or writing your own AJAX scripts, variant selection handlers, etc, dive right in!
+
+> Want to help? We'd love to have you. Ideas, feedback,
 > critiques 👉 shoot us an Issue.
 
 <br />
