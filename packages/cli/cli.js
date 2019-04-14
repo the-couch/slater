@@ -7,6 +7,7 @@ const exit = require('exit')
 const wait = require('w2t')
 const download = require('download')
 const extract = require('extract-zip')
+const link = require('terminal-link')
 
 const sync = require('@slater/sync')
 const {
@@ -23,7 +24,7 @@ const prog = require('commander')
   .option('-c, --config <path>', 'specify the path to your config file')
   .option('-t, --theme <name>', 'specify a named theme from your config file')
 
-const log = logger('@slater/cli')
+const log = logger('slater')
 
 prog
   .command('watch')
@@ -60,7 +61,14 @@ prog
         })
     ])
       .then(() => {
-        log.info('sync', 'complete', true)
+        log.info(
+          'synced',
+          link(
+            `${config.theme.name} theme`,
+            `https://${config.theme.store}/?fts=0&preview_theme_id=${config.theme.id}`
+          ),
+          true
+        )
         exit()
       })
       .catch(({ errors, key }) => {
@@ -88,15 +96,22 @@ prog
         .unsync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          log.info('syncing', percent + '%', true)
+          log.info('unsyncing', percent + '%', true)
         })
     ])
       .then(() => {
-        log.info('syncing', 'complete', true)
+        log.info(
+          'unsynced',
+          link(
+            `${config.theme.name} theme`,
+            `https://${config.theme.store}/?fts=0&preview_theme_id=${config.theme.id}`
+          ),
+          true
+        )
         exit()
       })
       .catch(({ errors, key }) => {
-        log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
+        log.error(`unsyncing ${key} failed - ${errors.asset.join('  ')}`)
         exit()
       })
   })
@@ -128,7 +143,7 @@ prog
         .then(() => fs.remove(tempfile))
         .then(() => fs.remove(extracted))
         .then(() => {
-          log.info('initiaizing', 'complete', true)
+          log.info('initializing', 'complete', true)
           exit()
         })
         .catch(e => {
@@ -143,5 +158,7 @@ if (!process.argv.slice(2).length) {
     exit()
   })
 } else {
+  console.clear()
+  log.info(`slater`, `v${pkg.version}\n`)
   prog.parse(process.argv)
 }

@@ -18,11 +18,10 @@ const {
   sanitize
 } = require('@slater/util')
 
-const log = logger('@slater/cli')
+const log = logger('slater')
 
 function logStats (stats, opts = {}) {
-  log.info('built', ` in ${stats.duration}s`)
-  log.info('built', ` in ${stats.duration}ms\n${stats.assets.reduce((_, asset, i) => {
+  log.info('built', `in ${stats.duration}s\n${stats.assets.reduce((_, asset, i) => {
     const size = opts.watch ? '' : asset.size + 'kb'
     return _ += `  > ${log.colors.gray(asset.name)} ${size}${i !== stats.assets.length - 1 ? `\n` : ''}`
   }, '')}`)
@@ -80,7 +79,14 @@ module.exports = function createApp (config) {
       })
     },
     build () {
-      log.info('building', '', true)
+      log.info(
+        'build',
+        link(
+          `${config.theme.name} theme`,
+          `https://${config.theme.store}/?fts=0&preview_theme_id=${config.theme.id}`
+        )
+      )
+      console.log('')
 
       return new Promise((res, rej) => {
         const bundle = compiler(config.assets)
@@ -98,19 +104,18 @@ module.exports = function createApp (config) {
       })
     },
     watch () {
-      log.info('watching')
-
-      let socket
-
-      const theme = sync(config.theme)
-
       log.info(
-        'syncing',
+        'watch',
         link(
           `${config.theme.name} theme`,
           `https://${config.theme.store}/?fts=0&preview_theme_id=${config.theme.id}`
         )
       )
+      console.log('')
+
+      let socket
+
+      const theme = sync(config.theme)
 
       /**
        * utilities for watch task only
