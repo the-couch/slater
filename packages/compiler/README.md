@@ -1,5 +1,5 @@
-# @rola/compiler
-A compiler utility for [rola](https://github.com/estrattonbailey/rola).
+# @slater/compiler
+A compiler utility for [slater](https://github.com/the-couch/slater).
 
 ## License
-MIT License © [Eric Bailey](https://estrattonbailey.com)
+MIT License © [The Couch](https://thecouch.nyc)

@@ -1,47 +1,62 @@
-# slater
-A Shopify theme development toolkit.
+# Slater
+A Shopify development toolkit.
 
 <br />
 
-> This project is an active work in progress! The CLI for compiling/syncing themes is stable, but **the theme itself is not**. However, if you're comfortable hacking around our code or writing your own AJAX scripts, variant selection handlers, etc, dive right in!
-
+> This project is an active work in progress! The CLI is stable, but **the theme
+> itself is not**.
+>
 > Want to help? We'd love to have you. Ideas, feedback,
 > critiques 👉 shoot us an Issue.
 
 <br />
 
-## Features
-- bare-bones base theme
-- JS and CSS compilation via [spaghetti](https://github.com/the-couch/spaghetti)
-- live reloading
-- easy config
-- simple CLI
-
-## Install
+### Install
 ```bash
-npm i -g @slater/cli
+npm i slater -g
 ```
 
-## Guides
-[Adding Slater to any existing Theme](https://medium.com/the-couch/getting-started-with-slater-bundling-and-deployment-with-any-existing-shopify-theme-d994a17f590f)
+### Features
+- asset pipeline via Webpack, Babel, PostCSS/SASS
+- built-in deployment tool
+- live reloading
+- simple config
+- easy integration into existing themes
+- starter theme (WIP)
 
-## Getting Started
-The easist way to get started with `slater` is `slater init`. `init` outputs a
+### Table of Contents
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+  - [Themes](#themes)
+  - [Directory Structure](#directory-structure)
+  - [Assets](#assets)
+  - [Alias & Env](#alias--env)
+- [Command Line](#command-line)
+  - [watch](#watch)
+  - [build](#build)
+  - [sync](#sync)
+  - [Options](#options)
+- [Deployment](#deployment)
+- [Live Reloading](#live-reloading--https)
+- [Guides and Tutorials](#guides)
+- [Slater in the Wild](#in-the-wild)
+- [Contributors](#contributors)
+- [License](#license)
+
+## Quick Start
+The easist way to get started with Slater is `slater init`. `init` outputs a
 default folder structure into the directory of your choice.
-
 ```bash
 slater init <root>
 ```
 
 Don't forget to install the dependencies.
-
 ```bash
 npm install
 ```
 
 You'll need to define one or more themes in the provided `slater.config.js` file
 to deploy to, similar to a standard Shopify `config.yml` file.
-
 ```javascript
 module.exports = {
   themes: {
@@ -49,93 +64,153 @@ module.exports = {
       id: '12345...',
       password: 'abcde...',
       store: 'store-name.myshopify.com',
-      ignore: []
+      ignore: [
+        'settings_data.json'
+      ]
     }
   }
 }
 ```
 
 Then, from the project root:
-
 ```bash
 slater watch
 ```
 
-And that's it! `slater` will watch your local theme for changes and sync them to
+And that's it! Slater will watch your local theme for changes and sync them to
 your remote site when they update 🎉.
 
-## Configuration
-By default, `slater` looks for a `slater.config.js` file in the project root.
-Defaults below:
-```javascript
-module.exports = {
-  in: '/src',
-  out: '/build',
-  assets: '/src/scripts/index.js',
-  themes: {}
-}
-```
+## Usage
+Slater makes some assumptions out of the box, but it can be easily customized to
+fit most existing projects.
+
 #### Themes
-Themes are configured similarly to a standard Shopify `config.yml` file.
-```javascript
-module.exports = {
-  themes: {
-    development: {
-      id: '12345...',
-      password: 'abcde...',
-      store: 'store-name.myshopify.com',
-      ignore: [ 'snippets/test.liquid' ]
-    }
-  }
-}
-```
-You can define as many as you like:
+Slater projects require themes to be defined in the
+`slater.config.js`.
+
+By default it looks for a theme called `development`:
 
 ```javascript
 module.exports = {
   themes: {
-    sandbox: { ... },
-    development: { ... },
-    production: { ... }
+    development: { ... }
   }
 }
 ```
 
-And reference each using the `--theme` flag on the CLI (defaults to
-`development`).
+You can call it whatever you want though.
 
+```javascript
+module.exports = {
+  themes: {
+    dev: { ... }
+  }
+}
+```
+
+Just be sure to specify your theme name on the CLI:
 ```bash
-slater sync --theme production
+slater build --theme dev
 ```
 
-#### Using SCSS
-We used PostCSS by default, but you can push a custom config object to enable
-SCSS compiling. Modify your `slater.config.js` as follows:
+You can also define as many themes as you like. Use these for a production
+theme, staging, or whatever you like.
 
 ```javascript
 module.exports = {
-  // ...
-  assets: {
-    in: '/src/scripts/index.js',
-    sass: true
+  themes: {
+    dev: { ... },
+    test: { ... },
+    live: { ... }
   }
+}
+```
+
+#### Directory Structure
+All theme files should be located within a single source directory. By default,
+Slater looks for a `/src` directory in your project root.
+
+To adjust this, specify an `in` prop on your config:
+```javascript
+module.exports = {
+  in: '/source'
+}
+```
+
+Files within this directory will be built and copied to `/build` in
+your project root, and then synced to your remote theme.
+
+To adjust your local build directory, specify an `out` prop on your config:
+```javascript
+module.exports = {
+  out: '/dist'
 }
 ```
 
 #### Assets
-`slater` uses [spaghetti](https://github.com/the-couch/spaghetti) internally to
-compile JS and CSS, using most goodies you'll want from the Babel and PostCSS
-ecosystems.
+Slater uses Webpack internally to compile a single JavaScript entry point. By
+default, it looks for `/src/scripts/index.js`.
 
-To compile CSS, just import your root stylesheet into your JavaScript index file
-*a la*:
+You can specify a different entry point using the `assets` object on your
+config:
 ```javascript
-import '../main.css'
-
-/* your code here */
+module.exports = {
+  assets: {
+    in: '/source/scripts/index.js'
+  }
+}
 ```
 
-## Commands
+Slater uses PostCSS by default. It's configured to allow SASS-like nesting, in
+addition to all modern CSS goodies.
+
+To compile your styles, simply import your root stylesheet into your JavaScript
+entrypoint:
+```javascript
+import '../styles.css'
+
+// rest of your project scripts
+```
+
+You can also use SASS. Simple specify the `sass` preset in your assets config:
+```javascript
+module.exports = {
+  assets: {
+    presets: [
+      'sass'
+    ]
+  }
+}
+```
+
+#### Alias & Env
+To make your JavaScript a little easier to work with, Slater supports alias
+definitions and environment variables.
+
+```javascript
+module.exports = {
+  alias: {
+    components: './src/scripts/components'
+  },
+  env: {
+    API_KEY: 'abcde...'
+  }
+}
+```
+
+Which you can then use in your JavaScript like this:
+```javascript
+import api from 'components/api.js'
+
+const fetcher = api({
+  key: API_KEY
+})
+```
+
+> Keep in mind, these environment variables are **public**, so don't use them
+> for any secret keys, passwords, or any value that you need to keep private!
+
+## Command Line
 
 #### `watch`
 Watches for file changes and syncs updates to your specified theme.
@@ -159,7 +234,7 @@ slater sync build/snippets # directory
 slater sync # defaults to config.out
 ```
 
-### Options
+#### Options
 Any of the core commands can be combined with the following options:
 
 - `--config <path>` - specify the path to your config file
@@ -171,47 +246,6 @@ To deploy a theme, combine the above commands as needed:
 slater build && slater sync --theme production
 ```
 
-## API
-`slater` can also be used directly in node. The configuration is the same, but
-instead of `themes`, simply define a single `theme`:
-```javascript
-// see options above
-const config = {
-  in: '/theme',
-  out: '/dist',
-  assets: '/theme/js/index.js',
-  theme: {
-    id: '',
-    password: '',
-    store: '',
-    ignore: []
-  }
-}
-
-const app = require('@slater/cli')(config)
-```
-
-### Methods
-All methods return a `Promise`.
-
-#### `build`
-Compile assets.
-```javascript
-app.build().then(() => console.log('all done!'))
-```
-
-#### `watch`
-Watches for file changes and syncs updates to your specified theme.
-```javascript
-app.watch()
-```
-
-#### `copy`
-Copies all files from the `config.in` directory to the `config.out` directory.
-```javascript
-app.copy()
-```
-
 ## Live-reloading & HTTPS
 `slater` uses an local SSL certification to correspond with Shopify's HTTPS
 hosted themes. To take advantage of live-reloading, you need to create a
@@ -220,20 +254,21 @@ security exception for the `slater` cert (this is safe). To do this, load
 the instructions for adding an exception. If it works, you should see this in
 your browser window:
 ```
-@slater/cli successfully connected
+slater running
 ```
 
+### Guides
+[Adding Slater to any existing Theme](https://medium.com/the-couch/getting-started-with-slater-bundling-and-deployment-with-any-existing-shopify-theme-d994a17f590f)
+
 ## In the Wild
-
-List of sites out in the wild currently running some version of Slater. Feel free to PR to add sites if you end up using Slater.
-
+The following sites were built using some version of Slater. Send us a PR to add
+to this list!
 - [Wool & Oak](https://www.woolandoak.com)
 - [Blume](https://www.meetblume.com)
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
 
 ## Contributors
-
 <table>
   <tbody>
     <tr>
@@ -252,5 +287,4 @@ List of sites out in the wild currently running some version of Slater. Feel fre
 </table>
 
 ## License
-MIT License
-© The Couch
+MIT License © [The Couch](https://thecouch.nyc)

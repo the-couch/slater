@@ -3,7 +3,7 @@ Sync files between your local machine and a remote Shopify theme.
 
 ## Install
 ```bash
-npm i -g @slater/sync
+npm i @slater/sync -g
 ```
 
 ## Getting Started
@@ -86,5 +86,4 @@ theme.unsync([ 'templates/index.liquid' ])
 ```
 
 ## License
-MIT License
-© The Couch
+MIT License © [The Couch](https://thecouch.nyc)

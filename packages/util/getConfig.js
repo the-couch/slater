@@ -25,8 +25,7 @@ module.exports = function getConfig (options) {
     in: '/src',
     out:'/build',
     assets: {
-      in: '/src/scripts/index.js',
-      out: '/build/assets'
+      in: '/src/scripts/index.js'
     }
   }, require(configpath))
 
@@ -40,6 +39,14 @@ module.exports = function getConfig (options) {
       'maps',
       'postcss'
     ]
+  }
+
+  if (config.assets.presets && !config.assets.presets.includes('maps')) {
+    config.assets.presets.push('maps')
+  }
+
+  if (!config.assets.out) {
+    config.assets.out = path.join(config.out, 'assets')
   }
 
   /*
