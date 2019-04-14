@@ -207,6 +207,9 @@ const fetcher = api({
 })
 ```
 
+For convenience, there's also a built-in alias `@` that points to the directory
+containing your JavaScript entry point.
+
 > Keep in mind, these environment variables are **public**, so don't use them
 > for any secret keys, passwords, or any value that you need to keep private!
 
