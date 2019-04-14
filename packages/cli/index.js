@@ -26,15 +26,12 @@ const reloadBanner = require('./lib/reloadBanner.js')
 
 const log = logger('@slater/cli')
 
-/**
- * kinda gross, but looks nice in the console
- */
-function logAssets ({ duration, assets }, persist) {
-  log.info('built', ` in ${duration}ms`)
-  // log.info('built', ` in ${duration}ms\n${assets.reduce((_, asset, i) => {
-  //   const size = asset.size.gzip ? asset.size.gzip + 'kb gzipped' : asset.size.raw + 'kb'
-  //   return _ += `  > ${log.colors.gray(asset.filename)} ${size}${i !== assets.length - 1 ? `\n` : ''}`
-  // }, '')}`, persist)
+function logStats (stats, opts = {}) {
+  log.info('built', ` in ${stats.duration}s`)
+  log.info('built', ` in ${stats.duration}ms\n${stats.assets.reduce((_, asset, i) => {
+    const size = opts.watch ? '' : asset.size + 'kb'
+    return _ += `  > ${log.colors.gray(asset.name)} ${size}${i !== stats.assets.length - 1 ? `\n` : ''}`
+  }, '')}`)
 }
 
 /**
@@ -99,7 +96,7 @@ module.exports = function createApp (config) {
           rej(e)
         })
         bundle.on('stats', stats => {
-          console.log(stats)
+          logStats(stats)
           res(stats)
         })
 
@@ -195,7 +192,7 @@ module.exports = function createApp (config) {
         log.error(e.message)
       })
       bundle.on('stats', stats => {
-        console.log(stats)
+        logStats(stats, { watch: true })
       })
 
       bundle.watch()
