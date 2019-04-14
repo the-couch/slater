@@ -11,7 +11,7 @@ const baseConfig = {
   mode: 'development',
   target: 'web',
   performance: { hints: false },
-  devtool: 'cheap-module-source-map',
+  devtool: 'inline-cheap-module-source-map',
   module: {
     rules: [
       {

@@ -18,12 +18,6 @@ const {
   sanitize
 } = require('@slater/util')
 
-/**
- * library specific deps
- */
-const { socket, closeServer } = require('./lib/socket.js')
-const reloadBanner = require('./lib/reloadBanner.js')
-
 const log = logger('@slater/cli')
 
 function logStats (stats, opts = {}) {
@@ -92,7 +86,7 @@ module.exports = function createApp (config) {
         const bundle = compiler(config.assets)
 
         bundle.on('error', e => {
-          log.error(e.message)
+          log.error(e)
           rej(e)
         })
         bundle.on('stats', stats => {
@@ -105,6 +99,8 @@ module.exports = function createApp (config) {
     },
     watch () {
       log.info('watching')
+
+      let socket
 
       const theme = sync(config.theme)
 
@@ -189,17 +185,16 @@ module.exports = function createApp (config) {
       const bundle = compiler(config.assets)
 
       bundle.on('error', e => {
-        log.error(e.message)
+        log.error(e)
       })
       bundle.on('stats', stats => {
         logStats(stats, { watch: true })
       })
 
-      bundle.watch()
+      socket = bundle.watch()
 
       onExit(() => {
         watchers.map(w => w.close())
-        closeServer()
         bundle.close()
       })
     }

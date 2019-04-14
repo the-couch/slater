@@ -96,6 +96,12 @@ module.exports = conf => {
 
         socket.emit('refresh')
       })
+
+      return {
+        emit (ev) {
+          socket.emit(ev)
+        }
+      }
     }
   }
 }
