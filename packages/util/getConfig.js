@@ -26,16 +26,20 @@ module.exports = function getConfig (options) {
     out:'/build',
     assets: {
       in: '/src/scripts/index.js',
-      out: '/build/assets',
-      presets: [
-        'maps'
-      ]
+      out: '/build/assets'
     }
   }, require(configpath))
 
   config.assets.alias = {
     '@': abs(path.dirname(config.assets.in)),
     ...(config.assets.alias || {})
+  }
+
+  if (!config.assets.presets) {
+    config.assets.presets = [
+      'maps',
+      'postcss'
+    ]
   }
 
   /*
