@@ -16,7 +16,7 @@ const {
 
 const pkg = require('./package.json')
 
-const log = logger('@slater/sync')
+const log = logger('slater')
 
 module.exports = function init (config) {
   if (!config.id) {

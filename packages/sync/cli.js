@@ -13,7 +13,7 @@ const {
 
 const pkg = require('./package.json')
 
-const log = logger('@slater/sync')
+const log = logger('slater')
 
 const prog = require('commander')
   .version(pkg.version)
