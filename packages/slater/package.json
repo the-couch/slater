@@ -1,7 +1,7 @@
 {
   "name": "slater",
   "version": "1.2.1",
-  "description": "shopify theme management toolkit",
+  "description": "A Shopify development toolkit",
   "main": "index.js",
   "bin": {
     "slater": "./cli.js"
@@ -44,5 +44,5 @@
     "w2t": "0.0.2",
     "yaml": "^1.0.0-rc.7"
   },
-  "gitHead": "ec422c88460ed4d15d9029ac0b01c57a6ca94a2d"
+  "gitHead": "65c4ae0b5f0bd4ab699d8897271697a8d2990261"
 }
