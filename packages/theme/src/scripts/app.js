@@ -6,6 +6,7 @@ import header from '@/components/header.js'
 import productSelection from '@/components/product-selection.js'
 import cartDrawer from '@/components/cartDrawer.js'
 import cartDrawerItem from '@/components/cartDrawerItem.js'
+import productForm from '@/components/productForm.js'
 
 const state = {
   cartOpen: false
@@ -17,7 +18,8 @@ const components = {
   header,
   productSelection,
   cartDrawer,
-  cartDrawerItem
+  cartDrawerItem,
+  productForm
 }
 
 export default picoapp(components, state)

@@ -1,6 +1,6 @@
 {
   "name": "slater",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A Shopify development toolkit",
   "main": "index.js",
   "bin": {
@@ -14,14 +14,11 @@
   "author": "https://thecouch.nyc",
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
-  "peerDependencies": {
-    "webpack": "^4.26.0"
-  },
   "dependencies": {
     "@friendsof/spaghetti": "^1.4.0",
-    "@slater/compiler": "^1.2.2",
-    "@slater/sync": "^1.2.2",
-    "@slater/util": "^1.2.2",
+    "@slater/compiler": "^1.2.3",
+    "@slater/sync": "^1.2.3",
+    "@slater/util": "^1.2.3",
     "ansi-colors": "^3.0.4",
     "anymatch": "^2.0.0",
     "chokidar": "^2.0.4",
@@ -42,7 +39,8 @@
     "terminal-link": "^1.2.0",
     "unzipper": "^0.9.10",
     "w2t": "0.0.2",
+    "webpack": "^4.26.0",
     "yaml": "^1.0.0-rc.7"
   },
-  "gitHead": "65c4ae0b5f0bd4ab699d8897271697a8d2990261"
+  "gitHead": "588d2746c81a9d54141d801f42b1e1cab86df65a"
 }
