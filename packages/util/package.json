@@ -1,6 +1,6 @@
 {
   "name": "@slater/util",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "shopify theme management toolkit",
   "main": "index.js",
   "scripts": {},
