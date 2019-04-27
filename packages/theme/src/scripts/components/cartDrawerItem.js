@@ -1,12 +1,12 @@
 import { component } from 'picoapp'
 import { removeAddon, updateAddon } from '@/lib/cart.js'
 
-export default component(({ node: item, state }) => {
-  const button = item.getElementsByTagName('button')[0]
-  const decrease = item.querySelector('.js-remove-single')
-  const increase = item.querySelector('.js-add-single')
-  const currentQty = item.querySelector('.js-single-quantity').innerHTML
-  const id = item.getAttribute('data-id')
+export default component((node, ctx) => {
+  const button = node.querySelector('.js-remove-item')
+  const decrease = node.querySelector('.js-remove-single')
+  const increase = node.querySelector('.js-add-single')
+  const currentQty = node.querySelector('.js-single-quantity').innerHTML
+  const id = node.getAttribute('data-id')
 
   button.addEventListener('click', e => {
     e.preventDefault()

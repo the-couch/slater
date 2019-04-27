@@ -8,7 +8,8 @@
     "deploy:production": "slater build && slater sync --theme production",
     "test:start": "slater watch --config test.config.js",
     "test:build": "slater build --config test.config.js",
-    "test:deploy": "slater build --config test.config.js && slater sync --config test.config.js"
+    "test:deploy": "slater build --config test.config.js && slater sync --config test.config.js",
+    "test:deploy:production": "slater build --config test.config.js && slater sync --theme production --config test.config.js"
   },
   "author": "https://thecouch.nyc",
   "license": "MIT",

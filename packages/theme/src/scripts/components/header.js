@@ -16,7 +16,7 @@ export default component((node, ctx) => {
     })
   }
 
-  ctx.on('cart:update', state => {
+  ctx.on('cart:updated', state => {
     cartCount.innerHTML = state.cart.item_count
   })
 

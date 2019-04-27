@@ -1,89 +1,63 @@
-{%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+<div data-component='product'>
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org/",
-    "@type": "Product",
-    "name": "{{ product.title }}",
-    "url": "{{ shop.url }}{{ current_variant.url }}",
-    "image": "{{ featured_image | img_url: '600x600' }}",
-    "description": "{{ product.description | strip_html | escape }}",
-    "brand": {
-      "@type": "Thing",
-      "name": "{{ product.vendor }}"
-    },
-    "offers": [
-      {
-        "@type": "Offer",
-        "availability": "http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
-        "price": "{{ current_variant.price | money_without_currency }}",
-        "priceCurrency": "{{ shop.currency }}",
-        "url": "{{ shop.url }}{{ current_variant.url }}",
-        "itemOffered": {
-          "@type": "Product",
-          "name": "{{ product.title }}",
-          "sku": "{{ current_variant.sku }}"
-        }
-      }
-    ]
-  }
-</script>
+  {% include 'product-head' %}
+  <section data-component='productSelection'>
+    <div class='outer'>
+      <div class='container--l mxa'>
+        <div class='slater-product f aic jcb fw'>
 
-<section data-component='productSelection'>
-  <div class='outer'>
-    <div class='container--l mxa'>
-      <div class='slater-product f aic jcb fw'>
-
-        <div class='slater-product__images'>
-          <ul>
-            {% for image in product.images %}
-              <li>
-                <img class='block x' src='{{ image.src | img_url: '600x' }}' alt='{{ image.alt | escape }}' />
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class='slater-product__info'>
-          <h1>{{ product.title }}</h1>
-
-          <div class="rte">
-            {{ product.description }}
+          <div class='slater-product__images'>
+            <ul>
+              {% for image in product.images %}
+                <li>
+                  <img class='block x' src='{{ image.src | img_url: '600x' }}' alt='{{ image.alt | escape }}' />
+                </li>
+              {% endfor %}
+            </ul>
           </div>
 
-          <form action='/cart/add' method='post' enctype='multipart/form-data'>
-            {% include 'product-options' %}
+          <div class='slater-product__info'>
+            <h1>{{ product.title }}</h1>
 
-            <div class='py1'>
-              {% include 'component-counter' %}
+            <div class="rte">
+              {{ product.description }}
             </div>
 
-            <div class='f aic py1'>
-              <span data-price>{{ current_variant.price | money }}</span>
-              <s data-compare-price style='display: none'>{{ current_variant.compare_at_price | money }}</s>
-            </div>
+            <form action='/cart/add' method='post' enctype='multipart/form-data' data-component='productForm'>
+              {% include 'product-options' %}
 
-            <div class='py1'>
-              {%- capture cta -%}
-                {% if product.available %}
-                  Add to Cart
-                {% else %}
-                  Out of Stock
-                {% endif %}
-              {%- endcapture -%}
-              {%
-                include 'component-button' with
-                tag: 'button',
-                name: 'add',
-                type: 'submit',
-                className: 'js-add-to-cart',
-                cta: cta
-              %}
-            </div>
-          </form>
+              <div class='py1'>
+                {% include 'component-counter' %}
+              </div>
+
+              <div class='f aic py1'>
+                <span data-price>{{ current_variant.price | money }}</span>
+                <s data-compare-price style='display: none'>{{ current_variant.compare_at_price | money }}</s>
+              </div>
+
+              <div class='py1'>
+                {%- capture cta -%}
+                  {% if product.available %}
+                    Add to Cart
+                  {% else %}
+                    Out of Stock
+                  {% endif %}
+                {%- endcapture -%}
+                {%
+                  include 'component-button' with
+                  tag: 'button',
+                  name: 'add',
+                  type: 'submit',
+                  className: 'js-add-to-cart',
+                  cta: cta
+                %}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

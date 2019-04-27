@@ -1,0 +1,41 @@
+<meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
+<meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
+<meta itemprop="brand" content="{{ product.vendor }}">
+<meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
+<meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": "{{ product.title }}",
+    "url": "{{ shop.url }}{{ current_variant.url }}",
+    "image": "{{ featured_image | img_url: '600x600' }}",
+    "description": "{{ product.description | strip_html | escape }}",
+    "brand": {
+      "@type": "Thing",
+      "name": "{{ product.vendor }}"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "availability": "http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price": "{{ current_variant.price | money_without_currency }}",
+        "priceCurrency": "{{ shop.currency }}",
+        "url": "{{ shop.url }}{{ current_variant.url }}",
+        "itemOffered": {
+          "@type": "Product",
+          "name": "{{ product.title }}",
+          "sku": "{{ current_variant.sku }}"
+        }
+      }
+    ]
+  }
+</script>
+
+<script class='js-product-json' type='text/template'>
+  {
+    "selectedOrFirstAvailableVariant": {{ current_variant.id | json }},
+    "product": {{ product | json }}
+  }
+</script>

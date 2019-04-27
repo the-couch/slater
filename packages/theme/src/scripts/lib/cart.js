@@ -1,10 +1,5 @@
 import fetch from 'unfetch'
-import mitt from 'mitt'
 import app from '@/app.js'
-
-const ev = mitt()
-
-export const on = ev.on
 
 export function addVariant (variant, quantity) {
   const numAvailable = variant.inventory_policy === 'deny' && variant.inventory_management === 'shopify' ? (
@@ -17,7 +12,7 @@ export function addVariant (variant, quantity) {
 
     if (numAvailable !== null && numRequested > numAvailable) {
       const err = `There are only ${numAvailable} of that product available, requested ${numRequested}.`
-      ev.emit('error', err)
+      app.emit('error', err)
       throw new Error(err)
     } else {
       return addItemById(variant.id, quantity)
@@ -40,7 +35,7 @@ export function removeAddon (id) {
 }
 
 function changeAddon (line, quantity) {
-  ev.emit('updating')
+  app.emit('cart:updating')
 
   return fetch('/cart/change.js', {
     method: 'POST',
@@ -50,8 +45,8 @@ function changeAddon (line, quantity) {
     },
     body: JSON.stringify({ line, quantity })
   }).then(res => res.json()).then(cart => {
-    ev.emit('addon', { item: null, cart })
-    app.hydrate({ cart: cart })(() => console.log('updated') )
+    app.hydrate({ cart: cart })
+    app.emit('cart:updated', { cart: cart })
     return cart
   })
 }
@@ -60,9 +55,7 @@ function changeAddon (line, quantity) {
  * Warning: this does not check available products first
  */
 export function addItemById (id, quantity) {
-  ev.emit('updating')
-
-  console.log('yo adddy')
+  app.emit('cart:updating')
 
   return fetch('/cart/add.js', {
     method: 'POST',
@@ -73,9 +66,14 @@ export function addItemById (id, quantity) {
     body: JSON.stringify({ id, quantity })
   }).then(r => r.json()).then(item => {
     return fetchCart().then(cart => {
-      app.hydrate({ cart: cart })(() => console.log('updated'))
-      app.actions.toggleCart()
-      // ev.emit('updated', { item, cart })
+      app.hydrate({ cart: cart })
+      app.emit('cart:updated')
+      app.emit('cart:toggle', state => {
+        return {
+          cartOpen: !state.cartOpen
+        }
+      })
+      // app.emit('updated', { item, cart })
       return { item, cart }
     })
   })

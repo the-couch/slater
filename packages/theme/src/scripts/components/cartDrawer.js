@@ -37,7 +37,7 @@ function createItem ({
         ${color ? `<div class='xsmall sans caps track cm mv025 book'>${color.split(':')[0]}</div>` : ``}
       </div>
 
-      <button class='button--reset'>${X}</button>
+      <button class='button--reset js-remove-item'>${X}</button>
     </div>
   </div>
 </div>
@@ -92,5 +92,9 @@ export default component((node, ctx) => {
 
   ctx.on('cart:toggle', ({ cart, cartOpen }) => {
     cartOpen && open(cart)
+  })
+  ctx.on('cart:updated', ({ cart, cartOpen }) => {
+    render(ctx.state.cart)
+    app.mount()
   })
 })
