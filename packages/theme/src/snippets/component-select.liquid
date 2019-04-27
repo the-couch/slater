@@ -14,6 +14,7 @@
       id='{{ id | default: uid | strip }}'
       name='{{ name | default: label | strip }}'
       value='{{ value }}'
+      required
       {{ attributes }}
       {% if required %}required{% endif %}>
       {% if placeholder %}<option disabled selected>{{ placeholder }}</option>{% endif %}
