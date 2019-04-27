@@ -1,8 +1,6 @@
-{% include 'theme-provider' with theme: 'dark' %}
-
 <div class='account-login x y account-wrapper bg-p ac f aic jcc' data-component='accountLogin'>
   <div class='outer x'>
-    <div class='account-login__recover account-dialog px2 hide ma js-recover-dialog'>
+    <div class='account-login__recover account-dialog px2 ma js-recover-dialog' style='display: none;'>
       <h2 class='h3 serif mb05'>Forgot your password?</h2>
       <p class='h6'>Enter your email and we will send you a password reset link.</p>
 
@@ -12,7 +10,7 @@
           <span class='mb1 js-recover-success'>Success! Check your email for a link to reset your password.</span>
         {% else %}
           {%
-          include 'form-input-text' with
+          include 'component-input' with
           label: 'Email',
           placeholder: 'Email',
           name: 'email',
@@ -31,7 +29,7 @@
 
           <div class='mt1'>
             {%
-            include 'button' with
+            include 'component-button' with
             tag: 'button',
             type: 'submit',
             cta: 'Reset password',
@@ -51,7 +49,7 @@
       {% form 'customer_login', class: 'ma' %}
         <div class='mb1 pb05'>
           {%
-          include 'form-input-text' with
+          include 'component-input' with
           label: 'Email',
           placeholder: 'Email',
           name: 'customer[email]',
@@ -60,7 +58,7 @@
           %}
 
           {%
-          include 'form-input-text' with
+          include 'component-input' with
           label: 'Password',
           placeholder: 'Password',
           name: 'customer[password]',
@@ -81,7 +79,7 @@
 
         <div class='mt2'>
           {%
-          include 'button' with
+          include 'component-button' with
           tag: 'button',
           type: 'submit',
           cta: 'Sign in',

@@ -6,6 +6,7 @@ import header from '@/components/header.js'
 import productSelection from '@/components/product-selection.js'
 import cartDrawer from '@/components/cartDrawer.js'
 import cartDrawerItem from '@/components/cartDrawerItem.js'
+import accountLogin from '@/components/accountLogin.js'
 import productForm from '@/components/productForm.js'
 
 const state = {
@@ -14,7 +15,7 @@ const state = {
 
 const components = {
   slaterWelcome,
-
+  accountLogin,
   header,
   productSelection,
   cartDrawer,

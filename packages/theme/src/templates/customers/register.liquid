@@ -7,7 +7,7 @@
         {{ form.errors | default_errors }}
 
         {%
-          include 'form-input-text' with
+          include 'component-input' with
           placeholder: 'First Name',
           name: 'customer[first_name]',
           value: form.first_name,
@@ -15,14 +15,14 @@
           className: 'mb1'
         %}
         {%
-          include 'form-input-text' with
+          include 'component-input' with
           placeholder: 'Last Name',
           name: 'customer[last_name]',
           type: 'text',
           className: 'mb1'
         %}
         {%
-          include 'form-input-text' with
+          include 'component-input' with
           placeholder: 'Email',
           name: 'customer[email]',
           type: 'email',
@@ -33,7 +33,7 @@
         %}
 
         {%
-          include 'form-input-text' with
+          include 'component-input' with
           placeholder: 'Password',
           name: 'customer[password]',
           type: 'password',
@@ -41,7 +41,15 @@
         %}
 
         <div class='mt2'>
-          <button type='submit' class='btn btn__blue caps bold' role='button'>Sign Up</button>
+          <div class='mt1'>
+            {%
+            include 'component-button' with
+            tag: 'button',
+            type: 'submit',
+            cta: 'Sign Up',
+            className: 'btn btn__blue'
+            %}
+          </div>
         </div>
         <div class='pt1 f aic small jcc'>
           <div class='small cgm'>

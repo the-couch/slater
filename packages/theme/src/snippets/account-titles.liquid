@@ -2,12 +2,12 @@
 
 <section class='account-titles outer ac'>
   <div class='outer'>
-    <div class='container--s mha'>
+    <div class='container--s mxa'>
       <h1 class='h2 mb0 caps track medium mb2'>{{ title }}</h1>
 
       <nav class='account-titles__links small caps track mb1'>
         <ul class='f aic fw jcc'>
-          <li class='account-titles__link mh1'>
+          <li class='account-titles__link m1'>
             {% if template contains 'account' %}
               <span class='cg'>Account Home</span>
             {% else %}
@@ -15,7 +15,7 @@
             {% endif %}
           </li>
 
-          <li class='account-titles__link mh1'>
+          <li class='account-titles__link m1'>
             {% if template contains 'address' %}
               <span>Addresses</span>
             {% else %}
@@ -23,7 +23,7 @@
             {% endif %}
           </li>
 
-          <li class='account-titles__link mh1'>
+          <li class='account-titles__link m1'>
             <a class='link--underline no-ajax' href='/account/logout'>Logout</a>
           </li>
         </ul>

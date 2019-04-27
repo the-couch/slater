@@ -1,7 +1,7 @@
 <footer class='slater-footer'>
   <div class='outer'>
     <div class='container--l mxa'>
-      <div class='slater-footer__inner f aic'>
+      <div class='slater-footer__inner f aic jcb'>
         {% assign footer_menu = section.settings.footer_menu %}
 
         {% if linklists[footer_menu].links.size > 0 %}
@@ -11,7 +11,15 @@
             {% endfor %}
           </ul>
         {% endif %}
+        <div class=''>
+          {% if customer %}
+            <a href="/account">Account</a>
+          {% else %}
+            <a href="/account/login">Log In</a>
+          {% endif %}
+        </div>
       </div>
+
     </div>
   </div>
 </footer>

@@ -33,9 +33,11 @@
 @import 'slater/header.css';
 @import 'slater/footer.css';
 @import 'slater/welcome.css';
+@import 'slater/accounts.css';
 @import 'slater/product.css';
 @import 'slater/cart-drawer.css';
+@import 'slater/inputs.css';
 
-#preview-bar-iframe {
+#preview-bar-iframe, .none {
   display: none !important;
 }

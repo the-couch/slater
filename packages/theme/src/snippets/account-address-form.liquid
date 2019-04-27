@@ -18,7 +18,7 @@
     <div class='account-address__form__fields f ais fcb fw x'>
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'First name'
         placeholder: 'First name',
         name: 'address[first_name]',
@@ -27,7 +27,7 @@
       </div>
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'Last name',
         placeholder: 'Last name',
         name: 'address[last_name]',
@@ -37,7 +37,7 @@
 
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'Company',
         placeholder: 'Company',
         name: 'address[company]',
@@ -46,7 +46,7 @@
       </div>
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'Phone',
         placeholder: 'Phone',
         name: 'address[phone]',
@@ -57,7 +57,7 @@
 
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'Address',
         placeholder: 'Address',
         name: 'address[address1]',
@@ -66,7 +66,7 @@
       </div>
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'Apt/Suite number',
         placeholder: 'Apt/Suite number',
         name: 'address[address2]',
@@ -76,7 +76,7 @@
 
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'City',
         placeholder: 'City',
         name: 'address[city]',
@@ -85,7 +85,7 @@
       </div>
       <div class='account-address__form__field x mb1'>
         {%
-        include 'form-input-text' with
+        include 'component-input' with
         label: 'Zip',
         placeholder: 'Zip',
         name: 'address[zip]',
@@ -98,7 +98,7 @@
         data-default="{{ form.country }}"
         {%- endcapture -%}
         {%
-        include 'form-input-select' with
+        include 'component-select' with
         label: 'Country',
         id: form_country_id,
         name: 'address[country]'
@@ -112,7 +112,7 @@
         data-default="{{ form.province }}"
         {%- endcapture -%}
         {%
-        include 'form-input-select' with
+        include 'component-select' with
         label: 'Province',
         id: form_province_id,
         name: 'address[province]'
@@ -130,7 +130,7 @@
 
     <div class='pt1 f aic x'>
       {%
-      include 'button' with
+      include 'component-button' with
       tag: 'button',
       cta: cta,
       type: 'submit',
@@ -138,7 +138,7 @@
       %}
 
       {%
-      include 'button' with
+      include 'component-button' with
       tag: 'button',
       cta: 'Cancel',
       type: 'button',

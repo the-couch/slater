@@ -1,16 +1,15 @@
 import { component } from 'picoapp'
 
-export default component(({ node: outer, state }) => {
-  const login = outer.querySelector('.js-login-dialog')
-  const recover = outer.querySelector('.js-recover-dialog')
-  const recoverLink = outer.querySelector('.js-recover-trigger')
-  const cancelRecoverLink = outer.querySelector('.js-recover-cancel')
+export default component((node, ctx) => {
+  const login = node.querySelector('.js-login-dialog')
+  const recover = node.querySelector('.js-recover-dialog')
+  const recoverLink = node.querySelector('.js-recover-trigger')
+  const cancelRecoverLink = node.querySelector('.js-recover-cancel')
 
   /* eslint-disable */
   const recoverIsTarget = window.location.hash.match(/\#recover/) ? true : false
   /* eslint-enable */
-
-  const successMessage = outer.querySelector('.js-recover-success') !== null
+  const successMessage = node.querySelector('.js-recover-success') !== null
 
   if (recoverIsTarget || successMessage) {
     login.style.display = 'none'

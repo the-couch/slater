@@ -1,11 +1,10 @@
-{% include 'theme-provider' with theme: 'dark' %}
 
-{% include 'account-titles' with title: 'Addresses' %}
 
 {% paginate customer.addresses by 100 %}
 
 <div class='account-wrapper'>
   <section class='account-addresses outer'>
+    {% include 'account-titles' with title: 'Addresses' %}
     <div class='container--s mha'>
       <button class='account-addresses__new button--reset link--underline caps track medium cg mb1' onclick='slater.toggleNewForm()'>Create new address</button>
 
