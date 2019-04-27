@@ -1,6 +1,6 @@
 {
   "name": "@slater/theme",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "scripts": {
     "start": "slater watch",
     "build": "slater build",
