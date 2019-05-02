@@ -22,6 +22,7 @@ const createApp = require('./index.js')
 const prog = require('commander')
   .version(pkg.version)
   .option('-c, --config <path>', 'specify the path to your config file')
+  .option('-d, --debug', 'output some debugging logs')
   .option('-t, --theme <name>', 'specify a named theme from your config file')
 
 const log = logger('slater')
@@ -30,6 +31,7 @@ prog
   .command('watch')
   .action(() => {
     const config = getConfig(prog)
+    prog.debug && log.info('debug', JSON.stringify(config, null, '  '))
     const app = createApp(config)
 
     app.copy().then(app.watch)
@@ -39,6 +41,7 @@ prog
   .command('build')
   .action(() => {
     const config = getConfig(prog)
+    prog.debug && log.info('debug', JSON.stringify(config, null, '  '))
     const app = createApp(config)
 
     app.copy().then(app.build).then(() => exit())
