@@ -157,6 +157,7 @@ module.exports = function createApp (config) {
           })
       }
 
+      // @see https://github.com/paulmillr/chokidar/issues/773
       const watchers = [
         chokidar.watch(config.in, {
           persistent: true,
@@ -164,15 +165,17 @@ module.exports = function createApp (config) {
           ignore: config.theme.ignore
         })
           .on('add', file => {
-            // @see https://github.com/paulmillr/chokidar/issues/773
+            if (!file) return
             if (match(file, config.theme.ignore)) return
             copyFile(formatFile(file, config.in, config.out))
           })
           .on('change', file => {
+            if (!file) return
             if (match(file, config.theme.ignore)) return
             copyFile(formatFile(file, config.in, config.out))
           })
           .on('unlink', file => {
+            if (!file) return
             if (match(file, config.theme.ignore)) return
             deleteFile(formatFile(file, config.in, config.out))
           }),
@@ -182,9 +185,9 @@ module.exports = function createApp (config) {
           persistent: true,
           ignoreInitial: true
         })
-          .on('add', file => syncFile(formatFile(file, config.in, config.out)))
-          .on('change', file => syncFile(formatFile(file, config.in, config.out)))
-          .on('unlink', file => unsyncFile(formatFile(file, config.in, config.out)))
+          .on('add', file => file && syncFile(formatFile(file, config.in, config.out)))
+          .on('change', file => file && syncFile(formatFile(file, config.in, config.out)))
+          .on('unlink', file => file && unsyncFile(formatFile(file, config.in, config.out)))
       ]
 
       const bundle = compiler(config.assets)
