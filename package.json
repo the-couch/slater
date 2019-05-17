@@ -4,7 +4,8 @@
   "description": "the slater monorepo",
   "scripts": {
     "publish": "NPM_CONFIG_OTP= ./node_modules/.bin/lerna publish",
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "contributors": "all-contributors generate"
   },
   "repository": {
     "type": "git",
@@ -14,6 +15,7 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "devDependencies": {
+    "all-contributors-cli": "^6.4.0",
     "lerna": "^3.10.6"
   }
 }
