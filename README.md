@@ -276,22 +276,8 @@ to this list!
 - [Dims Home](https://www.dimshome.com)
 
 ## Contributors
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/estrattonbailey.png?s=150">
-        <br />
-        <a href="https://github.com/estrattonbailey">Eric Bailey</a>
-      </td>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/iamkevingreen.png?s=150">
-        <br />
-        <a href="https://github.com/iamkevingreen">Kevin Green</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
 MIT License © [The Couch](https://thecouch.nyc)
