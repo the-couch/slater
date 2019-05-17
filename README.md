@@ -1,8 +1,6 @@
 # Slater
 A Shopify development toolkit.
 
-![slater](https://media.giphy.com/media/129ndN2vLNGvbW/giphy.gif)
-
 <br />
 
 > This project is an active work in progress! The CLI is stable, but **the theme
@@ -44,6 +42,10 @@ npm i slater -g
 - [Slater in the Wild](#in-the-wild)
 - [Contributors](#contributors)
 - [License](#license)
+
+<br>
+
+![slater](https://media.giphy.com/media/129ndN2vLNGvbW/giphy.gif)
 
 ## Quick Start
 The easist way to get started with Slater is `slater init`. `init` outputs a
