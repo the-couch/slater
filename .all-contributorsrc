@@ -29,6 +29,19 @@
         "review",
         "maintenance"
       ]
+    },
+    {
+      "login": "Jore",
+      "name": "Joe Refoy",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/696506?v=4",
+      "profile": "https://github.com/Jore",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
     }
-  ]
+  ],
+  "repoType": "github",
+  "commitConvention": "none"
 }
