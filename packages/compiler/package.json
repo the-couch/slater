@@ -45,5 +45,6 @@
     "socket.io": "^2.2.0",
     "style-loader": "^0.20.3",
     "webpack": "^4.29.6"
-  }
+  },
+  "gitHead": "02be3144a3cbc8609ea6d2cad9c74682699182d8"
 }

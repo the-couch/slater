@@ -26,5 +26,6 @@
     "sliced": "^1.0.1",
     "svbstrate": "^4.1.1",
     "unfetch": "^4.1.0"
-  }
+  },
+  "gitHead": "02be3144a3cbc8609ea6d2cad9c74682699182d8"
 }
