@@ -277,6 +277,9 @@ to this list!
 
 ## Contributors
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://github.com/estrattonbailey"><img src="https://github.com/estrattonbailey.png?s=100" width="100px;" alt="Eric Bailey"/><br /><sub><b>Eric Bailey</b></sub></a><br /><a href="https://github.com/all-contributors/all-contributors/commits?author=estrattonbailey" title="Code">💻</a> <a href="https://github.com/all-contributors/all-contributors/commits?author=estrattonbailey" title="Documentation">📖</a> <a href="#review-estrattonbailey" title="Reviewed Pull Requests">👀</a> <a href="#maintenance-estrattonbailey" title="Maintenance">🚧</a></td><td align="center"><a href="https://github.com/iamkevingreen"><img src="https://github.com/iamkevingreen.png?s=100" width="100px;" alt="Kevin Green"/><br /><sub><b>Kevin Green</b></sub></a><br /><a href="https://github.com/all-contributors/all-contributors/commits?author=iamkevingreen" title="Code">💻</a> <a href="https://github.com/all-contributors/all-contributors/commits?author=iamkevingreen" title="Documentation">📖</a> <a href="#review-iamkevingreen" title="Reviewed Pull Requests">👀</a> <a href="#maintenance-iamkevingreen" title="Maintenance">🚧</a></td></tr></table>
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
