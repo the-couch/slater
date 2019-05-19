@@ -2,36 +2,10 @@
 /components/counter.css
 {% endcomment %}
 
-{% assign min = min | default: '1' %}
-{% assign max = max | default: '' %}
-
-<div class="counter-wrapper rel">
+<div class="counter-wrapper rel" data-component="productCounter">
   <div class="counter rel f aic">
     <button type="button" class="js-counter-remove">-</button>
-    <input type="number" name="quantity" value="1" min="{{min}}" max="{{max}}" class="js-counter-quantity">
+    <input type="number" name="quantity" value="1" min="1" max="" class="js-counter-quantity">
     <button type="button" class="js-counter-add">+</button>
   </div>
-
-  <script>
-    (function counter (counter) {
-      var decrease = document.querySelector('.js-counter-remove')
-      var increase = document.querySelector('.js-counter-add')
-      var quantity = document.querySelector('.js-counter-quantity')
-      var min = parseInt(quantity.attributes.min.value)
-      var max = parseInt(quantity.attributes.max.value)
-
-      var count = parseInt(quantity.value)
-
-      function set (i) {
-        count = Math.max(min, Math.min(i, max || 10000))
-        quantity.value = count
-      }
-
-      decrease.onclick = e => set(--count)
-      increase.onclick = e => set(++count)
-      quantity.onchange = e => set(parseInt(quantity.value))
-
-      counter.parentNode.removeChild(document.currentScript)
-    })(document.currentScript.parentNode.children[0])
-  </script>
 </div>
