@@ -18,13 +18,11 @@ export default component((node, ctx) => {
 
   decrease.addEventListener('click', e => {
     e.preventDefault()
-    console.log('decrease')
     set(--count)
   })
 
   increase.addEventListener('click', e => {
     e.preventDefault()
-    console.log('increase')
     set(++count)
   })
 })
