@@ -275,6 +275,20 @@ to this list!
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
 
+## Contributing
+Slater uses [lerna](https://lerna.js.org/) to manage the monorepo. That makes developing locally pretty simple, but a little different from what you might be used to. Use the steps below to get up and running locally:
+
+1. Clone this repository
+2. From the project root, run `npm run bootstrap`
+3. Define a `test.config.js` file with your Slater config data
+4. Use the `test` specific commands in `/theme/package.json` to run your local theme
+5. Make neat, granular commits
+    1. Be descriptive
+    2. Reference open/closed issues where applicable
+6. Open a pull request!
+
+**Important:** don't increment any of the core package versions. The core Slater team will handle versioning when publishing to npm.
+
 ## Contributors
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
