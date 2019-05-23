@@ -1,5 +1,5 @@
 # Slater
-A Shopify development toolkit.
+Slater is a new toolkit for building and deploying themes on Shopify.
 
 <br />
 

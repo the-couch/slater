@@ -20,5 +20,5 @@ export default component((node, ctx) => {
     cartCount.innerHTML = state.cart.item_count
   })
 
-  cartCount.innerHTML = ctx.state.cart.item_count
+  cartCount.innerHTML = ctx.getState().cart.item_count
 })
