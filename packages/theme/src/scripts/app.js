@@ -8,6 +8,7 @@ import cartDrawer from '@/components/cartDrawer.js'
 import cartDrawerItem from '@/components/cartDrawerItem.js'
 import accountLogin from '@/components/accountLogin.js'
 import product from '@/components/product.js'
+import productCounter from '@/components/product-counter.js'
 
 const state = {
   cartOpen: false
@@ -20,7 +21,8 @@ const components = {
   productSelection,
   cartDrawer,
   cartDrawerItem,
-  product
+  product,
+  productCounter
 }
 
 export default picoapp(components, state)
