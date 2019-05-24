@@ -85,7 +85,7 @@ export default component((node, ctx) => {
     }, 400)
   }
 
-  render(ctx.state.cart)
+  render(ctx.getState().cart)
 
   overlay.addEventListener('click', close)
   closeButton.addEventListener('click', close)
@@ -93,8 +93,8 @@ export default component((node, ctx) => {
   ctx.on('cart:toggle', ({ cart, cartOpen }) => {
     cartOpen && open(cart)
   })
-  ctx.on('cart:updated', ({ cart, cartOpen }) => {
-    render(ctx.state.cart)
+  ctx.on('cart:updated', () => {
+    render(ctx.getState().cart)
     app.mount()
   })
 })
