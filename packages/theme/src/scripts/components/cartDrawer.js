@@ -16,7 +16,7 @@ function createItem ({
   ...item
 }) {
   const img = image ? getSizedImageUrl(
-    image.replace('_' + imageSize(image), ''), '200x' // TODO hacky af
+    image.replace('.' + imageSize(image), ''), '200x' // TODO hacky af
   ) : 'https://source.unsplash.com/R9OS29xJb-8/2000x1333'
 
   return `
