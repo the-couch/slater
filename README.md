@@ -281,7 +281,7 @@ Slater uses [lerna](https://lerna.js.org/) to manage the monorepo. That makes de
 1. Clone this repository
 2. From the project root, install core dependencies with `npm i`
 2. From the project root, run `npm run bootstrap`
-3. Define a `test.config.js` file with your Slater config data
+3. Define a `packages/theme/test.config.js` file with your Slater config data
 4. Use the `test` specific commands in `/theme/package.json` to run your local theme
 5. Make neat, granular commits
     1. Be descriptive
