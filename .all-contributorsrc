@@ -1,6 +1,6 @@
 {
-  "projectName": "all-contributors",
-  "projectOwner": "all-contributors",
+  "projectName": "slater",
+  "projectOwner": "the-couch",
   "files": [
     "README.md"
   ],
@@ -40,8 +40,20 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "wardpenney",
+      "name": "Ward Penney",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/615249?v=4",
+      "profile": "https://github.com/wardpenney",
+      "contributions": [
+        "bug",
+        "doc"
+      ]
     }
   ],
   "repoType": "github",
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "repoHost": "https://github.com",
+  "contributorsPerLine": 7
 }
