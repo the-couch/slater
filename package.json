@@ -5,6 +5,7 @@
   "scripts": {
     "publish": "NPM_CONFIG_OTP= ./node_modules/.bin/lerna publish",
     "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean",
     "contributors": "all-contributors generate"
   },
   "repository": {
