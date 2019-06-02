@@ -50,6 +50,16 @@
         "bug",
         "doc"
       ]
+    },
+    {
+      "login": "tomaszbujnowicz",
+      "name": "Tomasz Bujnowicz",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/557199?v=4",
+      "profile": "https://www.tomaszbujnowicz.com",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "repoType": "github",
