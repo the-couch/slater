@@ -89,6 +89,8 @@ module.exports = function createApp (config) {
       console.log('')
 
       return new Promise((res, rej) => {
+        if (!fs.existsSync(config.assets.in)) return
+
         const bundle = compiler(config.assets)
 
         bundle.on('error', e => {
@@ -100,7 +102,7 @@ module.exports = function createApp (config) {
           res(stats)
         })
 
-        bundle.build()
+        return bundle.build()
       })
     },
     watch () {
@@ -136,7 +138,7 @@ module.exports = function createApp (config) {
         if (!filename) return Promise.resolve(true)
 
         return theme.sync(dest)
-          .then(() => socket.emit('refresh'))
+          .then(() => socket && socket.emit('refresh'))
           .then(() => {
             log.info('synced', filename)
           })
@@ -148,7 +150,7 @@ module.exports = function createApp (config) {
         if (!filename) return Promise.resolve(true)
 
         return theme.unsync(dest)
-          .then(() => socket.emit('refresh'))
+          .then(() => socket && socket.emit('refresh'))
           .then(() => {
             log.info('unsynced', filename)
           })
@@ -190,21 +192,26 @@ module.exports = function createApp (config) {
           .on('unlink', file => file && unsyncFile(formatFile(file, config.in, config.out)))
       ]
 
-      const bundle = compiler(config.assets)
-
-      bundle.on('error', e => {
-        log.error(e)
-      })
-      bundle.on('stats', stats => {
-        logStats(stats, { watch: true })
-      })
-
-      socket = bundle.watch()
-
       onExit(() => {
         watchers.map(w => w.close())
-        bundle.close()
       })
+
+      if (fs.existsSync(config.assets.in)) {
+        const bundle = compiler(config.assets)
+
+        bundle.on('error', e => {
+          log.error(e)
+        })
+        bundle.on('stats', stats => {
+          logStats(stats, { watch: true })
+        })
+
+        socket = bundle.watch()
+
+        onExit(() => {
+          bundle.close()
+        })
+      }
     }
   }
 }
