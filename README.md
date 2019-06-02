@@ -196,9 +196,11 @@ module.exports = {
   alias: {
     components: './src/scripts/components'
   },
-  env: {
-    API_KEY: 'abcde...'
-  }
+  assets: {
+    env: {
+      API_KEY: JSON.stringify('abcde'),
+    }
+  },
 }
 ```
 
