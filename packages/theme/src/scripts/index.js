@@ -5,6 +5,8 @@ import app from '@/app.js'
 import router from '@/router.js'
 import { fetchCart } from '@/lib/cart.js'
 
+console.log('hello')
+
 /**
  * store binding fn
  */

@@ -15,7 +15,8 @@ const sync = require('@slater/sync')
 const {
   logger,
   match,
-  sanitize
+  sanitize,
+  abs
 } = require('@slater/util')
 
 const log = logger('slater')
@@ -89,7 +90,7 @@ module.exports = function createApp (config) {
       console.log('')
 
       return new Promise((res, rej) => {
-        if (!fs.existsSync(config.assets.in)) return
+        if (!fs.existsSync(abs(config.assets.in))) return
 
         const bundle = compiler(config.assets)
 
@@ -196,7 +197,7 @@ module.exports = function createApp (config) {
         watchers.map(w => w.close())
       })
 
-      if (fs.existsSync(config.assets.in)) {
+      if (fs.existsSync(abs(config.assets.in))) {
         const bundle = compiler(config.assets)
 
         bundle.on('error', e => {
