@@ -117,6 +117,7 @@ module.exports = function createApp (config) {
       console.log('')
 
       let socket
+      let syncTimeout
 
       const theme = sync(config.theme)
 
@@ -139,7 +140,14 @@ module.exports = function createApp (config) {
         if (!filename) return Promise.resolve(true)
 
         return theme.sync(dest)
-          .then(() => socket && socket.emit('refresh'))
+          .then(() => {
+            if (socket) {
+              syncTimeout && clearTimeout(syncTimeout)
+              syncTimeout = setTimeout(() => {
+                socket.emit('refresh')
+              }, 100)
+            }
+          })
           .then(() => {
             log.info('synced', filename)
           })

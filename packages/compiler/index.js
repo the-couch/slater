@@ -93,8 +93,6 @@ module.exports = conf => {
         if (s.warnings && s.warnings.length) emit('warn', s.warnings)
 
         emit('stats', s)
-
-        socket.emit('refresh')
       })
 
       return {
