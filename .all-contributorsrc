@@ -60,6 +60,16 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "antonioOrtiz",
+      "name": "antonio",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/4282013?v=4",
+      "profile": "https://www.antonio-p-ortiz.com",
+      "contributions": [
+        "bug",
+        "doc"
+      ]
     }
   ],
   "repoType": "github",
