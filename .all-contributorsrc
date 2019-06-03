@@ -78,7 +78,16 @@
       "contributions": [
         "bug",
         "doc"
-      ]  
+      ]
+    },
+    {
+      "login": "softgradient",
+      "name": "dana kim",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/25087790?v=4",
+      "profile": "http://www.dana.kim",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "repoType": "github",
