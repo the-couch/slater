@@ -88,7 +88,7 @@ your remote site when they update 🎉.
 Slater makes some assumptions out of the box, but it can be easily customized to
 fit most existing projects.
 
-#### Themes
+### Themes
 Slater projects require themes to be defined in the
 `slater.config.js`.
 
@@ -130,7 +130,18 @@ module.exports = {
 }
 ```
 
-#### Directory Structure
+#### Theme IDs and Passwords
+Each of these themes should have its own theme `id` value. Theme IDs can be
+found by going to *Online Store > Themes > Customize Theme* and plucking the ID
+from the URL i.e. `../admin/themes/<id>/editor`.
+
+All themes can use the same `password` property. To get one, [create your own
+private
+app](https://help.shopify.com/en/api/getting-started/authentication/private-authentication)
+and pull it from there. Make sure your private app allows for read/write to the
+"Theme templates and theme assets".
+
+### Directory Structure
 All theme files should be located within a single source directory. By default,
 Slater looks for a `/src` directory in your project root.
 
@@ -151,7 +162,7 @@ module.exports = {
 }
 ```
 
-#### Assets
+### Assets
 Slater uses Webpack internally to compile a single JavaScript entry point. By
 default, it looks for `/src/scripts/index.js`.
 
@@ -160,7 +171,7 @@ config:
 ```javascript
 module.exports = {
   assets: {
-    in: '/source/scripts/index.js'
+    in: '/src/scripts/index.js'
   }
 }
 ```
@@ -179,6 +190,7 @@ import '../styles.css'
 You can also use SASS. Simple specify the `sass` preset in your assets config:
 ```javascript
 module.exports = {
+    in: '/src/scripts/index.js'
   assets: {
     presets: [
       'sass'
@@ -187,20 +199,24 @@ module.exports = {
 }
 ```
 
-#### Alias & Env
+### Alias & Env
 To make your JavaScript a little easier to work with, Slater supports alias
 definitions and environment variables.
 
 ```javascript
 module.exports = {
-  alias: {
-    components: './src/scripts/components'
-  },
   assets: {
+    in: '/src/scripts/index.js'
+    alias: {
+      components: './src/scripts/components'
+    },
     env: {
       API_KEY: JSON.stringify('abcde'),
     }
   },
+  themes: {
+    // ...
+  }
 }
 ```
 
@@ -216,8 +232,11 @@ const fetcher = api({
 For convenience, there's also a built-in alias `@` that points to the directory
 containing your JavaScript entry point.
 
-> Keep in mind, these environment variables are **public**, so don't use them
-> for any secret keys, passwords, or any value that you need to keep private!
+**N.B.** Keep in mind, these environment variables are **public**, so don't use
+them for any secret keys, passwords, or any value that you need to keep private!
+Also, these values are passed directly to Webpack's Define Plugin, so please
+refer to [those docs](https://webpack.js.org/plugins/define-plugin/) for
+clarity.
 
 ## Command Line
 
