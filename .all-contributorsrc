@@ -60,6 +60,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "seandogg",
+      "name": "Sean Orfila",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7729784?v=4",
+      "profile": "https://www.sean-orfila.com",
+      "contributions": [
+        "question"
+      ]
     }
   ],
   "repoType": "github",
