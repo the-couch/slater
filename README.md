@@ -1,22 +1,25 @@
-# Slater
-Slater is a new toolkit for building and deploying themes on Shopify.
+![repo-banner](https://user-images.githubusercontent.com/4732330/59070492-e925a900-8888-11e9-9dd5-90fb7b8da034.png)
+
+```bash
+npm i slater -g
+```
+<br />
+
+A new toolkit for building and deploying themes on Shopify.
 
 <br />
 
-> This project is an active work in progress! The CLI is stable, but **the theme
-> itself is not**.
+> This project is an active work in progress!
+> 
+> The CLI for compiling and uploading themes is stable, but **the starter theme
+> needs some love!**
 >
 > Want to help? We'd love to have you. Ideas, feedback,
 > critiques 👉 shoot us an Issue.
 
 <br />
 
-### Install
-```bash
-npm i slater -g
-```
-
-### Features
+## Features
 - asset pipeline via Webpack, Babel, PostCSS/SASS
 - built-in deployment tool
 - live reloading
@@ -24,7 +27,7 @@ npm i slater -g
 - easy integration into existing themes
 - starter theme (WIP)
 
-### Table of Contents
+## Table of Contents
 - [Quick Start](#quick-start)
 - [Usage](#usage)
   - [Themes](#themes)
@@ -44,8 +47,6 @@ npm i slater -g
 - [License](#license)
 
 <br>
-
-![slater](https://media.giphy.com/media/129ndN2vLNGvbW/giphy.gif)
 
 ## Quick Start
 The easist way to get started with Slater is `slater init`. `init` outputs a
