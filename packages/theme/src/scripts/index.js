@@ -1,4 +1,4 @@
-import '../styles/main.css'
+import '../styles/main.scss'
 import '@/lib/select.js'
 import lazim from 'lazim'
 import app from '@/app.js'

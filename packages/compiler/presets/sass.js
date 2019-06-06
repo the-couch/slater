@@ -10,11 +10,20 @@ module.exports = (options = {}) => {
         ExtractCSS.loader,
         require.resolve('css-loader'),
         {
+          loader: require.resolve('postcss-loader'),
+          options: {
+            ident: 'postcss',
+            plugins: [
+              require('autoprefixer')(),
+            ],
+          }
+        },
+        {
           loader: require.resolve('sass-loader'),
           options: {
             implementation: require('sass'),
           }
-        }
+        },
       ]
     })
 
