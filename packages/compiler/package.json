@@ -1,6 +1,6 @@
 {
   "name": "@slater/compiler",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Compiler abstraction for slater.",
   "main": "index.js",
   "repository": {
