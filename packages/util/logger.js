@@ -1,5 +1,6 @@
 const c = require('ansi-colors')
 const write = require('log-update')
+const progress = require('./progress')
 const log = console.log
 
 module.exports = function logger (scope) {
@@ -26,6 +27,13 @@ module.exports = function logger (scope) {
     error (message) {
       write([
         c.red('error') + ' ' + (message || '')
+      ].filter(Boolean).join(' '))
+    },
+    progress (theme, action, percentage) {
+      write([
+        c.gray(scope),
+        c.blue(action + '\n\n'),
+        progress[theme](percentage)
       ].filter(Boolean).join(' '))
     }
   }
