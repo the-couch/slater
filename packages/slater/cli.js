@@ -60,7 +60,7 @@ prog
         .sync(paths, (total, rest) => {
           const complete = total - rest
           const percent = Math.ceil((complete / total) * 100)
-          log.info('syncing', percent + '%', true)
+          log.progress('upload','syncing', percent)
         })
     ])
       .then(() => {
