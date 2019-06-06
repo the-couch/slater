@@ -88,6 +88,17 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "mrtamagotchi",
+      "name": "kotte",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/14197736?v=4",
+      "profile": "http://studiolye.se",
+      "contributions": [
+        "code",
+        "design",
+        "ideas"
+      ]
     }
   ],
   "repoType": "github",
