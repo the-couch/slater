@@ -5,7 +5,7 @@ export default component((node, ctx) => {
   const json = JSON.parse(node.querySelector('.js-product-json').innerHTML)
   const form = node.querySelector('form')
 
-  const { selectedOrFirstAvailableVariant, product } = JSON.parse(document.querySelector('.js-product-json').innerHTML)
+  const { selectedOrFirstAvailableVariant, product } = json
   let currentVariant = product.variants.filter(v => v.id === selectedOrFirstAvailableVariant)[0]
 
   form.addEventListener('submit', e => {
