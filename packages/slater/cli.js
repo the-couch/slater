@@ -55,14 +55,22 @@ prog
 
     paths = paths && paths.length ? paths : config.out
 
-    wait(1000, [
-      theme
-        .sync(paths, (total, rest) => {
-          const complete = total - rest
-          const percent = Math.ceil((complete / total) * 100)
-          log.progress('upload','syncing', percent)
-        })
-    ])
+    theme
+      .test()
+      .catch(({ errors }) => {
+        log.error(errors)
+        exit()
+      })
+      .then(() =>
+        wait(1000, [
+          theme
+            .sync(paths, (total, rest) => {
+              const complete = total - rest
+              const percent = Math.ceil((complete / total) * 100)
+              log.progress('upload','syncing', percent)
+            })
+        ])
+      )
       .then(() => {
         log.info(
           'synced',
@@ -94,14 +102,22 @@ prog
 
     paths = paths && paths.length ? paths : config.out
 
-    wait(1000, [
-      theme
-        .unsync(paths, (total, rest) => {
-          const complete = total - rest
-          const percent = Math.ceil((complete / total) * 100)
-          log.info('unsyncing', percent + '%', true)
-        })
-    ])
+    theme
+      .test()
+      .catch(({ errors }) => {
+        log.error(errors)
+        exit()
+      })
+      .then(() =>
+        wait(1000, [
+          theme
+            .unsync(paths, (total, rest) => {
+              const complete = total - rest
+              const percent = Math.ceil((complete / total) * 100)
+              log.info('unsyncing', percent + '%', true)
+            })
+        ])
+      )
       .then(() => {
         log.info(
           'unsynced',

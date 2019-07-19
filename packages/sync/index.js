@@ -55,6 +55,24 @@ module.exports = function init (config) {
     })
   }
 
+  function test () {
+    return api('GET', undefined)
+      .then(res => {
+        if (res.status === 404) {
+          throw {
+            errors: `No theme found with id '${config.id}'`
+          }
+        }
+        return res.json()
+      })
+      .then(({ errors, ...rest }) => {
+        if (errors) {
+          throw {errors}
+        }
+        return rest
+      })
+  }
+
   function upload ({ key, file }) {
     const encoded = Buffer.from(fs.readFileSync(file), 'utf-8').toString('base64')
 
@@ -208,6 +226,7 @@ module.exports = function init (config) {
   return {
     sync,
     unsync,
-    config
+    config,
+    test
   }
 }
