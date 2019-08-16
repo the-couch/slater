@@ -294,6 +294,7 @@ The following sites were built using some version of Slater. Send us a PR to add
 to this list!
 - [Wool & Oak](https://www.woolandoak.com)
 - [Blume](https://www.meetblume.com)
+- [A24](https://shop.a24films.com)
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
 
