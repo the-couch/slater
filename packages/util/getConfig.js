@@ -7,6 +7,7 @@ const exit = require('exit')
  * internal modules
  */
 const abs = require('./abs.js')
+const fixPathSeparators = require("./fixPathSeparators.js")
 const logger = require('./logger.js')
 const log = logger('slater')
 
@@ -46,7 +47,7 @@ module.exports = function getConfig (options) {
   }
 
   if (!config.assets.out) {
-    config.assets.out = path.join(config.out, 'assets')
+    config.assets.out = fixPathSeparators(path.join(config.out, 'assets'))
   }
 
   /*
