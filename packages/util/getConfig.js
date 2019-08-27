@@ -23,10 +23,10 @@ module.exports = function getConfig (options) {
    * deep merge user config with defaults
    */
   const config = merge({
-    in: '/src',
-    out:'/build',
+    in: './src',
+    out:'./build',
     assets: {
-      in: '/src/scripts/index.js'
+      in: './src/scripts/index.js'
     }
   }, require(configpath))
 
@@ -82,8 +82,8 @@ module.exports = function getConfig (options) {
   /**
    * overwrite paths to ensure they point to the cwd()
    */
-  config.in = abs(config.in || '/src')
-  config.out = abs(config.out || '/build')
+  config.in = abs(config.in || './src')
+  config.out = abs(config.out || './build')
 
   return config
 }
