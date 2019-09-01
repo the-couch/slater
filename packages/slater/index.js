@@ -16,7 +16,8 @@ const {
   logger,
   match,
   sanitize,
-  abs
+  abs,
+  fixPathSeparators
 } = require('@slater/util')
 
 const log = logger('slater')
@@ -177,16 +178,19 @@ module.exports = function createApp (config) {
         })
           .on('add', file => {
             if (!file) return
+            file = fixPathSeparators(file)
             if (match(file, config.theme.ignore)) return
             copyFile(formatFile(file, config.in, config.out))
           })
           .on('change', file => {
             if (!file) return
+            file = fixPathSeparators(file)
             if (match(file, config.theme.ignore)) return
             copyFile(formatFile(file, config.in, config.out))
           })
           .on('unlink', file => {
             if (!file) return
+            file = fixPathSeparators(file)
             if (match(file, config.theme.ignore)) return
             deleteFile(formatFile(file, config.in, config.out))
           }),
@@ -196,9 +200,9 @@ module.exports = function createApp (config) {
           persistent: true,
           ignoreInitial: true
         })
-          .on('add', file => file && syncFile(formatFile(file, config.in, config.out)))
-          .on('change', file => file && syncFile(formatFile(file, config.in, config.out)))
-          .on('unlink', file => file && unsyncFile(formatFile(file, config.in, config.out)))
+          .on('add', file => file && syncFile(formatFile(fixPathSeparators(file), config.in, config.out)))
+          .on('change', file => file && syncFile(formatFile(fixPathSeparators(file), config.in, config.out)))
+          .on('unlink', file => file && unsyncFile(formatFile(fixPathSeparators(file), config.in, config.out)))
       ]
 
       onExit(() => {
