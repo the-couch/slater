@@ -14,15 +14,17 @@ module.exports = function clientReloader (port) {
           var socket = io('https://localhost:${port}', {
             reconnectionAttempts: 1
           })
-          socket.on('connect', () => console.log('slater connected'))
-          socket.on('refresh', () => {
+          socket.on('connect', function connect () {
+            console.log('slater connected')
+          })
+          socket.on('refresh', function refresh () {
             ls.setItem('slater-scroll', global.scrollY)
             global.location.reload()
           })
-          socket.on('disconnect', () => {
+          socket.on('disconnect', function disconnect () {
             disconnected = true
           })
-          socket.on('reconnect_failed', e => {
+          socket.on('reconnect_failed', function reconnectFailed (e) {
             if (disconnected) return
             console.group("slater - %cconnection to server at ${port} failed", "color: red")
             console.info("try visiting https://localhost:${port} and creating a security exception")
