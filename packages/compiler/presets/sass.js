@@ -8,7 +8,12 @@ module.exports = (options = {}) => {
       exclude: /node_modules/,
       use: [
         ExtractCSS.loader,
-        require.resolve('css-loader'),
+        {
+          loader: require.resolve('css-loader'),
+          options: {
+            url: false
+          }
+        },
         {
           loader: require.resolve('postcss-loader'),
           options: {
