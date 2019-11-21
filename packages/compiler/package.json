@@ -1,6 +1,6 @@
 {
   "name": "@slater/compiler",
-  "version": "1.6.1",
+  "version": "1.6.1-1",
   "description": "Compiler abstraction for slater.",
   "main": "index.js",
   "repository": {
@@ -23,6 +23,7 @@
     "@babel/preset-react": "^7.0.0",
     "acorn": "^6.1.1",
     "ansi-colors": "^3.2.4",
+    "autoprefixer": "^9.7.2",
     "babel-loader": "^8.0.6",
     "clone": "^2.1.2",
     "css-loader": "^2.1.0",
@@ -40,16 +41,13 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
     "sass": "^1.21.0",
     "sass-loader": "^7.1.0",
     "socket.io": "^2.2.0",
     "style-loader": "^0.20.3",
+    "tailwindcss": "^1.1.3",
     "webpack": "^4.33.0"
   },
-  "gitHead": "3efcf640b15bfcbecbba4b4181a6826efa9b6f7e",
-  "devDependencies": {
-    "autoprefixer": "^9.7.2",
-    "postcss-preset-env": "^6.7.0",
-    "tailwindcss": "^1.1.3"
-  }
+  "gitHead": "3efcf640b15bfcbecbba4b4181a6826efa9b6f7e"
 }
