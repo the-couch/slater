@@ -23,7 +23,6 @@
     "@babel/preset-react": "^7.0.0",
     "acorn": "^6.1.1",
     "ansi-colors": "^3.2.4",
-    "autoprefixer": "^9.6.0",
     "babel-loader": "^8.0.6",
     "clone": "^2.1.2",
     "css-loader": "^2.1.0",
@@ -47,5 +46,10 @@
     "style-loader": "^0.20.3",
     "webpack": "^4.33.0"
   },
-  "gitHead": "3efcf640b15bfcbecbba4b4181a6826efa9b6f7e"
+  "gitHead": "3efcf640b15bfcbecbba4b4181a6826efa9b6f7e",
+  "devDependencies": {
+    "autoprefixer": "^9.7.2",
+    "postcss-preset-env": "^6.7.0",
+    "tailwindcss": "^1.1.3"
+  }
 }
