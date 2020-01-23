@@ -28,7 +28,7 @@
     "clone": "^2.1.2",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.10",
-    "fast-async": "^6.3.8",
+    "fast-async": "^7.0.6",
     "fs-extra": "^7.0.1",
     "get-port": "^4.2.0",
     "gzip-size": "^5.1.1",
