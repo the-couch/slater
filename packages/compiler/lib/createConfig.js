@@ -24,7 +24,7 @@ const baseConfig = {
               plugins: [
                 require.resolve('@babel/plugin-syntax-object-rest-spread'),
                 require.resolve('@babel/plugin-proposal-class-properties'),
-                require.resolve('fast-async')
+                require.resolve('@babel/plugin-transform-async-to-generator')
               ],
               presets: [
                 require.resolve('@babel/preset-env'),
