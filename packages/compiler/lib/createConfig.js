@@ -21,10 +21,11 @@ const baseConfig = {
           {
             loader: require.resolve('babel-loader'),
             options: {
+              sourceType: 'unambiguous',
               plugins: [
                 require.resolve('@babel/plugin-syntax-object-rest-spread'),
                 require.resolve('@babel/plugin-proposal-class-properties'),
-                require.resolve('@babel/plugin-transform-async-to-generator')
+                require.resolve('@babel/plugin-transform-runtime'),
               ],
               presets: [
                 require.resolve('@babel/preset-env'),

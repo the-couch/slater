@@ -17,9 +17,9 @@
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
-    "@babel/plugin-transform-async-to-generator": "^7.8.3",
     "@babel/plugin-transform-flow-strip-types": "^7.4.4",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "acorn": "^6.1.1",
@@ -47,5 +47,5 @@
     "style-loader": "^0.20.3",
     "webpack": "^4.33.0"
   },
-  "gitHead": "b9b06934963436e0676c0182b89e6d07157d0d89"
+  "gitHead": "5068db0b2661b5e4a94a7a439e5919c4cc13c837"
 }
