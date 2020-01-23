@@ -1,6 +1,6 @@
 {
   "name": "slater",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A Shopify development toolkit",
   "main": "index.js",
   "bin": {
@@ -16,7 +16,7 @@
   "homepage": "https://github.com/the-couch/slater#readme",
   "dependencies": {
     "@friendsof/spaghetti": "^1.4.0",
-    "@slater/compiler": "^1.6.0",
+    "@slater/compiler": "^1.6.1",
     "@slater/sync": "^1.6.0",
     "@slater/util": "^1.6.0",
     "ansi-colors": "^3.0.4",
