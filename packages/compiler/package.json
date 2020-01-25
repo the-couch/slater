@@ -45,6 +45,8 @@
     "sass-loader": "^7.1.0",
     "socket.io": "^2.2.0",
     "style-loader": "^0.20.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5",
     "webpack": "^4.33.0"
   },
   "gitHead": "5068db0b2661b5e4a94a7a439e5919c4cc13c837"

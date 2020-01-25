@@ -39,6 +39,8 @@
     "terminal-link": "^1.2.0",
     "unzipper": "^0.9.10",
     "w2t": "0.0.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5",
     "webpack": "^4.26.0",
     "yaml": "^1.0.0-rc.7"
   },
