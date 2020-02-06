@@ -15,10 +15,10 @@ module.exports = (options = {}) => {
             plugins: [
               require('postcss-import'),
               require('postcss-nested'),
-              require('postcss-cssnext')({
-                warnForDuplicates: false,
-                warnForDeprecations: false
+              require('postcss-preset-env')({
+                stage: 0
               }),
+              require('autoprefixer')
             ]
           }
         }
