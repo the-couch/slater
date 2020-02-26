@@ -13,6 +13,7 @@ module.exports = (options = {}) => {
           loader: require.resolve('postcss-loader'),
           options: {
             plugins: [
+              require('tailwindcss'),
               require('postcss-import'),
               require('postcss-nested'),
               require('postcss-preset-env')({
