@@ -297,6 +297,7 @@ to this list!
 - [A24](https://shop.a24films.com)
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
+- [Roll or Die](https://rollordie.shop)
 
 ## Contributing
 Slater uses [lerna](https://lerna.js.org/) to manage the monorepo. That makes developing locally pretty simple, but a little different from what you might be used to. Use the steps below to get up and running locally:
