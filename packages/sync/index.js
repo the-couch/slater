@@ -57,12 +57,12 @@ module.exports = function init (config) {
 
   function upload ({ key, file }) {
     const encoded = Buffer.from(fs.readFileSync(file), 'utf-8').toString('base64')
+    const value = Buffer.from(fs.readFileSync(file), 'utf-8').toString()
+
+    const output = key.includes('.liquid') ? { key, value } : { key, attachment: encoded }
 
     return api('PUT', {
-      asset: {
-        key,
-        attachment: encoded
-      }
+      asset: output
     })
       .then(res => res ? res.json() : {})
       .then(({ errors, asset }) => {
