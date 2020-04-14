@@ -10,7 +10,7 @@ A new toolkit for building and deploying themes on Shopify.
 <br />
 
 > This project is an active work in progress!
-> 
+>
 > The CLI for compiling and uploading themes is stable, but **the starter theme
 > needs some love!**
 >
@@ -298,6 +298,8 @@ to this list!
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
 - [Roll or Die](https://rollordie.shop)
+- [The Elder Statesman](https://elder-statesman.com/)
+
 
 ## Contributing
 Slater uses [lerna](https://lerna.js.org/) to manage the monorepo. That makes developing locally pretty simple, but a little different from what you might be used to. Use the steps below to get up and running locally:
