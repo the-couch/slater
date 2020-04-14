@@ -1,6 +1,6 @@
 {
   "name": "slater",
-  "version": "1.7.3",
+  "version": "1.8.0",
   "description": "A Shopify development toolkit",
   "main": "index.js",
   "bin": {
@@ -17,7 +17,7 @@
   "dependencies": {
     "@friendsof/spaghetti": "^1.4.0",
     "@slater/compiler": "^1.7.3",
-    "@slater/sync": "^1.7.2",
+    "@slater/sync": "^1.8.0",
     "@slater/util": "^1.7.2",
     "ansi-colors": "^3.0.4",
     "anymatch": "^2.0.0",
