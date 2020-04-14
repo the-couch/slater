@@ -10,7 +10,7 @@ A new toolkit for building and deploying themes on Shopify.
 <br />
 
 > This project is an active work in progress!
-> 
+>
 > The CLI for compiling and uploading themes is stable, but **the starter theme
 > needs some love!**
 >
@@ -317,7 +317,7 @@ slater build && slater sync --theme production
 `slater` uses an local SSL certification to correspond with Shopify's HTTPS
 hosted themes. To take advantage of live-reloading, you need to create a
 security exception for the `slater` cert (this is safe). To do this, load
-[https://localhost:3000](https://localhost:3000) in your browser, and follow
+[https://localhost:4000](https://localhost:4000) in your browser, and follow
 the instructions for adding an exception. If it works, you should see this in
 your browser window:
 ```
@@ -335,6 +335,9 @@ to this list!
 - [A24](https://shop.a24films.com)
 - [Fur](https://www.furyou.com)
 - [Dims Home](https://www.dimshome.com)
+- [Roll or Die](https://rollordie.shop)
+- [The Elder Statesman](https://elder-statesman.com/)
+
 
 ## Contributing
 Slater uses [lerna](https://lerna.js.org/) to manage the monorepo. That makes developing locally pretty simple, but a little different from what you might be used to. Use the steps below to get up and running locally:

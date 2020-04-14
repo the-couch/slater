@@ -13,12 +13,13 @@ module.exports = (options = {}) => {
           loader: require.resolve('postcss-loader'),
           options: {
             plugins: [
+              require('tailwindcss'),
               require('postcss-import'),
               require('postcss-nested'),
-              require('postcss-cssnext')({
-                warnForDuplicates: false,
-                warnForDeprecations: false
+              require('postcss-preset-env')({
+                stage: 0
               }),
+              require('autoprefixer')
             ]
           }
         }
