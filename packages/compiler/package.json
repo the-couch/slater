@@ -1,6 +1,6 @@
 {
   "name": "@slater/compiler",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Compiler abstraction for slater.",
   "main": "index.js",
   "repository": {
@@ -45,11 +45,10 @@
     "sass-loader": "^7.1.0",
     "socket.io": "^2.2.0",
     "style-loader": "^0.20.3",
+    "tailwindcss": "^1.2.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
-    "tailwindcss": "^1.2.0",
     "webpack": "^4.33.0"
   },
-  "gitHead": "5068db0b2661b5e4a94a7a439e5919c4cc13c837",
-  "devDependencies": {}
+  "gitHead": "5068db0b2661b5e4a94a7a439e5919c4cc13c837"
 }
