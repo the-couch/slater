@@ -33,6 +33,7 @@ A new toolkit for building and deploying themes on Shopify.
   - [Themes](#themes)
   - [Directory Structure](#directory-structure)
   - [Assets](#assets)
+  - [Typescript](#typescript)
   - [Alias & Env](#alias--env)
 - [Command Line](#command-line)
   - [watch](#watch)
@@ -197,6 +198,43 @@ module.exports = {
       'sass'
     ]
   }
+}
+```
+
+### Typescript
+Specify `typescript` preset in your assets config to enable Typescript support:
+```javascript
+module.exports = {
+    in: '/src/scripts/index.js'
+  assets: {
+    presets: [
+      'typescript'
+    ]
+  }
+}
+```
+
+Then add `index.ts` file to `/src/scripts/` folder and modify your entry js file (`/src/scripts/index.js` by default) to import new typescript entry file:
+```javascript
+import './index.ts' // path to your entry .ts file
+
+// rest of your project scripts
+```
+
+You can copy rest of the projects scripts and styles import to typescript file, leaving only one import line in js file. Last step is to add `tsconfig.json` file to the root of your project:
+```json
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": false,
+    "target": "es2015"
+  },
+  "exclude": ["node_modules", "slater.config.js", "test.config.js"]
 }
 ```
 
