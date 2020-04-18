@@ -26,7 +26,7 @@ router.on('after', () => {
 })
 
 /**
- * load any data that your site needs on fist load
+ * load any data that your site needs on first load
  */
 Promise.all([
   fetchCart()
