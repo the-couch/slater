@@ -91,7 +91,7 @@ module.exports = function createApp (config) {
       console.log('')
 
       return new Promise((res, rej) => {
-        if (!fs.existsSync(abs(config.assets.in))) return
+        if (fs.existsSync(Array.isArray(config.assets.in) ? abs(config.assets.in[0]) : abs(config.assets.in))) return
 
         const bundle = compiler(config.assets)
 
@@ -209,7 +209,7 @@ module.exports = function createApp (config) {
         watchers.map(w => w.close())
       })
 
-      if (fs.existsSync(abs(config.assets.in))) {
+      if (fs.existsSync(Array.isArray(config.assets.in) ? abs(config.assets.in[0]) : abs(config.assets.in))) {
         const bundle = compiler(config.assets)
 
         bundle.on('error', e => {

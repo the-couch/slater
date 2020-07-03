@@ -48,9 +48,10 @@ const baseConfig = {
 module.exports = function createConfig (conf, watch) {
   const wc = clone(baseConfig)
 
-  wc.entry = {
-    [path.basename(conf.in, '.js')]: path.resolve(cwd, conf.in)
-  }
+  wc.entry = (Array.isArray(conf.in) ? conf.in : [conf.in]).reduce((obj, entry) => {
+    obj[path.basename(entry, '.js')] = path.resolve(cwd, entry);
+    return obj;
+  },{});
 
   /**
    * merge output as an object,

@@ -30,10 +30,10 @@ module.exports = function getConfig (options) {
     }
   }, require(configpath))
 
-  config.assets.alias = {
-    '@': abs(path.dirname(config.assets.in)),
-    ...(config.assets.alias || {})
-  }
+  config.assets.alias = (Array.isArray(config.assets.in) ? config.assets.in : [config.assets.in]).reduce((obj, entry) => {
+    obj['@'] = abs(path.dirname(entry));
+    return obj;
+  },{})
 
   if (!config.assets.presets) {
     config.assets.presets = [
