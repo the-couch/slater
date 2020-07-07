@@ -15,7 +15,7 @@ const baseConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: [
           {
@@ -38,6 +38,7 @@ const baseConfig = {
     ]
   },
   resolve: {
+    extensions: ['.js', '.jsx'],
     alias: {
       '@': process.cwd()
     }
