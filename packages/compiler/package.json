@@ -48,7 +48,8 @@
     "tailwindcss": "^1.2.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
-    "webpack": "^4.33.0"
+    "webpack": "^4.33.0",
+    "webpack-merge": "^5.7.3"
   },
   "gitHead": "5068db0b2661b5e4a94a7a439e5919c4cc13c837"
 }
