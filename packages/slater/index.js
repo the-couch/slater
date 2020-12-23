@@ -93,7 +93,7 @@ module.exports = function createApp (config) {
       return new Promise((res, rej) => {
         if (!fs.existsSync(abs(config.assets.in))) return
 
-        const bundle = compiler(config.assets)
+        const bundle = compiler({ ...config.assets, webpack: config.webpack })
 
         bundle.on('error', e => {
           log.error(e)
@@ -210,7 +210,7 @@ module.exports = function createApp (config) {
       })
 
       if (fs.existsSync(abs(config.assets.in))) {
-        const bundle = compiler(config.assets)
+        const bundle = compiler({ ...config.assets, webpack: config.webpack })
 
         bundle.on('error', e => {
           log.error(e)
