@@ -2,6 +2,8 @@ const path = require('path')
 const clone = require('clone')
 const webpack = require('webpack')
 
+const { merge } = require("webpack-merge")
+
 const cwd = process.cwd()
 
 const baseConfig = {
@@ -46,7 +48,7 @@ const baseConfig = {
 }
 
 module.exports = function createConfig (conf, watch) {
-  const wc = clone(baseConfig)
+  let wc = clone(baseConfig)
 
   wc.entry = {
     [path.basename(conf.in, '.js')]: path.resolve(cwd, conf.in)
@@ -92,6 +94,8 @@ module.exports = function createConfig (conf, watch) {
         )
       } catch (e) {}
     })
+
+  wc = merge(wc, conf.webpack || {})
 
   return wc
 }
