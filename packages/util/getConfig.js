@@ -25,15 +25,18 @@ module.exports = function getConfig (options) {
   const config = merge({
     in: './src',
     out:'./build',
-    assets: {
-      in: './src/scripts/index.js'
-    }
+    assets: {}
   }, require(configpath))
 
+  /*
   config.assets.alias = {
-    '@': abs(path.dirname(config.assets.in)),
+    '@': abs(path.dirname(config.assets[0])),
     ...(config.assets.alias || {})
   }
+  console.log(abs(path.dirname(config.assets[0])))
+  console.log(config.assets.alias)
+  */
+  console.log(config.assets)
 
   if (!config.assets.presets) {
     config.assets.presets = [

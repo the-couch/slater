@@ -16,9 +16,9 @@
   "homepage": "https://github.com/the-couch/slater#readme",
   "dependencies": {
     "@friendsof/spaghetti": "^1.4.0",
-    "@slater/compiler": "^1.7.3",
-    "@slater/sync": "^1.8.0",
-    "@slater/util": "^1.7.2",
+    "@slater/compiler": "file:../compiler",
+    "@slater/sync": "file:../sync",
+    "@slater/util": "file:../util",
     "ansi-colors": "^3.0.4",
     "anymatch": "^2.0.0",
     "chokidar": "^2.0.4",

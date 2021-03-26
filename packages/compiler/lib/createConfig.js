@@ -48,9 +48,18 @@ const baseConfig = {
 module.exports = function createConfig (conf, watch) {
   const wc = clone(baseConfig)
 
-  wc.entry = {
-    [path.basename(conf.in, '.js')]: path.resolve(cwd, conf.in)
-  }
+  wc.entry = {} //conf.entry
+
+  conf.entry.forEach(entry => {
+    //let obj = { [path.parse(entry).name]: path.resolve(cwd, entry) }
+    let obj = { [path.basename(entry, '.js')]: path.resolve(cwd, entry) }
+    wc.entry = { ...wc.entry, ...obj }
+  });
+
+ 
+  console.log("---------------")
+  console.log(wc)
+  console.log("---------------")
 
   /**
    * merge output as an object,

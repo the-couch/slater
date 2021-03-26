@@ -91,7 +91,11 @@ module.exports = function createApp (config) {
       console.log('')
 
       return new Promise((res, rej) => {
-        if (!fs.existsSync(abs(config.assets.in))) return
+        //if (!fs.existsSync(abs(config.assets.in))) return
+
+        console.log("###build###")
+        console.log(config.assets)
+        console.log("###")
 
         const bundle = compiler(config.assets)
 
@@ -152,9 +156,13 @@ module.exports = function createApp (config) {
           .then(() => {
             log.info('synced', filename)
           })
+          .catch((error) => {
+            console.log(error)
+          })
+          /*
           .catch(({ errors, key }) => {
             log.error(`syncing ${key} failed - ${errors.asset ? errors.asset.join('  ') : errors}`)
-          })
+          })*/
       }
       function unsyncFile ({ filename, src, dest }) {
         if (!filename) return Promise.resolve(true)
@@ -209,8 +217,12 @@ module.exports = function createApp (config) {
         watchers.map(w => w.close())
       })
 
-      if (fs.existsSync(abs(config.assets.in))) {
+      //if (fs.existsSync(abs(config.assets.in))) {
         const bundle = compiler(config.assets)
+
+        console.log("###watch###")
+        console.log(config.assets)
+        console.log("###")
 
         bundle.on('error', e => {
           log.error(e)
@@ -224,7 +236,7 @@ module.exports = function createApp (config) {
         onExit(() => {
           bundle.close()
         })
-      }
+      //}
     }
   }
 }

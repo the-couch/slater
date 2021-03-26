@@ -44,10 +44,11 @@ module.exports = function init (config) {
   }
 
   function api (method, body) {
-    return fetch(`https://${config.store}/admin/themes/${config.id}/assets.json`, {
+    console.log(method)
+    return fetch(`http://${config.store}/admin/themes/${config.id}/assets.json`, {
       method,
       headers: {
-        'X-Shopify-Access-Token': config.password,
+        'X-Store-Access-Token': config.password,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
@@ -64,6 +65,10 @@ module.exports = function init (config) {
           }
         }
         return res.json()
+      })
+      .then(data => {
+        console.log(data)
+        return data
       })
       .then(({ errors, ...rest }) => {
         if (errors) {
@@ -83,6 +88,10 @@ module.exports = function init (config) {
       asset: output
     })
       .then(res => res ? res.json() : {})
+      .then(data => {
+        console.log(data)
+        return data
+      })
       .then(({ errors, asset }) => {
         if (errors) {
           throw {
@@ -103,6 +112,10 @@ module.exports = function init (config) {
       asset: { key }
     })
       .then(res => res ? res.json() : {})
+      /*.then(data => {
+        console.log(data)
+        return data
+      })*/
       .then(({ errors, asset }) => {
         if (errors) {
           throw {

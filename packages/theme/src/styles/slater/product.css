@@ -1,8 +1,0 @@
-.slater-product {
-  padding: 32px 0;
-  @media (--1000) {
-    > div {
-      width: 48%;
-    }
-  }
-}
