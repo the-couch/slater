@@ -50,6 +50,8 @@ module.exports = function createConfig (conf, watch) {
 
   wc.entry = {} //conf.entry
 
+  //console.log(conf)
+
   conf.entry.forEach(entry => {
     //let obj = { [path.parse(entry).name]: path.resolve(cwd, entry) }
     let obj = { [path.basename(entry, '.js')]: path.resolve(cwd, entry) }

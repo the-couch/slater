@@ -15,17 +15,9 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "devDependencies": {
-    "slater": "^1.8.0"
+    "slater": "file:../slater"
   },
   "dependencies": {
-    "choozy": "0.0.3",
-    "lazim": "^1.0.0",
-    "mitt": "^1.1.3",
-    "operator": "^1.4.0",
-    "picoapp": "^3.1.3",
-    "sliced": "^1.0.1",
-    "svbstrate": "^4.1.1",
-    "unfetch": "^4.1.0"
   },
   "gitHead": "5068db0b2661b5e4a94a7a439e5919c4cc13c837"
 }

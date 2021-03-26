@@ -16,7 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/the-couch/slater#readme",
   "devDependencies": {
-    "all-contributors-cli": "^6.4.0",
-    "lerna": "^3.10.6"
+    "all-contributors-cli": "^6.20.0",
+    "lerna": "^4.0.0"
   }
 }

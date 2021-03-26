@@ -25,7 +25,11 @@ module.exports = function getConfig (options) {
   const config = merge({
     in: './src',
     out:'./build',
-    assets: {}
+    assets: {
+      entry:[
+        '/src/scripts/theme.js'
+      ]
+    }
   }, require(configpath))
 
   /*

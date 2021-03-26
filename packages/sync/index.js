@@ -88,10 +88,6 @@ module.exports = function init (config) {
       asset: output
     })
       .then(res => res ? res.json() : {})
-      .then(data => {
-        console.log(data)
-        return data
-      })
       .then(({ errors, asset }) => {
         if (errors) {
           throw {

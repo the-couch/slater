@@ -10,7 +10,6 @@ const link = require('terminal-link')
  * internal modules
  */
 const compiler = require('@slater/compiler')
-const spaghetti = require('@friendsof/spaghetti')
 const sync = require('@slater/sync')
 const {
   logger,
