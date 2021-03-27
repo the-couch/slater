@@ -44,7 +44,7 @@ module.exports = function init (config) {
   }
 
   function api (method, body) {
-    console.log(method)
+    //console.log(method)
     return fetch(`http://${config.store}/admin/themes/${config.id}/assets.json`, {
       method,
       headers: {
@@ -66,10 +66,10 @@ module.exports = function init (config) {
         }
         return res.json()
       })
-      .then(data => {
+      /*.then(data => {
         console.log(data)
         return data
-      })
+      })*/
       .then(({ errors, ...rest }) => {
         if (errors) {
           throw {errors}

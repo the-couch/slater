@@ -92,12 +92,12 @@ module.exports = function createApp (config) {
       return new Promise((res, rej) => {
         //if (!fs.existsSync(abs(config.assets.in))) return
 
-        console.log("###build###")
-        console.log(config.assets)
-        console.log("###")
+        //console.log("###build###")
+        //console.log(config.assets)
+        //console.log("###")
 
         const bundle = compiler(config.assets)
-
+        //console.log("paso por aquiiii")
         bundle.on('error', e => {
           log.error(e)
           rej(e)
@@ -155,13 +155,9 @@ module.exports = function createApp (config) {
           .then(() => {
             log.info('synced', filename)
           })
-          .catch((error) => {
-            console.log(error)
-          })
-          /*
-          .catch(({ errors, key }) => {
+          .catch(( errors, key ) => {
             log.error(`syncing ${key} failed - ${errors.asset ? errors.asset.join('  ') : errors}`)
-          })*/
+          })
       }
       function unsyncFile ({ filename, src, dest }) {
         if (!filename) return Promise.resolve(true)
@@ -171,11 +167,14 @@ module.exports = function createApp (config) {
           .then(() => {
             log.info('unsynced', filename)
           })
-          .catch(({ errors, key }) => {
+          .catch(( errors, key ) => {
             log.error(`syncing ${key} failed - ${errors.asset ? errors.asset.join('  ') : errors}`)
           })
       }
 
+      //console.log("==============")
+      //console.log(config)
+      //console.log("==============")
       // @see https://github.com/paulmillr/chokidar/issues/773
       const watchers = [
         chokidar.watch(config.in, {
@@ -219,9 +218,9 @@ module.exports = function createApp (config) {
       //if (fs.existsSync(abs(config.assets.in))) {
         const bundle = compiler(config.assets)
 
-        console.log("###watch###")
-        console.log(config.assets)
-        console.log("###")
+        //console.log("###watch###")
+        //console.log(config.assets)
+        //console.log("###")
 
         bundle.on('error', e => {
           log.error(e)

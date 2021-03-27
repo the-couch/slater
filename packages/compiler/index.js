@@ -39,11 +39,16 @@ module.exports = conf => {
       emit('build')
 
       const config = createConfig(conf, false)
+      //console.log("entro a composer build")
       config.mode = 'production'
+
+      //console.log(config)
 
       return new Promise((res, rej) => {
         webpack(config).run((e, stats) => {
+          
           if (e) {
+            //console.log("entro if e")
             emit('error', e)
             rej(e)
             return
@@ -51,6 +56,7 @@ module.exports = conf => {
 
           const s = formatStats(stats)
 
+          //console.log(s.errors)
           if (s.errors && s.errors.length) emit('error', s.errors)
           if (s.warnings && s.warnings.length) emit('warn', s.warnings)
 

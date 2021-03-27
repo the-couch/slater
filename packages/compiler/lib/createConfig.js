@@ -1,6 +1,7 @@
 const path = require('path')
 const clone = require('clone')
 const webpack = require('webpack')
+const miniCssExtractPlugin = require('mini-css-extract-plugin'); //https://webpack.js.org/plugins/mini-css-extract-plugin/
 
 const cwd = process.cwd()
 
@@ -17,23 +18,20 @@ const baseConfig = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: require.resolve('babel-loader'),
-            options: {
-              sourceType: 'unambiguous',
-              plugins: [
-                require.resolve('@babel/plugin-syntax-object-rest-spread'),
-                require.resolve('@babel/plugin-proposal-class-properties'),
-                require.resolve('@babel/plugin-transform-runtime'),
-              ],
-              presets: [
-                require.resolve('@babel/preset-env'),
-                require.resolve('@babel/preset-react')
-              ]
-            }
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [require.resolve('@babel/preset-env')],
           }
-        ]
+        }
+      },
+      {
+        test: /\.scss$/i,
+        use: [
+          { loader: miniCssExtractPlugin.loader },
+          { loader: require.resolve('css-loader'), options: { url: false, importLoaders: 1 } },
+          { loader: require.resolve('sass-loader') }
+        ],
       }
     ]
   },
@@ -59,10 +57,6 @@ module.exports = function createConfig (conf, watch) {
   });
 
  
-  console.log("---------------")
-  console.log(wc)
-  console.log("---------------")
-
   /**
    * merge output as an object,
    * or resolve a simple path
@@ -76,33 +70,17 @@ module.exports = function createConfig (conf, watch) {
 
   wc.resolve.alias = Object.assign(wc.resolve.alias, conf.alias || {})
 
-  wc.plugins = wc.plugins.concat([
-    new webpack.DefinePlugin(conf.env || {}),
-    conf.banner && new webpack.BannerPlugin({
-      banner: conf.banner,
-      raw: true,
-      entryOnly: true,
-      exclude: /\.(sa|sc|c)ss$/
+  wc.plugins =  [
+    new miniCssExtractPlugin({
+      linkType: 'text/css',
+      filename: "[name].css"
     })
-  ].filter(Boolean))
+  ]
 
-  ;[].concat(conf.presets || [])
-    .map(p => {
-      const props = {
-        config: wc,
-        watch
-      }
 
-      try {
-        typeof p === 'function' ? p(props) : (
-          Array.isArray(p) ? (
-            require(`../presets/${p[0]}.js`)(p[1])(props)
-          ) : (
-            require(`../presets/${p}.js`)()(props)
-          )
-        )
-      } catch (e) {}
-    })
+  //console.log("---------------")
+  //console.log(wc)
+  //console.log("---------------")
 
   return wc
 }

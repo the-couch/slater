@@ -26,6 +26,8 @@ try {
 } catch (e) {}
 
 function mergeConfig (inputs) {
+  //console.log('mergeConfig')
+  //console.log(inputs)
   const cli = inputs.length ? {
     in: inputs.reduce((entry, file) => {
       if (/\*+/g.test(file)) {

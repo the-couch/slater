@@ -57,7 +57,7 @@ prog
 
     theme
       .test()
-      .catch(({ errors }) => {
+      .catch(( errors ) => {
         log.error(errors)
         exit()
       })
@@ -82,7 +82,7 @@ prog
         )
         exit()
       })
-      .catch(({ errors, key }) => {
+      .catch(( errors, key) => {
         log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
         exit()
       })
@@ -104,7 +104,7 @@ prog
 
     theme
       .test()
-      .catch(({ errors }) => {
+      .catch(( errors ) => {
         log.error(errors)
         exit()
       })
@@ -129,7 +129,7 @@ prog
         )
         exit()
       })
-      .catch(({ errors, key }) => {
+      .catch((errors, key) => {
         log.error(`unsyncing ${key} failed - ${errors.asset.join('  ')}`)
         exit()
       })

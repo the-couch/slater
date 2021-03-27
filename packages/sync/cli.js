@@ -38,7 +38,7 @@ prog
         log.info('syncing', 'complete', true)
         exit()
       })
-      .catch(({ errors, key }) => {
+      .catch(( errors, key ) => {
         log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
         exit()
       })
@@ -68,7 +68,7 @@ prog
         log.info('syncing', 'complete', true)
         exit()
       })
-      .catch(({ errors, key }) => {
+      .catch(( errors, key ) => {
         log.error(`syncing ${key} failed - ${errors.asset.join('  ')}`)
         exit()
       })

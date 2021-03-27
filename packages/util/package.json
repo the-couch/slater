@@ -15,7 +15,6 @@
     "log-update": "^4.0.0",
     "merge-deep": "^3.0.3",
     "micromatch": "^4.0.2",
-    "neat-log": "^3.1.0",
     "yaml": "^1.10.2"
   },
   "gitHead": "3efcf640b15bfcbecbba4b4181a6826efa9b6f7e"

@@ -40,7 +40,6 @@ module.exports = function getConfig (options) {
   console.log(abs(path.dirname(config.assets[0])))
   console.log(config.assets.alias)
   */
-  console.log(config.assets)
 
   if (!config.assets.presets) {
     config.assets.presets = [
@@ -92,5 +91,8 @@ module.exports = function getConfig (options) {
   config.in = abs(config.in || './src')
   config.out = abs(config.out || './build')
 
+  //console.log("$$$$$$$$$$")
+  //console.log(config)
+  //console.log("$$$$$$$$$$")
   return config
 }
