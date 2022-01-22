@@ -32,7 +32,7 @@
     "log-update": "^2.3.0",
     "merge-deep": "^3.0.2",
     "micromatch": "^3.1.10",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^3.1.1",
     "parse-gitignore": "^1.0.1",
     "request": "^2.88.0",
     "socket.io": "^2.1.1",
